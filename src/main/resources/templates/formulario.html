@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+        <title>Registro</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logo.png" alt="" width="30" height="24">
+                Cafesitos Finos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Productos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="mas-pedidos.html">Los más pedidos</a></li>
+                            <li><a class="dropdown-item" href="clasicos.html">Clásicos</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="menu.html">Categorías</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            <form class="row g-3 mt-3">
+                <div class="col-6">
+                    <label for="nameInput" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nameInput" placeholder="Escribe tu nombre">
+                </div>
+                <div class="col-6">
+                    <label for="lastInput" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="lastlInput" placeholder="Escribe tus apellidos">
+                </div>
+                <div class="col-6">
+                    <label for="dateInput" class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="datelInput"
+                        placeholder="Indique su fecha de nacimiento ">
+                </div>
+                <div class="col-6">
+                    <label for="emailInput" class="form-label">Correo</label>
+                    <input type="email" class="form-control" id="emailInput" placeholder="Ingresar correo">
+                </div>
+                <div class="col-6">
+                    <label for="inputPass" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="inputPass" placeholder="Escribe tu contraseña">
+                </div>
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="inputAddress" placeholder="Escribe tu direccion">
+                </div>
+                <div class="col-3">
+                    <label for="cityInput" class="form-label">Ciudad</label>
+                    <input type="text" class="form-control" id="cityInput" placeholder="Escribe tu ciudad">
+                </div>
+                <div class="col-3">
+                    <label for="countryInput" class="form-label">Pais</label>
+                    <input type="text" class="form-control" id="countryInput" placeholder="Escribe tu pais">
+                </div>
+                <div class="col-12 mb-5">
+                    <button type="submit" class="btn btn-primary">Regístrate</button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3 pb-2">
+                        <a href="index.html" class="text-white text-decoration-none">Cafesitos Finos</a>
+                    </h5>
+                    <p>Disfruta del mejor café de especialidad. Visitanos en nuestro acogedor local o haz tu pedido
+                        online.</p>
+                    <p>
+                        <i class="bi bi-geo-alt-fill me-2"></i> Av. Wiese 987, Lima
+                        <br>
+                        <i class="bi bi-telephone-fill me-2"></i> (123) 456-7890
+                        <br>
+                        <i class="bi bi-envelope-fill me-2"></i> correo@correo.com
+                    </p>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3 pb-2">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white text-decoration-none"><i
+                                    class="bi bi-house-door me-2"></i>Inicio</a></li>
+                        <li class="mb-2"><a href="menu.html" class="text-white text-decoration-none"><i
+                                    class="bi bi-cup-hot me-2"></i>Nuestro Menú</a></li>
+                        <li class="mb-2"><a href="nosotros.html" class="text-white text-decoration-none"><i
+                                    class="bi bi-people me-2"></i>Nosotros</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-white text-decoration-none"><i
+                                    class="bi bi-chat-dots me-2"></i>Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3 pb-2">Síguenos</h5>
+                    <div class="mb-4">
+                        <a href="https://www.instagram.com/emilio__ch__/" class="text-white me-3 fs-4"><i
+                                class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/945247950" class="text-white me-3 fs-4"><i
+                                class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/emiliojorge.calizayahuaman" class="text-white me-3 fs-4"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" class="text-white me-3 fs-4"><i
+                                class="bi bi-youtube"></i></a>
+                    </div>
+                    <h6 class="mb-3">Suscríbete a nuestro boletín</h6>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Tu correo electrónico" aria-label="Email">
+                        <button class="btn btn-outline-light" type="button">Suscribir</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 text-center border-top pt-3">
+                    <p class="small">© 2025 Cafesitos Finos. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
