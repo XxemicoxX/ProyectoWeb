@@ -29,6 +29,9 @@
                 <div class="col-6">
                     <label for="inputPass" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="inputPass" placeholder="Escribe tu contraseña">
+                    <p th:if="1 eq 1" style="color:red;">
+                        Mínimo 8 caracteres.
+                    </p>
                 </div>
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Dirección</label>
@@ -43,7 +46,9 @@
                     <input type="text" class="form-control" id="countryInput" placeholder="Escribe tu pais">
                 </div>
                 <div class="col-12 mb-5">
-                    <button type="submit" class="btn btn-primary">Regístrate</button>
+                    <a href="/">
+                        <button type="submit" class="btn btn-primary">Regístrate</button>
+                    </a>
                 </div>
 
             </form>
