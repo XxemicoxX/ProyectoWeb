@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/template :: head('Sedes')}">
+</head>
+
+<body>
+    <header th:replace="~{/fragments/template :: header}"></header>
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col my-3 mx-5">
+                    <h2>¡Elige tu sede mas cercana!</h2>
+                    <br>
+                    <div class="d-flex col gap-5 justify-content-start">
+                        <select
+                            style="background-color: rgb(253, 241, 213); border-radius: 10px; border: 1px solid #ccc; padding: 10px; width: 550px;">
+                            <option th:each="sede : ${sedes}">[[${sede}]]</option>
+                        </select>
+                        <button class="btn btn-primary">Continuar</button>
+                    </div>
+                </div>
+                <div class="col my-3 mx-5">
+                    <img class="img-fluid" src="/img/sede.png">
+                </div>
+            </div>
+            <div class="row my-2 mx-2">
+                <div class="col">
+                   <a href="/menu">
+                     <button class="btn btn-secondary">Volver</button>
+                   </a>
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="~{/fragments/template :: footer}"></footer>
+</body>
+
+</html>

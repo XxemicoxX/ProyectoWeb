@@ -1,7 +1,12 @@
 package com.example.demo.controlador;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping
@@ -48,10 +53,10 @@ public class Controlador {
     }
 
     @GetMapping
-    public String inicio (){
+    public String inicio() {
         return "index";
     }
-    
+
     @GetMapping("/keke-chocolate")
     public String kekeChocolate() {
         return "keke-chocolate";
@@ -63,7 +68,7 @@ public class Controlador {
     }
 
     @GetMapping("/menu")
-    public String menu() {
+    public String menu(Model model) {
         return "menu";
     }
 
@@ -80,5 +85,16 @@ public class Controlador {
     @GetMapping("/sandwich")
     public String sandwich() {
         return "sandwich";
+    }
+
+    @GetMapping("/sede")
+    public String sede(Model modelo) {
+        List<String> ubicacion = new ArrayList<>();
+        ubicacion.add("Av. wiesse 2323232, SJL");
+        ubicacion.add("Av. escardo 123, San Miguel");
+        ubicacion.add("La Perla 345, Callao");
+        ubicacion.add("Av. girasoles, Agustino");
+        modelo.addAttribute("sedes", ubicacion);
+        return "sedes";
     }
 }
