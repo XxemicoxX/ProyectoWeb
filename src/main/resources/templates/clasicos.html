@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="~{fragments/template :: head('Clasico')}"></head>
+<head th:replace="~{fragments/template :: head('Clasicos')}"></head>
 
-<body>   
+<body>
 
     <header th:replace="~{/fragments/template :: header}"></header>
 
@@ -11,32 +11,34 @@
         <div class="container py-3">
             <h2>Clásicos</h2>
             <hr>
-                <div class = "row row-cols-1 row-cols-md-3 g-4">    
-                    <div class = "col py-2">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/img/espresscaliente.png" class="img-fluid card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><strong>Americano caliente</strong></h5>
-                                <p class="card-text">Espresso caliente, elaborado con
-                                    granos 100% arábica de tueste perfecto.</p>
-                                <a href="/espress-caliente" class="btn btn-primary">Pedir</a>
-                            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col py-2">
+                    <div class="card" style="width: 18rem;">
+                        <img src="/img/espresscaliente.png" class="img-fluid card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><strong>Americano caliente</strong></h5>
+                            <p class="card-text">Espresso caliente, elaborado con
+                                granos 100% arábica de tueste perfecto.</p>
+                            <a href="/espress-caliente" class="btn btn-primary">Pedir</a>
                         </div>
                     </div>
-                    <div class = "col py-2">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/img/espressfrio.png" class="img-fluid card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><strong>Americano frio</strong></h5>
-                                <p class="card-text">Preparado con café 100% arábica de alta calidad y enfriado cuidadosamente para conservar todo su sabor.</p>
-                                    <a href="/espress-frio" class="btn btn-primary">Pedir</a>
-                            </div>
+                </div>
+                <div class="col py-2">
+                    <div class="card" style="width: 18rem;">
+                        <img src="/img/espressfrio.png" class="img-fluid card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><strong>Americano frio</strong></h5>
+                            <p class="card-text">Preparado con café 100% arábica de alta calidad y enfriado
+                                cuidadosamente para conservar todo su sabor.</p>
+                            <a href="/espress-frio" class="btn btn-primary">Pedir</a>
                         </div>
                     </div>
-        </div>
+                </div>
+            </div>
     </main>
 
     <footer th:replace="~{/fragments/template :: footer}"></footer>
     <script th:replace="fragments/template :: script"></script>
 </body>
+
 </html>
