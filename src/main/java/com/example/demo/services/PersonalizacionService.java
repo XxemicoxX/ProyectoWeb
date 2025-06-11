@@ -17,6 +17,7 @@ public class PersonalizacionService {
     public List<Personalizacion> personalizacionSel() {
         return repository.findAll();
     }
+<<<<<<< HEAD
 
     public Personalizacion personalizacionSelectOne(Integer id) {
         return repository.findById(id).orElse(null);
@@ -30,4 +31,6 @@ public class PersonalizacionService {
     public void personalizacionDelete (Integer id) {
         repository.deleteById(id);
     }
+=======
+>>>>>>> af72320a150b2e350cc86951737a40e68a4908b7
 }
