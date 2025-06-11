@@ -19,4 +19,16 @@ public class CategoriaService {
         return repository.findAll();
     }
 
+    public Categoria categoriaSelectOne(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    //INSERT into rol && UPDATE dinosaurio SET
+    public Categoria categoriaInsertUpdate (Categoria categoria) {
+        return repository.save(categoria);
+    }
+
+    public void categoriaDelete (Integer id) {
+        repository.deleteById(id);
+    }
 }

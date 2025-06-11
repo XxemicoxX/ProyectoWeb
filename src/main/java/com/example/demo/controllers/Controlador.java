@@ -97,4 +97,17 @@ public class Controlador {
         modelo.addAttribute("sedes", ubicacion);
         return "sedes";
     }
+    
+    @GetMapping("/admin/personalizaciones")
+    public String personalizaciones() {
+        return "admin/personalizaciones";
+    }
+    @GetMapping("/admin/productos")
+    public String productos() {
+        return "admin/productos";
+    }
+    @GetMapping("/admin/usuarios")
+    public String usuarios() {
+        return "admin/usuarios";
+    }
 }

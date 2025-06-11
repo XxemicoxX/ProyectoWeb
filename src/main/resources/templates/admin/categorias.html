@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Categorías - CafeWeb</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#">Inicio</a>
+                <a class="nav-link" href="#">Productos</a>
+                <a class="nav-link" href="#">Usuarios</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <div class="alert alert-warning border-0 shadow-sm py-4 text-primary" style="background: rgba(255,255,255,0.95);">
+                    <h1 class="display-5 mb-2"><i class="fas fa-cogs"></i> Gestión de Categorías</h1>
+                    <p class="mb-0">Agrega categorías para los productos</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Formulario para Agregar/Editar Categoría -->
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Categoría</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="categoriasForm" th:action="@{/admin/categorias/save}" method="post" th:object="${categoria}">
+                            <input type="hidden" th:field="*{id}"/>
+                            <div class="mb-3">
+                                <label for="nombre_categoria" class="form-label">Nombre de la Categoría</label>
+                                <input type="text" class="form-control" id="nombre_categoria" maxlength="100" th:field="*{nombre}" required>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save"></i> Guardar Categoría
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary">
+                                    <i class="fas fa-eraser"></i> Limpiar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Categorías -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-list"></i> Lista de Categorías</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre de Categoría</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="categoria:${lista}">
+                                        <td>[[${categoria.id}]]</td>
+                                        <td>[[${categoria.nombre}]]</td>
+                                        <td>
+                                            <a th:href="@{/admin/categorias/edit(id=${categoria.id})}" class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
+                                            <form th:action="@{/admin/categorias/delete(id=${categoria.id})}" method="post">
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Deseas eliminar este rol?')">Eliminar</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        
+                                        <!--<td>1</td>
+                                        <td>Bebidas Calientes</td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm me-2">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Eliminar
+                                            </button>
+                                        </td>-->
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

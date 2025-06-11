@@ -10,14 +10,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Categorias")
+@Table(name = "personalizaciones")
 @Data
 @NoArgsConstructor
-public class Categoria {
+public class Personalizacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_categoria")
+    @Column(name = "id_personalizacion")
     private Integer id;
-    @Column(name = "nombre_categoria")
     private String nombre;
+    private String opcion;
+    @Column(name = "precio_extra")
+    private String precio;
 }
