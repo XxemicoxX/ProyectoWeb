@@ -9,12 +9,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Categorias")
+@Table(name = "categorias")
 @Data
 @NoArgsConstructor
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_categoria;
-    private String nombre_categoria;
+    private String nombre;
 }

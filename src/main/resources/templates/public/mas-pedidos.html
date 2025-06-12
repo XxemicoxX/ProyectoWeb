@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="~{fragments/template :: head('Frappe Pedidos')}">
+<head th:replace="~{/public/fragments/template :: head('Frappe Pedidos')}">
 </head>
 <body>
 
-    <header th:replace="~{/fragments/template :: header}"></header>
+    <header th:replace="~{/public/fragments/template :: header}"></header>
     <main>
         <div class="container py-3">
             <h2>Los mas pedidos</h2>
@@ -50,8 +50,8 @@
         </div>
     </main>
     
-    <footer th:replace="~{/fragments/template :: footer}"></footer> 
-    <script th:replace="fragments/template :: script"></script>
+    <footer th:replace="~{/public/fragments/template :: footer}"></footer> 
+    <script th:replace="/public/fragments/template :: script"></script>
 </body>
 
 </html>

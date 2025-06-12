@@ -14,77 +14,77 @@ public class Controlador {
 
     @GetMapping("/clasicos")
     public String clasicos() {
-        return "clasicos";
+        return "public/clasicos";
     }
 
     @GetMapping("/contacto")
     public String contacto() {
-        return "contacto";
+        return "public/contacto";
     }
 
     @GetMapping("/espress-caliente")
     public String espressCaliente() {
-        return "espress-caliente";
+        return "public/espress-caliente";
     }
 
     @GetMapping("/espress-frio")
     public String espressFrio() {
-        return "espress-frio";
+        return "public/espress-frio";
     }
 
     @GetMapping("/formulario")
     public String formulario() {
-        return "formulario";
+        return "public/formulario";
     }
 
     @GetMapping("/frap-matcha")
     public String frapMatcha() {
-        return "frap-matcha";
+        return "public/frap-matcha";
     }
 
     @GetMapping("/frap-mocha")
     public String frapMocha() {
-        return "frap-mocha";
+        return "public/frap-mocha";
     }
 
     @GetMapping("/frap-vainilla")
     public String frapVainilla() {
-        return "frap-vainilla";
+        return "public/frap-vainilla";
     }
 
     @GetMapping
     public String inicio() {
-        return "index";
+        return "public/index";
     }
 
     @GetMapping("/keke-chocolate")
     public String kekeChocolate() {
-        return "keke-chocolate";
+        return "public/keke-chocolate";
     }
 
     @GetMapping("/mas-pedidos")
     public String masPedidos() {
-        return "mas-pedidos";
+        return "public/mas-pedidos";
     }
 
     @GetMapping("/menu")
     public String menu(Model model) {
-        return "menu";
+        return "public/menu";
     }
 
     @GetMapping("/muffin-naranja")
     public String muffinNaranja() {
-        return "muffin-naranja";
+        return "public/muffin-naranja";
     }
 
     @GetMapping("/nosotros")
     public String nosotros() {
-        return "nosotros";
+        return "public/nosotros";
     }
 
     @GetMapping("/sandwich")
     public String sandwich() {
-        return "sandwich";
+        return "public/sandwich";
     }
 
     @GetMapping("/sede")
@@ -95,6 +95,6 @@ public class Controlador {
         ubicacion.add("La Perla 345, Callao");
         ubicacion.add("Av. girasoles, Agustino");
         modelo.addAttribute("sedes", ubicacion);
-        return "sedes";
+        return "public/sedes";
     }
 }

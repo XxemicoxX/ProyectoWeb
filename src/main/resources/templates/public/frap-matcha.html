@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="~{fragments/template :: head('Frappe Matcha')}"></head>
+<head th:replace="~{/public/fragments/template :: head('Frappe Matcha')}"></head>
 
 <body>
 
-    <header th:replace="~{/fragments/template :: header}"></header>
+    <header th:replace="~{/public/fragments/template :: header}"></header>
 
     <main>
         <div class="container py-5 px-5">
@@ -77,9 +77,9 @@
         </div>
     </main>
 
-    <div th:replace="fragments/template :: carrito"></div>
-    <footer th:replace="~{fragments/template :: footer}"></footer>    
-    <script th:replace="fragments/template :: script"></script>
+    <div th:replace="/public/fragments/template :: carrito"></div>
+    <footer th:replace="~{/public/fragments/template :: footer}"></footer>    
+    <script th:replace="/public/fragments/template :: script"></script>
 </body>
 
 </html>
