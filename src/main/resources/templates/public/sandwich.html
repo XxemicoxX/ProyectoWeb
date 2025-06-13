@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head th:replace="~{/public/fragments/template :: head('Sandwich')}"></head>
+
 <body>
     <header th:replace="~{/public/fragments/template :: header}"></header>
     <main>
@@ -11,37 +12,19 @@
                     <img src="/img/sandwich.png" class="img-fluid rounded" width="300">
                     <h2><strong>Sandwich</strong></h2>
 
-                    <p>Preparado con pan suave y ligeramente tostado, lleva finas lonjas de jamón, queso fundido y crujiente lechuga fresca, 
+                    <p>Preparado con pan suave y ligeramente tostado, lleva finas lonjas de jamón, queso fundido y
+                        crujiente lechuga fresca,
                         creando una mezcla equilibrada y deliciosa.</p>
                     <h3><strong>S/. 8.00</strong></h3>
                 </div>
-                <div class="col-9 px-2 py-3">
-                    <h2>Personaliza tu pedido</h2>
-                    <hr>
-                    <h4>Selecciona la temperatura para tu sandwich</h4>
-                    <div class="btn-group-vertical" role="group3" aria-label="Vertical radio toggle button group">
-                        <input type="radio" class="btn-check" name="vbtn-radio3" id="vbtn-radio6" autocomplete="off">
-                        <label class="btn btn-outline-warning" for="vbtn-radio6">Caliente</label>
-                        <input type="radio" class="btn-check" name="vbtn-radio3" id="vbtn-radio7" autocomplete="off">
-                        <label class="btn btn-outline-warning" for="vbtn-radio7">Sin calentar</label>
-                    </div>
-                    <br>
-                    <br>
-                    <br>
-                    <div class="d-grid d-flex gap-4 justify-content-md-end">
-                        <input class="btn btn-outline-success" type="number" name="tentacles" min="1" max="10" />
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#modalAgregar">
-                            Agregar
-                        </button>
-                    </div>
-                </div>
+                   
             </div>
         </div>
     </main>
-    
+
     <div th:replace="/public/fragments/template :: carrito"></div>
-    <footer th:replace="~{/public/fragments/template :: footer}"></footer>    
+    <footer th:replace="~{/public/fragments/template :: footer}"></footer>
     <script th:replace="/public/fragments/template :: script"></script>
 </body>
+
 </html>
