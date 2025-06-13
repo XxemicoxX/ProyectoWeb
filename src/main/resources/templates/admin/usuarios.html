@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - CafeWeb</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-info-subtle">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#">Inicio</a>
+                <a class="nav-link" href="#">Categorias</a>
+                <a class="nav-link" href="#">Usuarios</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="jumbotron bg-white rounded-3 shadow-sm py-4 text-center text-info">
+                    <h1 class="display-5"><i class="fas fa-users"></i> Gestión de Usuarios</h1>
+                    <p class="lead">Administra los usuarios registrados en tu plataforma</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Formulario de Usuario -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 shadow border-0">
+                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #17a2b8, #007bff);">
+                        <h5 class="mb-0"><i class="fas fa-user-plus"></i> Registrar Usuario</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" th:action="@{/admin/usuario/save}" th:object="${usuario}">
+                            <input type="hidden" th:field="*{id}" />
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre Completo</label>
+                                <input type="text" class="form-control border-info" id="nombre" name="nombre" th:field="*{nombre}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="correo" class="form-label"><i class="fas fa-envelope"></i> Correo</label>
+                                <input type="email" class="form-control border-info" id="correo" name="correo" th:field="*{correo}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label"><i class="fas fa-phone"></i> Teléfono</label>
+                                <input type="tel" class="form-control border-info" id="telefono" name="telefono" th:field="*{telefono}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rol" class="form-label"><i class="fas fa-user-tag"></i> Rol</label>
+                                <select class="form-select border-info" id="rol" name="rol" th:field="*{rol}" required>
+                                    <option value="">Seleccionar rol</option>
+                                    <option value="admin">Administrador</option>
+                                    <option value="empleado">Empleado</option>
+                                    <option value="cliente">Cliente</option>
+                                </select>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-info btn-lg">
+                                    <i class="fas fa-save"></i> Guardar Usuario
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary">
+                                    <i class="fas fa-broom"></i> Limpiar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Usuarios -->
+            <div class="col-lg-8">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #17a2b8, #007bff);">
+                        <h5 class="mb-0"><i class="fas fa-list"></i> Lista de Usuarios</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Búsqueda y Filtros -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-info text-white"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" name="buscar" placeholder="Buscar usuarios...">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" name="filtro_rol">
+                                    <option value="">Todos los roles</option>
+                                    <option value="admin">Administrador</option>
+                                    <option value="empleado">Empleado</option>
+                                    <option value="cliente">Cliente</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-info w-100">
+                                    <i class="fas fa-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tabla de usuarios -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead class="table-info">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Teléfono</th>
+                                        <th>Rol</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Ejemplo de filas - estas vendrán de la base de datos -->
+                                    <tr th:each="usuario:${lista}">
+                                        <td>[[${usuario.id}]]</td>
+                                        <td>[[${usuario.nombre}]]</td>
+                                        <td>[[${usuario.correo}]]</td>
+                                        <td>[[${usuario.telefono}]]</td>
+                                        <td>[[${usuario.rol}]]</td>
+                                        <td>
+                                            <a th:href="@{/admin/usuarios/edit(id=${usuario.id})}"
+                                                class="btn btn-warning">Editar</a>
+                                            <form th:action="@{/admin/usuarios/delete(id=${usuario.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('¿Deseas eliminar este usuario?')">Eliminar</button>
+                                            </form>
+                                        </td>
+                                        <!--<td>001</td>
+                                        <td>Juan Pérez García</td>
+                                        <td>juan.perez@email.com</td>
+                                        <td>+51 987 654 321</td>
+                                        <td>
+                                            <span class="badge bg-success">Administrador</span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td> -->
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Paginación -->
+                        <nav aria-label="Paginación de usuarios">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x mb-2"></i>
+                        <h4>150</h4>
+                        <p>Total Usuarios</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-shield fa-2x mb-2"></i>
+                        <h4>5</h4>
+                        <p>Administradores</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-tie fa-2x mb-2"></i>
+                        <h4>25</h4>
+                        <p>Empleados</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-friends fa-2x mb-2"></i>
+                        <h4>120</h4>
+                        <p>Clientes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar usuario -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="editUserModalLabel">
+                        <i class="fas fa-edit"></i> Editar Usuario
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="">
+                    <div class="modal-body">
+                        <input type="hidden" name="user_id" value="">
+                        <div class="mb-3">
+                            <label for="edit_nombre" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="edit_nombre" name="edit_nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="edit_email" name="edit_email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_telefono" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="edit_telefono" name="edit_telefono">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_rol" class="form-label">Rol</label>
+                            <select class="form-select" id="edit_rol" name="edit_rol" required>
+                                <option value="admin">Administrador</option>
+                                <option value="empleado">Empleado</option>
+                                <option value="cliente">Cliente</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-info">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

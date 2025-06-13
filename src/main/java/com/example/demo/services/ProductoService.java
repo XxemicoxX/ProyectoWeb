@@ -3,10 +3,12 @@ package com.example.demo.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Producto;
 import com.example.demo.repositories.ProductoRepository;
+
 
 
 @Service
@@ -26,5 +28,24 @@ public class ProductoService {
 
     public List<Producto> obtenerProductosPorCategoria(Long idCategoria) {
         return productoRepository.findByCategoriaIdCategoria(idCategoria);
+
     }
+    
+    /**public List<Producto> sel() {
+        return repository.findAll();
+    }
+
+    public Producto selectOne(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    //INSERT into rol && UPDATE dinosaurio SET
+    public Producto insertUpdate (Producto Producto) {
+        return repository.save(Producto);
+    }
+
+    public void delete (Integer id) {
+        repository.deleteById(id);
+
+    }**/
 }

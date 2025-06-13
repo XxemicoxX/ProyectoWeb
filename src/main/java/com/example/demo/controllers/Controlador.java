@@ -42,4 +42,14 @@ public class Controlador {
     public String nosotros() {
         return "public/nosotros";
     }
+
+    
+    @GetMapping("/admin/productos")
+    public String productos() {
+        return "admin/productos";
+    }
+    @GetMapping("/admin/usuarios")
+    public String usuarios() {
+        return "admin/usuarios";
+    }
 }

@@ -24,4 +24,23 @@ public class ProductoController {
         model.addAttribute("producto", producto);
         return "public/producto"; 
     }
+
+    /**@PostMapping("/save")
+    public String guardar(@ModelAttribute Producto producto) {
+        service.insertUpdate(producto);
+        return "redirect:/admin/productos";
+    }
+    
+    @GetMapping("/edit")
+    public String editar(@RequestParam("id") int id, Model model){
+        model.addAttribute("producto", service.selectOne(id));
+        model.addAttribute("lista", service.sel());
+        model.addAttribute("categoria", cService.Sel());
+        return "admin/productos";
+    }
+    @PostMapping("/delete")
+    public String eliminar(@RequestParam("id") Integer id){
+        service.delete(id);
+        return "redirect:/admin/productos";
+    }**/
 }

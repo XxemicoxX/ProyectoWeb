@@ -1,0 +1,145 @@
+[⚠️ Suspicious Content] <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Personalizaciones - CafeWeb</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-warning-subtle">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+        <div class="container">
+            <a class="navbar-brand text-dark fw-bold" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-dark" href="#">Inicio</a>
+                <a class="nav-link text-dark" href="#">Productos</a>
+                <a class="nav-link text-dark" href="#">Categorías</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <div class="alert alert-warning border-0 shadow-sm py-4" style="background: rgba(255,255,255,0.95);">
+                    <h1 class="display-5 mb-2"><i class="fas fa-cogs"></i> Gestión de Personalizaciones</h1>
+                    <p class="mb-0">Configura las opciones de personalización para tus productos</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- FORMULARIO AGREGAR OPCIÓN -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Personalización</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="id_personalizacion_opcion" class="form-label fw-bold">Personalización</label>
+                                <input type="text" class="form-control" id="nombre_opcion" name="nombre_opcion" maxlength="100" placeholder="Ej: Tipo de Leche, Tamaño, Endulzante" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombre_opcion" class="form-label fw-bold">Nombre de la Opción</label>
+                                <input type="text" class="form-control" id="nombre_opcion" name="nombre_opcion" maxlength="100" placeholder="Ej: Leche entera, Grande, Stevia" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="precio_extra" class="form-label fw-bold">Precio Extra (S/.)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-success text-white">S/.</span>
+                                    <input type="number" class="form-control" id="precio_extra" name="precio_extra" step="0.01" min="0" value="0.00">
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save"></i> Guardar Opción
+                                </button>
+                            </div>
+                            <div class="d-grid mt-2">
+                                <button type="button" class="btn btn-outline-secondary">
+                                    <i class="fas fa-broom"></i> Limpiar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LISTA DE OPCIONES -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header text-white" style="background-color: #17a2b8;">
+                        <h5 class="mb-0"><i class="fas fa-list"></i> Opciones de Personalización</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead style="background-color: #343a40; color: white;">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Personalización</th>
+                                        <th>Opción</th>
+                                        <th>Precio Extra</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Tipo de Leche</td>
+                                        <td>Leche Entera</td>
+                                        <td><span class="badge bg-success">S/. 0.00</span></td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm me-1">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Tamaño</td>
+                                        <td>Grande</td>
+                                        <td><span class="badge bg-success">S/. 2.50</span></td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm me-1">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Endulzante</td>
+                                        <td>Stevia</td>
+                                        <td><span class="badge bg-success">S/. 0.50</span></td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm me-1">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

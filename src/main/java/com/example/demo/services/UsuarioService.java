@@ -4,31 +4,30 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entities.Categoria;
-import com.example.demo.repositories.CategoriaRepository;
+import com.example.demo.entities.Usuario;
+import com.example.demo.repositories.UsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CategoriaService {
+public class UsuarioService {
+    private final UsuarioRepository repository;
 
-   /**private final CategoriaRepository repository;
-
-    public List<Categoria> Sel() {
+    public List<Usuario> Sel() {
         return repository.findAll();
     }
 
-    public Categoria SelectOne(Integer id) {
+    public Usuario SelectOne(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
     //INSERT into rol && UPDATE dinosaurio SET
-    public Categoria InsertUpdate (Categoria categoria) {
-        return repository.save(categoria);
+    public Usuario InsertUpdate (Usuario Usuario) {
+        return repository.save(Usuario);
     }
 
     public void Delete (Integer id) {
         repository.deleteById(id);
-    }**/
+    }
 }
