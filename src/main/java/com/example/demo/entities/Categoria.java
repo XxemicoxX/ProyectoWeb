@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Categorias")
+@Table(name = "categorias")
 @Data
 @NoArgsConstructor
 public class Categoria {
@@ -20,4 +20,5 @@ public class Categoria {
     private Integer id;
     @Column(name = "nombre_categoria")
     private String nombre;
+    private String descripcion;
 }

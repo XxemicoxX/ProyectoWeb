@@ -41,8 +41,8 @@
                         <form id="categoriasForm" th:action="@{/admin/categorias/save}" method="post" th:object="${categoria}">
                             <input type="hidden" th:field="*{id}"/>
                             <div class="mb-3">
-                                <label for="nombre_categoria" class="form-label">Nombre de la Categoría</label>
-                                <input type="text" class="form-control" id="nombre_categoria" maxlength="100" th:field="*{nombre}" required>
+                                <label for="nombre" class="form-label">Nombre de la Categoría</label>
+                                <input type="text" class="form-control" id="nombre" maxlength="100" th:field="*{nombre}" required>
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success">

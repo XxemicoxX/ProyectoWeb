@@ -98,10 +98,6 @@ public class Controlador {
         return "sedes";
     }
     
-    @GetMapping("/admin/personalizaciones")
-    public String personalizaciones() {
-        return "admin/personalizaciones";
-    }
     @GetMapping("/admin/productos")
     public String productos() {
         return "admin/productos";

@@ -21,5 +21,6 @@ public class Usuario {
     private String nombre;
     private String correo;
     private String telefono;
-    private String direccion;    
+    private String direccion;
+    private String rol;
 }

@@ -23,26 +23,26 @@ public class CategoriaController {
 
     @GetMapping
     public String lista (Model model) {
-        model.addAttribute("lista", service.categoriaSel()); //Lista de todas las categorias y las enviare al HTML con el alias "categorias"
+        model.addAttribute("lista", service.Sel()); //Lista de todas las categorias y las enviare al HTML con el alias "categorias"
         model.addAttribute("categoria", new Categoria());
         return "admin/categorias";
     }
 
     @PostMapping("/save")
     public String guardar(@ModelAttribute Categoria categoria) {
-        service.categoriaInsertUpdate(categoria);        
+        service.InsertUpdate(categoria);        
         return "redirect:/admin/categorias";
     }
     
     @GetMapping("/edit")
     public String editar(@RequestParam("id") int id, Model model){
-        model.addAttribute("categoria", service.categoriaSelectOne(id));
-        model.addAttribute("lista", service.categoriaSel());
+        model.addAttribute("categoria", service.SelectOne(id));
+        model.addAttribute("lista", service.Sel());
         return "admin/categorias";
     }
     @PostMapping("/delete")
     public String eliminar(@RequestParam("id") Integer id){
-        service.categoriaDelete(id);
+        service.Delete(id);
         return "redirect:/admin/categorias";
     }
 }
