@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Productos - CafeWeb</title>
+    <title>Gestión de Pedidos - CafeWeb</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -14,8 +14,10 @@
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="#">Inicio</a>
+                <a class="nav-link" href="#">Productos</a>
                 <a class="nav-link" href="#">Categorías</a>
                 <a class="nav-link" href="#">Usuarios</a>
+                <a class="nav-link" href="#">Tiendas</a>
             </div>
         </div>
     </nav>
@@ -27,55 +29,51 @@
                 <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.95);">
                     <div class="card-body text-center py-4">
                         <h1 class="display-5 text-dark mb-2">
-                            <i class="fas fa-boxes"></i> Gestión de Productos
+                            <i class="fas fa-shopping-cart"></i> Gestión de Pedidos
                         </h1>
-                        <p class="lead text-muted">Administra el catálogo de productos de tu cafetería</p>
+                        <p class="lead text-muted">Administra los pedidos de tu cafetería</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <!-- Formulario para Agregar Producto -->
+            <!-- Formulario para Agregar Pedido -->
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
-                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h5>
+                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Crear Nuevo Pedido</h5>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/productos/save}" method="post" th:object="${producto}">
-                            <input type="hidden" th:field="*{id}"/>
+                        <form>
                             <div class="mb-3">
-                                <label for="nombre" class="form-label fw-bold">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="100" th:field="*{nombre}" required>
+                                <label for="fecha" class="form-label fw-bold">Fecha del Pedido</label>
+                                <input type="datetime-local" class="form-control" id="fecha" name="fecha" required>
                             </div>
                             
                             <div class="mb-3">
-                                <label for="descripcion" class="form-label fw-bold">Descripción</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required th:field="*{descripcion}" required></textarea>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">S/.</span>
-                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" th:field="*{precio}" required>
-                                </div>
+                                <label for="id_usuario" class="form-label fw-bold">Usuario</label>
+                                <select class="form-select" id="id_usuario" name="id_usuario" required>
+                                    <option value="">-- Selecciona un usuario --</option>
+                                    <option value="1">Juan Pérez</option>
+                                    <option value="2">María García</option>
+                                    <option value="3">Carlos López</option>
+                                </select>
                             </div>
                             
                             <div class="mb-4">
-                                <label for="id_categoria" class="form-label fw-bold">Categoría</label>
-                                <select class="form-select" id="id_categoria" name="id_categoria" th:field="*{categoria}" required>
-                                    <option value="" disabled selected>Seleccionar</option>
-                                        <option th:each="c : ${categorias}" th:value="${c.id}"
-                                            th:text="${c.nombre}">
-                                        </option>
+                                <label for="id_tienda" class="form-label fw-bold">Tienda</label>
+                                <select class="form-select" id="id_tienda" name="id_tienda" required>
+                                    <option value="">-- Selecciona una tienda --</option>
+                                    <option value="1">Tienda Centro</option>
+                                    <option value="2">Tienda Norte</option>
+                                    <option value="3">Tienda Sur</option>
                                 </select>
                             </div>
                             
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success btn-lg">
-                                    <i class="fas fa-save"></i> Guardar Producto
+                                    <i class="fas fa-save"></i> Crear Pedido
                                 </button>
                                 <button type="reset" class="btn btn-outline-secondary">
                                     <i class="fas fa-eraser"></i> Limpiar Formulario
@@ -86,11 +84,11 @@
                 </div>
             </div>
 
-            <!-- Lista de Productos -->
+            <!-- Lista de Pedidos -->
             <div class="col-lg-7">
                 <div class="card shadow-lg border-0">
                     <div class="card-header text-white" style="background: linear-gradient(45deg, #007bff, #6610f2);">
-                        <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Productos Registrados</h5>
+                        <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Pedidos Registrados</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -98,40 +96,30 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Precio</th>
-                                        <th>Categoría</th>
+                                        <th>Fecha</th>
+                                        <th>Usuario</th>
+                                        <th>Tienda</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="producto:${lista}">
-                                        <td>[[${producto.id}]]</td>
-                                        <td>[[${producto.nombre}]]</td>
-                                        <td>[[${producto.precio}]]</td>
-                                        <td>[[${producto.categoria.nombre}]]</td>
-                                        <td>
-                                            <a th:href="@{/productos/edit(id=${producto.id})}"
-                                                class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/productos/delete(id=${producto.id})}" method="post"
-                                                style="display:inline;">
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
-                                            </form>
-                                        </td>
+                                    <tr>
                                         <!--<td><span class="badge bg-primary">1</span></td>
                                         <td>
-                                            <strong>Café Americano</strong><br>
-                                            <small class="text-muted">Café negro clásico premium</small>
+                                            <strong>15/06/2024 10:30</strong><br>
+                                            <small class="text-muted">Hace 2 horas</small>
                                         </td>
-                                        <td><span class="badge bg-success">S/. 8.50</span></td>
-                                        <td><span class="badge bg-info">Bebidas Calientes</span></td>
+                                        <td><span class="badge bg-info">Juan Pérez</span></td>
+                                        <td><span class="badge bg-warning">Tienda Centro</span></td>
                                         <td>
                                             <button class="btn btn-warning btn-sm me-1">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button class="btn btn-danger btn-sm">
+                                            <button class="btn btn-danger btn-sm me-1">
                                                 <i class="fas fa-trash"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
                                             </button>
                                         </td>-->
                                     </tr>                                    

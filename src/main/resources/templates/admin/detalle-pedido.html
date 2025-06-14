@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Productos - CafeWeb</title>
+    <title>Detalle de Pedidos - CafeWeb</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -14,6 +14,8 @@
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="#">Inicio</a>
+                <a class="nav-link" href="#">Productos</a>
+                <a class="nav-link" href="#">Pedidos</a>
                 <a class="nav-link" href="#">Categorías</a>
                 <a class="nav-link" href="#">Usuarios</a>
             </div>
@@ -27,55 +29,70 @@
                 <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.95);">
                     <div class="card-body text-center py-4">
                         <h1 class="display-5 text-dark mb-2">
-                            <i class="fas fa-boxes"></i> Gestión de Productos
+                            <i class="fas fa-list-alt"></i> Detalle de Pedidos
                         </h1>
-                        <p class="lead text-muted">Administra el catálogo de productos de tu cafetería</p>
+                        <p class="lead text-muted">Administra los detalles de cada pedido</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <!-- Formulario para Agregar Producto -->
+            <!-- Formulario para Agregar Detalle de Pedido -->
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
-                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h5>
+                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Detalle de Pedido</h5>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/productos/save}" method="post" th:object="${producto}">
-                            <input type="hidden" th:field="*{id}"/>
+                        <form th:action="@{/admin/detallepedidos/save}" method="post" th:object="${detallepedidos}">
                             <div class="mb-3">
-                                <label for="nombre" class="form-label fw-bold">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="100" th:field="*{nombre}" required>
+                                <label for="id_pedido" class="form-label fw-bold">Pedido</label>
+                                <select class="form-select" id="id_pedido" name="id_pedido" required>
+                                    <option value="">-- Selecciona un pedido --</option>
+                                    <option value="1">Pedido #001 - Juan Pérez</option>
+                                    <option value="2">Pedido #002 - María García</option>
+                                    <option value="3">Pedido #003 - Carlos López</option>
+                                </select>
                             </div>
                             
                             <div class="mb-3">
-                                <label for="descripcion" class="form-label fw-bold">Descripción</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required th:field="*{descripcion}" required></textarea>
+                                <label for="id_producto" class="form-label fw-bold">Producto</label>
+                                <select class="form-select" id="id_producto" name="id_producto" required>
+                                    <option value="">-- Selecciona un producto --</option>
+                                    <option value="1">Café Americano - S/. 8.50</option>
+                                    <option value="2">Cappuccino - S/. 10.00</option>
+                                    <option value="3">Latte - S/. 12.00</option>
+                                    <option value="4">Pastel de Chocolate - S/. 15.00</option>
+                                </select>
                             </div>
                             
                             <div class="mb-3">
-                                <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
+                                <label for="cantidad" class="form-label fw-bold">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" value="1" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="extra" class="form-label fw-bold">Extra (S/.)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">S/.</span>
-                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" th:field="*{precio}" required>
+                                    <input type="number" class="form-control" id="extra" name="extra" step="0.01" min="0" value="0.00">
                                 </div>
+                                <div class="form-text">Costo adicional por personalizaciones o extras</div>
                             </div>
                             
                             <div class="mb-4">
-                                <label for="id_categoria" class="form-label fw-bold">Categoría</label>
-                                <select class="form-select" id="id_categoria" name="id_categoria" th:field="*{categoria}" required>
-                                    <option value="" disabled selected>Seleccionar</option>
-                                        <option th:each="c : ${categorias}" th:value="${c.id}"
-                                            th:text="${c.nombre}">
-                                        </option>
-                                </select>
+                                <label for="monto_total" class="form-label fw-bold">Monto Total (S/.)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">S/.</span>
+                                    <input type="number" class="form-control" id="monto_total" name="monto_total" step="0.01" min="0" required>
+                                </div>
+                                <div class="form-text">Total = (Precio unitario × Cantidad) + Extra</div>
                             </div>
                             
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success btn-lg">
-                                    <i class="fas fa-save"></i> Guardar Producto
+                                    <i class="fas fa-save"></i> Guardar Detalle
                                 </button>
                                 <button type="reset" class="btn btn-outline-secondary">
                                     <i class="fas fa-eraser"></i> Limpiar Formulario
@@ -86,11 +103,11 @@
                 </div>
             </div>
 
-            <!-- Lista de Productos -->
+            <!-- Lista de Detalles de Pedidos -->
             <div class="col-lg-7">
                 <div class="card shadow-lg border-0">
                     <div class="card-header text-white" style="background: linear-gradient(45deg, #007bff, #6610f2);">
-                        <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Productos Registrados</h5>
+                        <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Detalles de Pedidos</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -98,34 +115,23 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Precio</th>
-                                        <th>Categoría</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Extra</th>
+                                        <th>Total</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="producto:${lista}">
-                                        <td>[[${producto.id}]]</td>
-                                        <td>[[${producto.nombre}]]</td>
-                                        <td>[[${producto.precio}]]</td>
-                                        <td>[[${producto.categoria.nombre}]]</td>
-                                        <td>
-                                            <a th:href="@{/productos/edit(id=${producto.id})}"
-                                                class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/productos/delete(id=${producto.id})}" method="post"
-                                                style="display:inline;">
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
-                                            </form>
-                                        </td>
+                                    <tr>
                                         <!--<td><span class="badge bg-primary">1</span></td>
                                         <td>
                                             <strong>Café Americano</strong><br>
-                                            <small class="text-muted">Café negro clásico premium</small>
+                                            <small class="text-muted">Pedido #001</small>
                                         </td>
-                                        <td><span class="badge bg-success">S/. 8.50</span></td>
-                                        <td><span class="badge bg-info">Bebidas Calientes</span></td>
+                                        <td><span class="badge bg-info">2</span></td>
+                                        <td><span class="badge bg-warning">S/. 2.00</span></td>
+                                        <td><span class="badge bg-success">S/. 19.00</span></td>
                                         <td>
                                             <button class="btn btn-warning btn-sm me-1">
                                                 <i class="fas fa-edit"></i>
