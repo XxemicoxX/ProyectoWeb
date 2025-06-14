@@ -13,22 +13,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoriaService {
 
-   /**private final CategoriaRepository repository;
+   private final CategoriaRepository repository;
 
-    public List<Categoria> Sel() {
+    public List<Categoria> sel() {
         return repository.findAll();
     }
 
-    public Categoria SelectOne(Integer id) {
+    public Categoria selectOne(Long id) {
         return repository.findById(id).orElse(null);
     }
 
     //INSERT into rol && UPDATE dinosaurio SET
-    public Categoria InsertUpdate (Categoria categoria) {
+    public Categoria insertUpdate (Categoria categoria) {
         return repository.save(categoria);
     }
 
-    public void Delete (Integer id) {
+    public void delete (Long id) {
         repository.deleteById(id);
-    }**/
+    }
 }

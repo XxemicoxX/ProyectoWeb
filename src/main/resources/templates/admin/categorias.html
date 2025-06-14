@@ -14,7 +14,7 @@
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="#">Inicio</a>
-                <a class="nav-link" href="#">Productos</a>
+                <a class="nav-link" href="productos">Productos</a>
                 <a class="nav-link" href="#">Usuarios</a>
             </div>
         </div>
@@ -42,7 +42,11 @@
                             <input type="hidden" th:field="*{id}"/>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre de la Categoría</label>
-                                <input type="text" class="form-control" id="nombre" maxlength="100" th:field="*{nombre}" required>
+                                <input type="text" class="form-control" id="nombre" maxlength="100" placeholder="Ejm: Bebidas frias, Bebidas calientes..." th:field="*{nombre}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="4" placeholder="Ingrese la descripción..."></textarea>
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success">
@@ -70,6 +74,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre de Categoría</th>
+                                        <th>Descripción</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -77,10 +82,11 @@
                                     <tr th:each="categoria:${lista}">
                                         <td>[[${categoria.id}]]</td>
                                         <td>[[${categoria.nombre}]]</td>
+                                        <td>[[${categoria.descripcion}]]</td>
                                         <td>
                                             <a th:href="@{/admin/categorias/edit(id=${categoria.id})}" class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
                                             <form th:action="@{/admin/categorias/delete(id=${categoria.id})}" method="post">
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Deseas eliminar este rol?')">Eliminar</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Deseas eliminar esta categoria?')">Eliminar</button>
                                             </form>
                                         </td>
                                         <td>

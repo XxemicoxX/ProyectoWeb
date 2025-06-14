@@ -49,13 +49,8 @@
                                 <label for="nombre" class="form-label fw-bold">Nombre del Producto</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" maxlength="100" th:field="*{nombre}" required>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label for="descripcion" class="form-label fw-bold">Descripción</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required th:field="*{descripcion}" required></textarea>
-                            </div>
-                            
-                            <div class="mb-3">
+
+                             <div class="mb-3">
                                 <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">S/.</span>
@@ -111,10 +106,9 @@
                                         <td>[[${producto.precio}]]</td>
                                         <td>[[${producto.categoria.nombre}]]</td>
                                         <td>
-                                            <a th:href="@{/productos/edit(id=${producto.id})}"
+                                            <a th:href="@{/admin/productos/edit(id=${producto.id})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/productos/delete(id=${producto.id})}" method="post"
-                                                style="display:inline;">
+                                            <form th:action="@{/admin/productos/delete(id=${producto.id})}" method="post" style="display:inline;">
                                                 <button type="submit" class="btn btn-danger"
                                                     onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
                                             </form>

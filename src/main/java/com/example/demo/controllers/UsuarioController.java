@@ -19,28 +19,28 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioController {
     private final UsuarioService service;
 
-    /**@GetMapping
+    @GetMapping
     public String lista (Model model) {
-        model.addAttribute("lista", service.Sel()); 
+        model.addAttribute("lista", service.sel()); 
         model.addAttribute("usuario", new Usuario());
         return "admin/usuarios";
     }
 
     @PostMapping("/save")
     public String guardar(@ModelAttribute Usuario usuario) {
-        service.InsertUpdate(usuario);        
+        service.insertUpdate(usuario);        
         return "redirect:/admin/usuarios";
     }
     
     @GetMapping("/edit")
     public String editar(@RequestParam("id") int id, Model model){
-        model.addAttribute("usuario", service.SelectOne(id));
-        model.addAttribute("lista", service.Sel());
+        model.addAttribute("usuario", service.selectOne(id));
+        model.addAttribute("lista", service.sel());
         return "admin/usuarios";
     }
     @PostMapping("/delete")
     public String eliminar(@RequestParam("id") Integer id){
-        service.Delete(id);
+        service.delete(id);
         return "redirect:/admin/usuarios";
-    }**/
+    }
 }

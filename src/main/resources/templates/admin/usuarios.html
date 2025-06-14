@@ -39,7 +39,7 @@
                         <h5 class="mb-0"><i class="fas fa-user-plus"></i> Registrar Usuario</h5>
                     </div>
                     <div class="card-body">
-                        <form method="POST" th:action="@{/admin/usuario/save}" th:object="${usuario}">
+                        <form method="POST" th:action="@{/admin/usuarios/save}" th:object="${usuario}">
                             <input type="hidden" th:field="*{id}" />
                             <div class="mb-3">
                                 <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre Completo</label>
@@ -50,8 +50,16 @@
                                 <input type="email" class="form-control border-info" id="correo" name="correo" th:field="*{correo}" required>
                             </div>
                             <div class="mb-3">
+                                <label for="contrasena" class="form-label"><i class="fas fa-user"></i> Contraseña</label>
+                                <input type="password" class="form-control border-info" id="contrasena" th:field="*{contrasena}" required>
+                            </div>                            
+                            <div class="mb-3">
                                 <label for="telefono" class="form-label"><i class="fas fa-phone"></i> Teléfono</label>
                                 <input type="tel" class="form-control border-info" id="telefono" name="telefono" th:field="*{telefono}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="direccion" class="form-label"><i class="fas fa-phone"></i> Dirección</label>
+                                <input type="tel" class="form-control border-info" id="direccion" th:field="*{direccion}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="rol" class="form-label"><i class="fas fa-user-tag"></i> Rol</label>
@@ -93,9 +101,9 @@
                             <div class="col-md-4">
                                 <select class="form-select" name="filtro_rol">
                                     <option value="">Todos los roles</option>
-                                    <option value="admin">Administrador</option>
-                                    <option value="empleado">Empleado</option>
-                                    <option value="cliente">Cliente</option>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Empleado">Empleado</option>
+                                    <option value="Cliente">Cliente</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -112,19 +120,22 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Email</th>
+                                        <th>Correo</th>
+                                        <th>Contraseña</th>
                                         <th>Teléfono</th>
+                                        <th>Dirección</th>
                                         <th>Rol</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Ejemplo de filas - estas vendrán de la base de datos -->
                                     <tr th:each="usuario:${lista}">
                                         <td>[[${usuario.id}]]</td>
                                         <td>[[${usuario.nombre}]]</td>
                                         <td>[[${usuario.correo}]]</td>
+                                        <td>[[${usuario.contrasena}]]</td>
                                         <td>[[${usuario.telefono}]]</td>
+                                        <td>[[${usuario.direccion}]]</td>
                                         <td>[[${usuario.rol}]]</td>
                                         <td>
                                             <a th:href="@{/admin/usuarios/edit(id=${usuario.id})}"

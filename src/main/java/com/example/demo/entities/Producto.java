@@ -18,13 +18,12 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-    private Long idProducto;
+    private Integer id;
     private String nombre;
     private String descripcion;
     private String cantidad;
     private BigDecimal precio;
     private String imagen;
-
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;

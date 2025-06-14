@@ -1,12 +1,9 @@
 package com.example.demo.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping
@@ -32,8 +29,7 @@ public class Controlador {
     public String inicio() {
         return "public/index";
     }
-
-
+    
     @GetMapping("/mas-pedidos")
     public String masPedidos() {
         return "public/mas-pedidos";
@@ -43,13 +39,4 @@ public class Controlador {
         return "public/nosotros";
     }
 
-    
-    @GetMapping("/admin/productos")
-    public String productos() {
-        return "admin/productos";
-    }
-    @GetMapping("/admin/usuarios")
-    public String usuarios() {
-        return "admin/usuarios";
-    }
 }

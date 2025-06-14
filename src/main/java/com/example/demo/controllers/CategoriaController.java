@@ -21,28 +21,28 @@ public class CategoriaController {
 
     private final CategoriaService service;
 
-    /**@GetMapping
+    @GetMapping
     public String lista (Model model) {
-        model.addAttribute("lista", service.Sel()); //Lista de todas las categorias y las enviare al HTML con el alias "categorias"
+        model.addAttribute("lista", service.sel()); //Lista de todas las categorias y las enviare al HTML con el alias "categorias"
         model.addAttribute("categoria", new Categoria());
         return "admin/categorias";
     }
 
     @PostMapping("/save")
     public String guardar(@ModelAttribute Categoria categoria) {
-        service.InsertUpdate(categoria);        
+        service.insertUpdate(categoria);        
         return "redirect:/admin/categorias";
     }
     
     @GetMapping("/edit")
-    public String editar(@RequestParam("id") int id, Model model){
-        model.addAttribute("categoria", service.SelectOne(id));
-        model.addAttribute("lista", service.Sel());
+    public String editar(@RequestParam("id") Long id, Model model){
+        model.addAttribute("categoria", service.selectOne(id));
+        model.addAttribute("lista", service.sel());
         return "admin/categorias";
     }
     @PostMapping("/delete")
-    public String eliminar(@RequestParam("id") Integer id){
-        service.Delete(id);
+    public String eliminar(@RequestParam("id") Long id){
+        service.delete(id);
         return "redirect:/admin/categorias";
-    }**/
+    }
 }

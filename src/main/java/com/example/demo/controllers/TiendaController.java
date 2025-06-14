@@ -10,7 +10,7 @@ import com.example.demo.services.TiendaService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("tiendas")
+@RequestMapping("admin/tiendas")
 @RequiredArgsConstructor
 public class TiendaController {
     private final TiendaService service;
