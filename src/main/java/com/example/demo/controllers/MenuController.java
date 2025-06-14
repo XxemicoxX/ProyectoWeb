@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.entities.Producto;
 import com.example.demo.services.ProductoService;
 
-/**
+
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
@@ -32,4 +32,4 @@ public class MenuController {
 
         return "public/menu";
     }
-}**/
+}
