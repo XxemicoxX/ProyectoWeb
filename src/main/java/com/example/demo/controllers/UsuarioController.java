@@ -33,13 +33,13 @@ public class UsuarioController {
     }
     
     @GetMapping("/edit")
-    public String editar(@RequestParam("id") int id, Model model){
+    public String editar(@RequestParam("id") Long id, Model model){
         model.addAttribute("usuario", service.selectOne(id));
         model.addAttribute("lista", service.sel());
         return "admin/usuarios";
     }
     @PostMapping("/delete")
-    public String eliminar(@RequestParam("id") Integer id){
+    public String eliminar(@RequestParam("id") Long id){
         service.delete(id);
         return "redirect:/admin/usuarios";
     }

@@ -18,16 +18,16 @@ public class UsuarioService {
         return repository.findAll();
     }
 
-    public Usuario selectOne(Integer id) {
+    public Usuario selectOne(Long id) {
         return repository.findById(id).orElse(null);
     }
 
     //INSERT into rol && UPDATE dinosaurio SET
-    public Usuario insertUpdate (Usuario Usuario) {
-        return repository.save(Usuario);
+    public Usuario insertUpdate (Usuario usuario) {
+        return repository.save(usuario);
     }
 
-    public void delete (Integer id) {
+    public void delete (Long id) {
         repository.deleteById(id);
     }
 }

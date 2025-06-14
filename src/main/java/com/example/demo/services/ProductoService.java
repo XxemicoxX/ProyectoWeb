@@ -29,8 +29,8 @@ public class ProductoService {
     }
 
     //INSERT into rol && UPDATE dinosaurio SET
-    public Producto insertUpdate (Producto Producto) {
-        return repository.save(Producto);
+    public Producto insertUpdate (Producto producto) {
+        return repository.save(producto);
     }
 
     public void delete (Long id) {

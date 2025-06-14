@@ -7,9 +7,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
+<body style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); min-height: 100vh;">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #8e44ad, #9b59b6);">
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
@@ -28,7 +28,7 @@
             <div class="col-12">
                 <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.95);">
                     <div class="card-body text-center py-4">
-                        <h1 class="display-5 text-dark mb-2">
+                        <h1 class="display-5 mb-2" style="color: #8e44ad;">
                             <i class="fas fa-store"></i> Gestión de Tiendas
                         </h1>
                         <p class="lead text-muted">Administra las sucursales de tu cafetería</p>
@@ -41,25 +41,23 @@
             <!-- Formulario para Agregar Tienda -->
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0">
-                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
+                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #8e44ad, #9b59b6);">
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Nueva Tienda</h5>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form method="POST" th:action="@{/admin/tiendas/save}" th:object="${tienda}">
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre de la Tienda</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="255" required>
-                                <div class="form-text">Ejemplo: CafeWeb Centro, CafeWeb Plaza Norte</div>
+                                <input type="text" class="form-control" id="nombre" maxlength="255" style="border-color: #8e44ad;" th:field="*{nombre}" required>
                             </div>
                             
                             <div class="mb-4">
                                 <label for="direccion" class="form-label fw-bold">Dirección</label>
-                                <textarea class="form-control" id="direccion" name="direccion" rows="3" required></textarea>
-                                <div class="form-text">Incluye calle, número, distrito y ciudad</div>
+                                <textarea class="form-control" id="direccion" rows="3" style="border-color: #8e44ad;" th:field="*{direccion}" required></textarea>
                             </div>
                             
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-success btn-lg">
+                                <button type="submit" class="btn btn-lg" style="background: linear-gradient(45deg, #8e44ad, #9b59b6); color: white; border: none;">
                                     <i class="fas fa-save"></i> Guardar Tienda
                                 </button>
                                 <button type="reset" class="btn btn-outline-secondary">
@@ -71,43 +69,36 @@
                 </div>
             </div>
 
-            <!-- Lista de Tiendas -->
             <div class="col-lg-7">
                 <div class="card shadow-lg border-0">
-                    <div class="card-header text-white" style="background: linear-gradient(45deg, #007bff, #6610f2);">
+                    <div class="card-header text-white" style="background: linear-gradient(45deg, #8e44ad, #9b59b6);">
                         <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Tiendas Registradas</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
-                                <thead class="table-dark">
+                                <thead style="background: linear-gradient(45deg, #8e44ad, #9b59b6); color: white;">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Tienda</th>
+                                        <th>Nombre de la Tienda</th>
                                         <th>Dirección</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <!--<td><span class="badge bg-primary">1</span></td>
+                                    <tr th:each="tienda:${lista}">
+                                        <td>[[${tienda.id}]]</td>
+                                        <td>[[${tienda.nombre}]]</td>
+                                        <td>[[${tienda.direccion}]]</td>
                                         <td>
-                                            <strong>CafeWeb Centro</strong><br>
-                                            <small class="text-muted"><i class="fas fa-map-marker-alt"></i> Tienda principal</small>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted">Av. Principal 123</span><br>
-                                            <small>Miraflores, Lima</small>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm me-1">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>-->
-                                    </tr>                                    
+                                            <a th:href="@{/admin/tiendas/edit(id=${tienda.id})}"
+                                                class="btn btn-warning">Editar</a>
+                                            <form th:action="@{/admin/tiendas/delete(id=${tienda.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
+                                            </form>
+                                        </td>                                        
+                                    </tr>                                      
                                 </tbody>
                             </table>
                         </div>
