@@ -1,5 +1,5 @@
 package com.example.demo.entities;
-
+import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +18,13 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-    private Integer id;
+    private Long idProducto;
     private String nombre;
     private String descripcion;
-    private String precio;
+    private String cantidad;
+    private BigDecimal precio;
     private String imagen;
+
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;

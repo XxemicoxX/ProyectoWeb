@@ -3,33 +3,29 @@ package com.example.demo.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entities.Producto;
-import com.example.demo.services.CategoriaService;
 import com.example.demo.services.ProductoService;
 
-import lombok.RequiredArgsConstructor;
-
 @Controller
-@RequestMapping("admin/productos")
-@RequiredArgsConstructor
+@RequestMapping("/productos")
 public class ProductoController {
-    private final CategoriaService cService;
-    private final ProductoService service;
+    private ProductoService productoService;
 
-    @GetMapping
-    public String lista (Model model) {
-        model.addAttribute("lista", service.sel()); //Lista de todas las Productos y las enviare al HTML con el alias "Productos"
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("categoria", cService.Sel());
-        return "admin/productos";
+    public ProductoController(ProductoService productoService) {
+        this.productoService = productoService;
     }
 
-    @PostMapping("/save")
+    @GetMapping("/{id}")
+    public String verProducto(@PathVariable Long id, Model model) {
+        Producto producto = productoService.obtenerProductoPorId(id);
+        model.addAttribute("producto", producto);
+        return "public/producto"; 
+    }
+
+    /**@PostMapping("/save")
     public String guardar(@ModelAttribute Producto producto) {
         service.insertUpdate(producto);
         return "redirect:/admin/productos";
@@ -46,5 +42,5 @@ public class ProductoController {
     public String eliminar(@RequestParam("id") Integer id){
         service.delete(id);
         return "redirect:/admin/productos";
-    }
+    }**/
 }

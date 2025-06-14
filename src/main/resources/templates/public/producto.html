@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{/public/fragments/template :: head('Cafesitos Finos')}">
+</head>
+
+<body>
+
+    <header th:replace="~{/public/fragments/template :: header}"></header>
+
+    <main>
+        <div class="container py-5 px-5">
+            <div class="row">
+                <div class="col">
+                    <img th:src="${producto.imagen}" class="img-fluid rounded" width="300">
+
+                    <h2><strong th:text="${producto.nombre}"></strong></h2>
+
+                    <p th:text="${producto.descripcion}"></p>
+                    <h4 th:text="${producto.cantidad}"></h4>
+                    <h3><strong th:text="'S/. ' + ${producto.precio}"></strong></h3>
+                </div>
+                <!-- para bebidas categoria = 1 -->
+                <div class="col-9 px-3 py-2" th:if="${producto.categoria.idCategoria == 1}">
+                    <h2>Personaliza tu bebida</h2>
+                    <hr>
+                    <h4>Elige el tipo de leche para tu bebida</h4>
+                    <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
+                        <input type="radio" class="btn-check" name="leche" id="leche1" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="leche1">Leche entera</label>
+
+                        <input type="radio" class="btn-check" name="leche" id="leche2" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="leche2">Leche descremada</label>
+
+                        <input type="radio" class="btn-check" name="leche" id="leche3" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="leche3">Leche sin lactosa</label>
+                    </div>
+
+                    <br><br>
+                    <h4>¿Deseas crema batida en tu bebida?</h4>
+                    <div class="btn-group-vertical">
+                        <input type="radio" class="btn-check" name="crema" id="crema1" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="crema1">Sin crema batida</label>
+                        <input type="radio" class="btn-check" name="crema" id="crema2" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="crema2">Con crema batida</label>
+                    </div>
+
+                    <br><br>
+                    <h4>¿Deseas agregar algo adicional?</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="checkbox" id="chocolate">
+                            <label class="form-check-label" for="chocolate">Chispas de chocolate - S/. 2.50</label>
+                        </li>
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="checkbox" id="vainilla">
+                            <label class="form-check-label" for="vainilla">Jarabe de vainilla - S/. 1.50</label>
+                        </li>
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="checkbox" id="algarrobina">
+                            <label class="form-check-label" for="algarrobina">Jarabe de algarrobina - S/. 1.50</label>
+                        </li>
+                    </ul>
+
+                    <br>
+                    <div class="d-grid d-flex gap-4 justify-content-md-end">
+                        <input class="btn btn-outline-success" type="number" min="1" max="10" />
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#modalAgregar">
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+                <!-- para bebidas categoria = 2 -->
+                <div class="col-9 px-2 py-3" th:if="${producto.categoria.idCategoria == 2}">
+                    <h2>Personaliza tu pedido</h2>
+                    <hr>
+                    <h4>Selecciona la temperatura para tu sandwich</h4>
+                    <div class="btn-group-vertical">
+                        <input type="radio" class="btn-check" name="temp" id="temp1" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="temp1">Caliente</label>
+
+                        <input type="radio" class="btn-check" name="temp" id="temp2" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="temp2">Sin calentar</label>
+                    </div>
+
+                    <br><br><br>
+                    <div class="d-grid d-flex gap-4 justify-content-md-end">
+                        <input class="btn btn-outline-success" type="number" min="1" max="10" />
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#modalAgregar">
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+
+    <div th:replace="/public/fragments/template :: carrito"></div>
+    <footer th:replace="~{/public/fragments/template :: footer}"></footer>
+    <script th:replace="/public/fragments/template :: script"></script>
+</body>
+
+</html>

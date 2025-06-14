@@ -21,7 +21,7 @@ public class CategoriaController {
 
     private final CategoriaService service;
 
-    @GetMapping
+    /**@GetMapping
     public String lista (Model model) {
         model.addAttribute("lista", service.Sel()); //Lista de todas las categorias y las enviare al HTML con el alias "categorias"
         model.addAttribute("categoria", new Categoria());
@@ -44,5 +44,5 @@ public class CategoriaController {
     public String eliminar(@RequestParam("id") Integer id){
         service.Delete(id);
         return "redirect:/admin/categorias";
-    }
+    }**/
 }

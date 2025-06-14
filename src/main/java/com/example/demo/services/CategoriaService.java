@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoriaService {
 
-    private final CategoriaRepository repository;
+   /**private final CategoriaRepository repository;
 
     public List<Categoria> Sel() {
         return repository.findAll();
@@ -30,5 +30,5 @@ public class CategoriaService {
 
     public void Delete (Integer id) {
         repository.deleteById(id);
-    }
+    }**/
 }

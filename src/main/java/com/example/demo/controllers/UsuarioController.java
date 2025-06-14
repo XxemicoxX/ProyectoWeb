@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioController {
     private final UsuarioService service;
 
-    @GetMapping
+    /**@GetMapping
     public String lista (Model model) {
         model.addAttribute("lista", service.Sel()); 
         model.addAttribute("usuario", new Usuario());
@@ -42,5 +42,5 @@ public class UsuarioController {
     public String eliminar(@RequestParam("id") Integer id){
         service.Delete(id);
         return "redirect:/admin/usuarios";
-    }
+    }**/
 }
