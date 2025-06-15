@@ -28,12 +28,12 @@ public class Usuario {
     @Email(message = "Ingrese un correo válido (ej: ejemplo@correo.com)")
     @NotBlank(message = "El correo es obligatorio")
     private String correo;
-    @Pattern(regexp = "^[0-9]{9}$", message = "El telefono debe de tener 9 digitos")
     @NotBlank(message = "Ingrese una contraseña valida")
     private String contrasena;
     @NotNull(message = "Ingrese el numero de telefono del usuario")    
+    @Pattern(regexp = "^[0-9]{9}$", message = "El telefono debe de tener 9 digitos")
     private String telefono;
-    @NotBlank(message = "Ingrese la direccion es un campo obligatorio")
+    @NotBlank(message = "La dirección es obligatoria")
     @Size(min = 10, max = 100,message = "La direccion debe de tener entre 10 a 100 caracterres")
     private String direccion;
     @NotBlank(message = "Seleccione el rol del usuario")

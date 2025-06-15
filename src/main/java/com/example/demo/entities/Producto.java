@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -24,20 +23,17 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-<<<<<<< HEAD
-    private Integer id;
-    @NotBlank(message = "El nombre es un campo obligatorio")
-=======
     private Integer idProducto;
->>>>>>> ad6c9b116df4bc0ad7cd847fa47184870f57b33d
+    @NotBlank(message = "El nombre es un campo obligatorio")
     private String nombre;
-    // @NotBlank(message = "Ingrese una descripcion del producto ")
+    @NotBlank(message = "Ingrese una descripcion del producto ")
     private String descripcion;
-    // @Min(1)
-    // @NotNull(message = "Ingrese una cantidad")
+    @NotBlank(message = "Especifique la cantidad del producto")
     private String cantidad;
+    @NotNull(message = "Ingrese el precio del producto")
     @Positive(message = "El precio debe ser mayor a 0")
     private BigDecimal precio;
+    @NotBlank(message = "Coloque el URL de la iamgen")
     private String imagen;
     @ManyToOne
     @JoinColumn(name = "id_categoria")

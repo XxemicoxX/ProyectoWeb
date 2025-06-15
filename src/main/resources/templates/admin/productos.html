@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,8 +16,8 @@
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="#">Inicio</a>
-                <a class="nav-link" href="categorias">Categorías</a>
-                <a class="nav-link" href="usuarios">Usuarios</a>
+                <a class="nav-link" href="/admin/categorias">Categorías</a>
+                <a class="nav-link" href="/admin/usuarios">Usuarios</a>
             </div>
         </div>
     </nav>
@@ -39,61 +41,64 @@
             <!-- Formulario para Agregar Producto -->
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0">
-                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
+                    <div class="card-header bg-gradient text-white"
+                        style="background: linear-gradient(45deg, #28a745, #20c997);">
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h5>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/productos/save}" method="post" th:object="${producto}">
-                            <input type="hidden" th:field="*{idProducto}"/>
+                        <form th:action="@{/productos/save}" method="post" th:object="${producto}">
+                            <input type="hidden" th:field="*{idProducto}" />
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="100" th:field="*{nombre}" >
-                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;" required></span>
+                                <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                                    maxlength="100">
+                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+                                    class="text-danger"></span>
                             </div>
 
-                             <div class="mb-3">
+                            <div class="mb-3">
                                 <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">S/.</span>
-                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" th:field="*{precio}" >
+                                    <input type="number" class="form-control" id="precio" step="0.01"
+                                        th:field="*{precio}">
                                 </div>
-                                <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" style="color: red;"></span>
+                                <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"
+                                    class="text-danger"></span>
                             </div>
 
                             <div class="mb-3">
-                                <label for="descripcion" class="form-label fw-bold">Descripcion</label>
-                                <div class="input-group">
-                                    <span class="input"></span>
-                                    <input type="text" class="form-control" id="descripcion" name="descripcion" step="0.01" min="0" th:field="*{descripcion}" required>
-                                </div>
+                                <label for="descripcion" class="form-label fw-bold">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}">
+                                <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"
+                                    class="text-danger"></span>
                             </div>
 
                             <div class="mb-3">
-                                <label for="cantidad" class="form-label fw-bold">Cantidad (ml)</label>
-                                <div class="input-group">
-                                    <span class="input"></span>
-                                    <input type="number" class="form-control" id="cantidad" name="cantidad" step="0.01" min="0" th:field="*{cantidad}" required>
-                                </div>
+                                <label for="cantidad" class="form-label fw-bold">Unidad de medida (ml)</label>
+                                <input type="text" class="form-control" id="cantidad" th:field="*{cantidad}">
+                                <span th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"
+                                    class="text-danger"></span>
                             </div>
 
                             <div class="mb-3">
                                 <label for="imagen" class="form-label fw-bold">Imagen (URL)</label>
-                                <div class="input-group">
-                                    <span class="input"></span>
-                                    <input type="text" class="form-control" id="imagen" name="imagen" step="0.01" min="0" th:field="*{imagen}" required>
-                                </div>
+                                <input type="text" class="form-control" id="imagen" th:field="*{imagen}">
+                                <span th:if="${#fields.hasErrors('imagen')}" th:errors="*{imagen}"
+                                    class="text-danger"></span>
                             </div>
-                            
+
                             <div class="mb-4">
                                 <label for="id_categoria" class="form-label fw-bold">Categoría</label>
-                                <select class="form-select" id="id_categoria" name="id_categoria" th:field="*{categoria}" >
+                                <select class="form-select" id="id_categoria" name="id_categoria"
+                                    th:field="*{categoria}">
                                     <option value="" disabled selected>Seleccionar</option>
-                                        <option th:each="c : ${categorias}" th:value="${c.idCategoria}"
-                                            th:text="${c.nombre}">
-                                        </option>
+                                    <option th:each="c : ${categorias}" th:value="${c.idCategoria}"
+                                        th:text="${c.nombre}">
+                                    </option>
                                 </select>
                             </div>
-                            
+
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success btn-lg">
                                     <i class="fas fa-save"></i> Guardar Producto
@@ -134,12 +139,13 @@
                                         <td>
                                             <a th:href="@{/admin/productos/edit(id=${producto.idProducto})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/productos/delete(id=${producto.idProducto})}" method="post" style="display:inline;">
+                                            <form th:action="@{/admin/productos/delete(id=${producto.idProducto})}"
+                                                method="post" style="display:inline;">
                                                 <button type="submit" class="btn btn-danger"
                                                     onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
                                             </form>
-                                        </td>                                        
-                                    </tr>                                    
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -151,4 +157,5 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

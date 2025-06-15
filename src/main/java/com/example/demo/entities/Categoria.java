@@ -18,13 +18,9 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria")
-<<<<<<< HEAD
-    private Long id;
-    @NotBlank(message = "El nombre es un campo obligatorio")
-=======
     private Long idCategoria;
->>>>>>> ad6c9b116df4bc0ad7cd847fa47184870f57b33d
+    @NotBlank(message = "El nombre es un campo obligatorio")
     private String nombre;
-    @NotBlank(message = "Ingrese una descripcion para la categoia")
+    @NotBlank(message = "Ingrese una descripcion para esta categoria")
     private String descripcion;
 }
