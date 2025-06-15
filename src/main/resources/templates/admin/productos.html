@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="cantidad" class="form-label fw-bold">Unidad de medida (ml)</label>
+                                <label for="cantidad" class="form-label fw-bold">Unidad de medida (ml/gr)</label>
                                 <input type="text" class="form-control" id="cantidad" th:field="*{cantidad}">
                                 <span th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"
                                     class="text-danger"></span>
