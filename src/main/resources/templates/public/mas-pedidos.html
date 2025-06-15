@@ -3,6 +3,7 @@
 
 <head th:replace="~{/public/fragments/template :: head('Frappe Pedidos')}">
 </head>
+
 <body>
 
     <header th:replace="~{/public/fragments/template :: header}"></header>
@@ -10,47 +11,24 @@
         <div class="container py-3">
             <h2>Los mas pedidos</h2>
             <hr>
-                <div class = "row">
-                    <div class = "col py-2">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/img/frapvain.jpeg" class="img-fluid card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><strong>Frappuccino de vainilla</strong></h5>
-                                <p class="card-text">Una deliciosa y refrescante mezcla de hielo,
-                                    leche y suave esencia de vainilla.</p>
-                                <a href="/frap-vainilla" class="btn btn-primary">Pedir <span
-                                        style = "font-size: 15px;"class="badge rounded-pill text-bg-danger">&#128293</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "col py-2">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/img/frapmocha.jpeg" class="img-fluid card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><strong>Frappuccino Mocha</strong></h5>
-                                <p class="card-text">Una deliciosa mezcla de café, leche y el intenso sabor del chocolate,
-                                    licuado con hielo.</p>
-                                    <a href="/frap-mocha" class="btn btn-primary">Pedir <span
-                                        style = "font-size: 15px;"class="badge rounded-pill text-bg-danger">&#128293</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "col py-2">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/img/frapmatcha.jpeg" class="img-fluid card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title"><strong>Frappuccino Matcha</strong></h5>
-                                <p class="card-text">Bebida fría y cremosa elaborada con té verde matcha, 
-                                    leche y hielo.</p>
-                                    <a href="/frap-matcha" class="btn btn-primary">Pedir <span
-                                        style = "font-size: 15px;"class="badge rounded-pill text-bg-danger">&#128293</span></a>
+            <div class="row">
+                <div class="col-md-4 mb-3" th:each="producto : ${productosTop}">
+                    <div class="card h-100" style="width: 18rem;">
+                        <img th:src="@{${producto.imagen}}" class="card-img-top" alt="Imagen del producto">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${producto.nombre}"></h5>
+                            <p class="card-text" th:text="${producto.descripcion}"></p>
+                            <a th:href="@{/productos/{id}(id=${producto.idProducto})}" class="btn btn-primary">
+                                Pedir <span class="badge rounded-pill text-bg-danger">&#128293;</span>
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </main>
-    
-    <footer th:replace="~{/public/fragments/template :: footer}"></footer> 
+
+    <footer th:replace="~{/public/fragments/template :: footer}"></footer>
     <script th:replace="/public/fragments/template :: script"></script>
 </body>
 

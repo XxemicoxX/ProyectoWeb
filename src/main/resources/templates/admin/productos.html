@@ -44,7 +44,7 @@
                     </div>
                     <div class="card-body">
                         <form th:action="@{/admin/productos/save}" method="post" th:object="${producto}">
-                            <input type="hidden" th:field="*{id}"/>
+                            <input type="hidden" th:field="*{idProducto}"/>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre del Producto</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" maxlength="100" th:field="*{nombre}" >
@@ -59,12 +59,36 @@
                                 </div>
                                 <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" style="color: red;"></span>
                             </div>
+
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label fw-bold">Descripcion</label>
+                                <div class="input-group">
+                                    <span class="input"></span>
+                                    <input type="text" class="form-control" id="descripcion" name="descripcion" step="0.01" min="0" th:field="*{descripcion}" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label fw-bold">Cantidad (ml)</label>
+                                <div class="input-group">
+                                    <span class="input"></span>
+                                    <input type="number" class="form-control" id="cantidad" name="cantidad" step="0.01" min="0" th:field="*{cantidad}" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="imagen" class="form-label fw-bold">Imagen (URL)</label>
+                                <div class="input-group">
+                                    <span class="input"></span>
+                                    <input type="text" class="form-control" id="imagen" name="imagen" step="0.01" min="0" th:field="*{imagen}" required>
+                                </div>
+                            </div>
                             
                             <div class="mb-4">
                                 <label for="id_categoria" class="form-label fw-bold">Categoría</label>
                                 <select class="form-select" id="id_categoria" name="id_categoria" th:field="*{categoria}" >
                                     <option value="" disabled selected>Seleccionar</option>
-                                        <option th:each="c : ${categorias}" th:value="${c.id}"
+                                        <option th:each="c : ${categorias}" th:value="${c.idCategoria}"
                                             th:text="${c.nombre}">
                                         </option>
                                 </select>
@@ -103,14 +127,14 @@
                                 </thead>
                                 <tbody>
                                     <tr th:each="producto:${lista}">
-                                        <td>[[${producto.id}]]</td>
+                                        <td>[[${producto.idProducto}]]</td>
                                         <td>[[${producto.nombre}]]</td>
                                         <td>[[${producto.precio}]]</td>
                                         <td>[[${producto.categoria.nombre}]]</td>
                                         <td>
-                                            <a th:href="@{/admin/productos/edit(id=${producto.id})}"
+                                            <a th:href="@{/admin/productos/edit(id=${producto.idProducto})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/productos/delete(id=${producto.id})}" method="post" style="display:inline;">
+                                            <form th:action="@{/admin/productos/delete(id=${producto.idProducto})}" method="post" style="display:inline;">
                                                 <button type="submit" class="btn btn-danger"
                                                     onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
                                             </form>

@@ -23,7 +23,6 @@ public class CategoriaService {
         return repository.findById(id).orElse(null);
     }
 
-    //INSERT into rol && UPDATE dinosaurio SET
     public Categoria insertUpdate (Categoria categoria) {
         return repository.save(categoria);
     }

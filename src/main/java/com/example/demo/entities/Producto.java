@@ -24,8 +24,12 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
+<<<<<<< HEAD
     private Integer id;
     @NotBlank(message = "El nombre es un campo obligatorio")
+=======
+    private Integer idProducto;
+>>>>>>> ad6c9b116df4bc0ad7cd847fa47184870f57b33d
     private String nombre;
     // @NotBlank(message = "Ingrese una descripcion del producto ")
     private String descripcion;
