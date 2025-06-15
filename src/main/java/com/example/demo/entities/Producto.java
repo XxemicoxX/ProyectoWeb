@@ -33,7 +33,7 @@ public class Producto {
     @NotNull(message = "Ingrese el precio del producto")
     @Positive(message = "El precio debe ser mayor a 0")
     private BigDecimal precio;
-    @NotBlank(message = "Coloque el URL de la iamgen")
+    @NotBlank(message = "Coloque el URL de la imagen")
     private String imagen;
     @ManyToOne
     @JoinColumn(name = "id_categoria")

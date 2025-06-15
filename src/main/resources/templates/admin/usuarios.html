@@ -15,7 +15,6 @@
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
-<<<<<<< HEAD
                 <a class="nav-link" href="categorias">Categorias</a>
                 <a class="nav-link" href="detalle-pedido">Detalle del pedido</a>
                 <a class="nav-link" href="pedidos-pedido">Pedidos</a>
@@ -23,11 +22,6 @@
                 <a class="nav-link" href="productos">Productos</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
-=======
-                <a class="nav-link" href="#">Inicio</a>
-                <a class="nav-link" href="/admin/categorias">Categorias</a>
-                <a class="nav-link" href="/admin/suarios">Usuarios</a>
->>>>>>> baf0dd76a8ce7f32b9cda03ff72be4210f615894
             </div>
         </div>
     </nav>
@@ -220,97 +214,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Estadísticas -->
-        <div class="row mt-4">
-            <div class="col-md-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-users fa-2x mb-2"></i>
-                        <h4>150</h4>
-                        <p>Total Usuarios</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-user-shield fa-2x mb-2"></i>
-                        <h4>5</h4>
-                        <p>Administradores</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-user-tie fa-2x mb-2"></i>
-                        <h4>25</h4>
-                        <p>Empleados</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-info text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-user-friends fa-2x mb-2"></i>
-                        <h4>120</h4>
-                        <p>Clientes</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-<<<<<<< HEAD
-=======
-
-    <!-- Modal para editar usuario -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="editUserModalLabel">
-                        <i class="fas fa-edit"></i> Editar Usuario
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <form method="POST" action="">
-                    <div class="modal-body">
-                        <input type="hidden" name="user_id" value="">
-                        <div class="mb-3">
-                            <label for="edit_nombre" class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" id="edit_nombre" name="edit_nombre" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="edit_email" name="edit_email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_telefono" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="edit_telefono" name="edit_telefono">
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_rol" class="form-label">Rol</label>
-                            <select class="form-select" id="edit_rol" name="edit_rol" required>
-                                <option value="admin">Administrador</option>
-                                <option value="empleado">Empleado</option>
-                                <option value="cliente">Cliente</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-info">
-                            <i class="fas fa-save"></i> Guardar Cambios
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
->>>>>>> baf0dd76a8ce7f32b9cda03ff72be4210f615894
     <!-- Scripts de Bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>

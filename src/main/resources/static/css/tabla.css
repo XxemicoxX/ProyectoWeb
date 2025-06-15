@@ -1,0 +1,131 @@
+.table-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.table-fixed {
+    min-width: 1200px;
+    /* Ancho mínimo para mantener estructura */
+    white-space: nowrap;
+}
+
+.table-fixed th,
+.table-fixed td {
+    vertical-align: middle;
+    padding: 12px 8px;
+}
+
+/* Anchos específicos para cada columna */
+.table-fixed th:nth-child(1),
+.table-fixed td:nth-child(1) {
+    width: 60px;
+    min-width: 60px;
+}
+
+/* ID */
+.table-fixed th:nth-child(2),
+.table-fixed td:nth-child(2) {
+    width: 120px;
+    min-width: 120px;
+}
+
+/* Nombre */
+.table-fixed th:nth-child(3),
+.table-fixed td:nth-child(3) {
+    width: 80px;
+    min-width: 80px;
+}
+
+/* Precio */
+.table-fixed th:nth-child(4),
+.table-fixed td:nth-child(4) {
+    width: 200px;
+    min-width: 200px;
+}
+
+/* Descripción */
+.table-fixed th:nth-child(5),
+.table-fixed td:nth-child(5) {
+    width: 100px;
+    min-width: 100px;
+}
+
+/* Unidad */
+.table-fixed th:nth-child(6),
+.table-fixed td:nth-child(6) {
+    width: 150px;
+    min-width: 150px;
+}
+
+/* Imagen URL */
+.table-fixed th:nth-child(7),
+.table-fixed td:nth-child(7) {
+    width: 100px;
+    min-width: 100px;
+}
+
+/* Categoría */
+.table-fixed th:nth-child(8),
+.table-fixed td:nth-child(8) {
+    width: 180px;
+    min-width: 180px;
+}
+
+/* Acciones */
+
+/* Texto truncado para campos largos */
+.text-truncate-custom {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Tooltip personalizado */
+.tooltip-cell {
+    cursor: help;
+    position: relative;
+}
+
+/* Scrollbar personalizada */
+.table-container::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Botones más compactos */
+.btn-sm-custom {
+    padding: 4px 8px;
+    font-size: 0.875rem;
+    margin: 1px;
+}
+
+/* Indicador de scroll */
+.scroll-indicator {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.card-body {
+    position: relative;
+}
