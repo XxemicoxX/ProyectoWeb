@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-info-subtle">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-info">
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
+<<<<<<< HEAD
                 <a class="nav-link" href="categorias">Categorias</a>
                 <a class="nav-link" href="detalle-pedido">Detalle del pedido</a>
                 <a class="nav-link" href="pedidos-pedido">Pedidos</a>
@@ -20,6 +23,11 @@
                 <a class="nav-link" href="productos">Productos</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
+=======
+                <a class="nav-link" href="#">Inicio</a>
+                <a class="nav-link" href="/admin/categorias">Categorias</a>
+                <a class="nav-link" href="/admin/suarios">Usuarios</a>
+>>>>>>> baf0dd76a8ce7f32b9cda03ff72be4210f615894
             </div>
         </div>
     </nav>
@@ -39,40 +47,61 @@
             <!-- Formulario de Usuario -->
             <div class="col-lg-4 mb-4">
                 <div class="card h-100 shadow border-0">
-                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #17a2b8, #007bff);">
+                    <div class="card-header bg-gradient text-white"
+                        style="background: linear-gradient(45deg, #17a2b8, #007bff);">
                         <h5 class="mb-0"><i class="fas fa-user-plus"></i> Registrar Usuario</h5>
                     </div>
                     <div class="card-body">
                         <form method="POST" th:action="@{/admin/usuarios/save}" th:object="${usuario}">
                             <input type="hidden" th:field="*{id}" />
                             <div class="mb-3">
-                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre Completo</label>
-                                <input type="text" class="form-control border-info" id="nombre" name="nombre" th:field="*{nombre}" required>
+                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre
+                                    Completo</label>
+                                <input type="text" class="form-control border-info" id="nombre" th:field="*{nombre}">
+                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+                                    class="text-danger"></span>
                             </div>
+
                             <div class="mb-3">
                                 <label for="correo" class="form-label"><i class="fas fa-envelope"></i> Correo</label>
-                                <input type="email" class="form-control border-info" id="correo" name="correo" th:field="*{correo}" required>
+                                <input type="email" class="form-control border-info" id="correo" th:field="*{correo}">
+                                <span th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"
+                                    class="text-danger"></span>
                             </div>
+
                             <div class="mb-3">
-                                <label for="contrasena" class="form-label"><i class="fas fa-user"></i> Contraseña</label>
-                                <input type="password" class="form-control border-info" id="contrasena" th:field="*{contrasena}" required>
-                            </div>                            
+                                <label for="contrasena" class="form-label"><i class="fas fa-lock"></i>
+                                    Contraseña</label>
+                                <input type="password" class="form-control border-info" id="contrasena"
+                                    th:field="*{contrasena}">
+                                <span th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"
+                                    class="text-danger"></span>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="telefono" class="form-label"><i class="fas fa-phone"></i> Teléfono</label>
-                                <input type="tel" class="form-control border-info" id="telefono" name="telefono" th:field="*{telefono}" required>
+                                <input type="tel" class="form-control border-info" id="telefono" th:field="*{telefono}">
+                                <span th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"
+                                    class="text-danger"></span>
                             </div>
+
                             <div class="mb-3">
-                                <label for="direccion" class="form-label"><i class="fas fa-phone"></i> Dirección</label>
-                                <input type="tel" class="form-control border-info" id="direccion" th:field="*{direccion}" required>
+                                <label for="direccion" class="form-label"><i class="fas fa-home"></i> Dirección</label>
+                                <input type="text" class="form-control border-info" id="direccion"
+                                    th:field="*{direccion}">
+                                <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"
+                                    class="text-danger"></span>
                             </div>
+
                             <div class="mb-3">
                                 <label for="rol" class="form-label"><i class="fas fa-user-tag"></i> Rol</label>
-                                <select class="form-select border-info" id="rol" name="rol" th:field="*{rol}" required>
+                                <select class="form-select border-info" id="rol" th:field="*{rol}">
                                     <option value="">Seleccionar rol</option>
                                     <option value="admin">Administrador</option>
                                     <option value="empleado">Empleado</option>
                                     <option value="cliente">Cliente</option>
                                 </select>
+                                <span th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}" class="text-danger"></span>
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-info btn-lg">
@@ -90,7 +119,8 @@
             <!-- Lista de Usuarios -->
             <div class="col-lg-8">
                 <div class="card shadow border-0">
-                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #17a2b8, #007bff);">
+                    <div class="card-header bg-gradient text-white"
+                        style="background: linear-gradient(45deg, #17a2b8, #007bff);">
                         <h5 class="mb-0"><i class="fas fa-list"></i> Lista de Usuarios</h5>
                     </div>
                     <div class="card-body">
@@ -98,8 +128,10 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-text bg-info text-white"><i class="fas fa-search"></i></span>
-                                    <input type="text" class="form-control" name="buscar" placeholder="Buscar usuarios...">
+                                    <span class="input-group-text bg-info text-white"><i
+                                            class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" name="buscar"
+                                        placeholder="Buscar usuarios...">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -144,7 +176,8 @@
                                         <td>
                                             <a th:href="@{/admin/usuarios/edit(id=${usuario.id})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/usuarios/delete(id=${usuario.id})}" method="post" style="display:inline;">
+                                            <form th:action="@{/admin/usuarios/delete(id=${usuario.id})}" method="post"
+                                                style="display:inline;">
                                                 <button type="submit" class="btn btn-danger"
                                                     onclick="return confirm('¿Deseas eliminar este usuario?')">Eliminar</button>
                                             </form>
@@ -164,7 +197,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td> -->
-                                    </tr>                                    
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -228,7 +261,58 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+
+    <!-- Modal para editar usuario -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="editUserModalLabel">
+                        <i class="fas fa-edit"></i> Editar Usuario
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form method="POST" action="">
+                    <div class="modal-body">
+                        <input type="hidden" name="user_id" value="">
+                        <div class="mb-3">
+                            <label for="edit_nombre" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="edit_nombre" name="edit_nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="edit_email" name="edit_email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_telefono" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="edit_telefono" name="edit_telefono">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_rol" class="form-label">Rol</label>
+                            <select class="form-select" id="edit_rol" name="edit_rol" required>
+                                <option value="admin">Administrador</option>
+                                <option value="empleado">Empleado</option>
+                                <option value="cliente">Cliente</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-info">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+>>>>>>> baf0dd76a8ce7f32b9cda03ff72be4210f615894
     <!-- Scripts de Bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

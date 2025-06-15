@@ -11,15 +11,13 @@ import com.example.demo.repositories.ProductoRepository;
 
 import lombok.RequiredArgsConstructor;
 
-
-
 @Service
 @RequiredArgsConstructor
 public class ProductoService {
 
     @Autowired
     private ProductoRepository repository;
-    
+
     public List<Producto> sel() {
         return repository.findAll();
     }
@@ -28,12 +26,29 @@ public class ProductoService {
         return repository.findById(id).orElse(null);
     }
 
-    //INSERT into rol && UPDATE dinosaurio SET
-    public Producto insertUpdate (Producto producto) {
+    public Producto insertUpdate(Producto producto) {
         return repository.save(producto);
     }
 
-    public void delete (Long id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public List<Producto> obtenerProductosPorCategoria(Long idCategoria) {
+        return repository.findByCategoriaIdCategoria(idCategoria);
+
+    }
+
+    public List<Producto> obtenerTop3Productos() {
+        return repository.findTop3ByOrderByIdProductoAsc();
+    }
+
+    public List<Producto> obtenerClasicos() {
+        return repository.findByIdProductoIn(List.of(6, 7));
+    }
+
+    public List<Producto> obtenerPrimerosSeis() {
+        return repository.findTop6ByOrderByIdProductoAsc();
+    }
+
 }
