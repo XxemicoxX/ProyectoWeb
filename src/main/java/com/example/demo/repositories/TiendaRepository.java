@@ -7,6 +7,5 @@ import com.example.demo.entities.Tienda;
 
 @Repository
 public interface TiendaRepository extends JpaRepository<Tienda, Long>{
-
     
 }

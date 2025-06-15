@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Tienda;
-import com.example.demo.entities.Tienda;
 import com.example.demo.repositories.TiendaRepository;
 
 import lombok.RequiredArgsConstructor;

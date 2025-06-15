@@ -19,7 +19,7 @@ public class CategoriaService {
         return repository.findAll();
     }
 
-    public Categoria selectOne(Long id) {
+    public Categoria selectOne (Long id) {
         return repository.findById(id).orElse(null);
     }
 

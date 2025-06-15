@@ -13,11 +13,13 @@
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="#">Inicio</a>
-                <a class="nav-link" href="#">Productos</a>
-                <a class="nav-link" href="#">Pedidos</a>
-                <a class="nav-link" href="#">Categorías</a>
-                <a class="nav-link" href="#">Usuarios</a>
+                <a class="nav-link" href="categorias">Categorias</a>
+                <a class="nav-link" href="detalle-pedido">Detalle del pedido</a>
+                <a class="nav-link" href="pedidos-pedido">Pedidos</a>
+                <a class="nav-link" href="personalizaciones">Personalizaciones</a>
+                <a class="nav-link" href="productos">Productos</a>
+                <a class="nav-link" href="tiendas">Tiendas</a>
+                <a class="nav-link" href="usuarios">Usuarios</a>
             </div>
         </div>
     </nav>
@@ -95,7 +97,7 @@
                                                 class="btn btn-warning">Editar</a>
                                             <form th:action="@{/admin/tiendas/delete(id=${tienda.id})}" method="post" style="display:inline;">
                                                 <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
+                                                    onclick="return confirm('¿Deseas eliminar esta tienda?')">Eliminar</button>
                                             </form>
                                         </td>                                        
                                     </tr>                                      
