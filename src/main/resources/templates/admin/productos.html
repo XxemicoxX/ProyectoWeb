@@ -14,8 +14,8 @@
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="#">Inicio</a>
-                <a class="nav-link" href="#">Categorías</a>
-                <a class="nav-link" href="#">Usuarios</a>
+                <a class="nav-link" href="categorias">Categorías</a>
+                <a class="nav-link" href="usuarios">Usuarios</a>
             </div>
         </div>
     </nav>
@@ -47,20 +47,22 @@
                             <input type="hidden" th:field="*{id}"/>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="100" th:field="*{nombre}" required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="100" th:field="*{nombre}" >
+                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;" required></span>
                             </div>
 
                              <div class="mb-3">
                                 <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">S/.</span>
-                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" th:field="*{precio}" required>
+                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" th:field="*{precio}" >
                                 </div>
+                                <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" style="color: red;"></span>
                             </div>
                             
                             <div class="mb-4">
                                 <label for="id_categoria" class="form-label fw-bold">Categoría</label>
-                                <select class="form-select" id="id_categoria" name="id_categoria" th:field="*{categoria}" required>
+                                <select class="form-select" id="id_categoria" name="id_categoria" th:field="*{categoria}" >
                                     <option value="" disabled selected>Seleccionar</option>
                                         <option th:each="c : ${categorias}" th:value="${c.id}"
                                             th:text="${c.nombre}">
