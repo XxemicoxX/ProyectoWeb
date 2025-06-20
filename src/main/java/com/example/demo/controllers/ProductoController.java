@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,14 +20,30 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/productos")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class ProductoController {
     private final ProductoService service;
     private final CategoriaService cService;
 
+    @GetMapping
+    public String mostrarInicio(Model model) {
+        model.addAttribute("productos", service.obtenerPrimerosSeis());
+        return "public/index";
+    }
 
-    @GetMapping("/{id}")
+
+    @GetMapping("/menu")
+    public String verMenu(Model model) {
+        List<Producto> bebidas = service.obtenerProductosPorCategoria(1L);
+        List<Producto> alimentos = service.obtenerProductosPorCategoria(2L);
+        model.addAttribute("bebidas", bebidas);
+        model.addAttribute("alimentos", alimentos);
+
+        return "public/menu";
+    }
+    
+    @GetMapping("/menu/productos/{id}")
     public String verProducto(@PathVariable Long id, Model model) {
 
         Producto producto = service.selectOne(id);
@@ -36,40 +54,7 @@ public class ProductoController {
 
     }
 
-    @GetMapping
-    public String lista(Model model) {
-        model.addAttribute("lista", service.sel());
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("categorias", cService.sel());
-        return "admin/productos";
-    }
-
-    @PostMapping("/save")
-    public String guardar(@Valid @ModelAttribute Producto producto, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("lista", service.sel());
-            model.addAttribute("categorias", cService.sel());
-            return "admin/productos";
-        }
-        service.insertUpdate(producto);
-        return "redirect:/admin/productos";
-    }
-
-    @GetMapping("/edit")
-    public String editar(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("producto", service.selectOne(id));
-        model.addAttribute("lista", service.sel());
-        model.addAttribute("categorias", cService.sel());
-        return "admin/productos";
-    }
-
-    @PostMapping("/delete")
-    public String eliminar(@RequestParam("id") Long id) {
-        service.delete(id);
-        return "redirect:/admin/productos";
-    }
-
-    @GetMapping("/clasicos")
+    @GetMapping("/menu/clasicos")
     public String mostrarClasicos(Model model) {
 
         model.addAttribute("clasicos", service.obtenerClasicos());
@@ -78,7 +63,7 @@ public class ProductoController {
 
     }
 
-    @GetMapping("/mas-pedidos")
+    @GetMapping("/menu/mas-pedidos")
     public String mostrarMasPedidos(Model model) {
 
         model.addAttribute("productosTop", service.obtenerTop3Productos());

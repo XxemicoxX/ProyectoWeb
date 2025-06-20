@@ -19,7 +19,7 @@
             <br>
             <div class="row">
               <div class="col" th:each="producto : ${bebidas}">
-                <a th:href="@{'/productos/' + ${producto.idProducto}}">
+                <a th:href="@{'/menu/productos/' + ${producto.idProducto}}">
                   <img th:src="${producto.imagen}" class="img-fluid rounded-circle" width="200">
                 </a>
                 <h5 th:text="${producto.nombre}"></h5>
@@ -32,7 +32,7 @@
           <hr>
           <div class="row">
             <div class="col"  th:each="producto : ${alimentos}">
-              <a th:href="@{/productos/{id}(id=${producto.idProducto})}">
+              <a th:href="@{/menu/productos/{id}(id=${producto.idProducto})}">
                 <img th:src="${producto.imagen}" class="img-fluid rounded-circle" width="200">
               </a>
               <h5><i th:text="${producto.nombre}"></i></h5>

@@ -46,7 +46,7 @@
       <div class="row row-cols-2">
         <div class="col-md-6 mb-3" th:each="producto : ${productos}">
           <div style="max-width: 350px;" class="mx-auto">
-            <a th:href="@{/productos/{id}(id=${producto.idProducto})}">
+            <a th:href="@{/menu/productos/{id}(id=${producto.idProducto})}">
               <img th:src="@{${producto.imagen}}" class="img-fluid rounded shadow" th:alt="${producto.nombre}" />
             </a>
           </div>

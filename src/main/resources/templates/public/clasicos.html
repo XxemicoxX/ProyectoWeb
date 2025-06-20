@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><strong th:text="${producto.nombre}"></strong></h5>
                             <p class="card-text" th:text="${producto.descripcion}"></p>
-                            <a th:href="@{/productos/{id}(id=${producto.idProducto})}" class="btn btn-primary">Pedir</a>
+                            <a th:href="@{/menu/productos/{id}(id=${producto.idProducto})}" class="btn btn-primary">Pedir</a>
                         </div>
                     </div>
                 </div>
