@@ -1,59 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="~{/public/fragments/template :: head('Formulario')}">
+<head th:replace="~{/public/fragments/template :: head('Registro')}">
 </head>
 
 <body>
     <header th:replace="~{/public/fragments/template :: header}"></header>
     <main>
         <div class="container">
-            <form class="row g-3 mt-3">
+            <form class="row g-3 mt-3" method="post" th:object="${usuario}" th:action="@{/user/registro}">
                 <div class="col-6">
-                    <label for="nameInput" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nameInput" placeholder="Escribe tu nombre">
-                </div>
-                <div class="col-6">
-                    <label for="lastInput" class="form-label">Apellidos</label>
-                    <input type="text" class="form-control" id="lastlInput" placeholder="Escribe tus apellidos">
-                </div>
-                <div class="col-6">
-                    <label for="dateInput" class="form-label">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control" id="datelInput"
-                        placeholder="Indique su fecha de nacimiento ">
-                </div>
-                <div class="col-6">
-                    <label for="emailInput" class="form-label">Correo</label>
-                    <input type="email" class="form-control" id="emailInput" placeholder="Ingresar correo">
-                </div>
-                <div class="col-6">
-                    <label for="inputPass" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="inputPass" placeholder="Escribe tu contraseña">
-                    <p th:if="1 eq 1" style="color:red;">
-                        Mínimo 8 caracteres.
-                    </p>
-                </div>
-                <div class="col-12">
-                    <label for="inputAddress" class="form-label">Dirección</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="Escribe tu direccion">
-                </div>
-                <div class="col-3">
-                    <label for="cityInput" class="form-label">Ciudad</label>
-                    <input type="text" class="form-control" id="cityInput" placeholder="Escribe tu ciudad">
-                </div>
-                <div class="col-3">
-                    <label for="countryInput" class="form-label">Pais</label>
-                    <input type="text" class="form-control" id="countryInput" placeholder="Escribe tu pais">
-                </div>
-                <div class="col-12 mb-5">
-                    <a href="/">
-                        <button type="submit" class="btn btn-primary">Regístrate</button>
-                    </a>
+                    <label for="nameInput" class="form-label">Nombres y Apellidos</label>
+                    <input type="text" class="form-control" id="nameInput" th:field="*{nombre}"
+                        placeholder="Escribe tu nombre">
+                    <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                 </div>
 
+                <div class="col-6">
+                    <label for="emailInput" class="form-label">Correo</label>
+                    <input type="email" class="form-control" id="emailInput" th:field="*{correo}"
+                        placeholder="Ingresar correo">
+                    <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+                </div>
+
+                <div class="col-6">
+                    <label for="inputPass" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="inputPass" th:field="*{contrasena}"
+                        placeholder="Escribe tu contraseña">
+                    <div class="text-danger" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></div>
+                </div>
+
+                <div class="col-3">
+                    <label for="telefono" class="form-label">Telefono</label>
+                    <input type="text" class="form-control" id="telefono" th:field="*{telefono}"
+                        placeholder="Escribe tu telefono personal">
+                    <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+                </div>
+
+                <div class="col-12">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="direccion" th:field="*{direccion}"
+                        placeholder="Escribe tu direccion">
+                    <div class="text-danger" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
+                </div>
+                <div class="col-12 mb-5">
+                    <button type="submit" class="btn btn-primary">Regístrate</button>
+                </div>
             </form>
+            <div th:if="${error}" class="alert alert-danger">
+                <p th:text="${error}"></p>
+            </div>
         </div>
     </main>
+    <br>
     <footer th:replace="~{/public/fragments/template :: footer}"></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"

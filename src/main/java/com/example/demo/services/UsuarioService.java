@@ -14,6 +14,17 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioService {
     private final UsuarioRepository repository;
 
+    public Usuario crearUsuario(Usuario usuario) throws Exception{
+        if (!repository.findByCorreo(usuario.getCorreo()).isEmpty()) {
+            throw new Exception("Usuario ya registrado");            
+        }
+        return repository.save(usuario);
+    }
+
+    public Usuario buscarUsuarioPorCorreo(String correo){
+        return repository.findByCorreo(correo).orElseThrow();
+    }
+
     public List<Usuario> sel() {
         return repository.findAll();
     }
@@ -22,7 +33,6 @@ public class UsuarioService {
         return repository.findById(id).orElse(null);
     }
 
-    //INSERT into rol && UPDATE dinosaurio SET
     public Usuario insertUpdate (Usuario usuario) {
         return repository.save(usuario);
     }
