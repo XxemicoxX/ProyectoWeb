@@ -15,12 +15,15 @@
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
+                <span class="nav-link disabled">
+                    <i class="fas fa-user"></i>
+                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
+                </span>
                 <a class="nav-link" href="categorias">Categorias</a>
-                <a class="nav-link" href="detalle-pedido">Detalle del pedido</a>
-                <a class="nav-link" href="pedidos-pedido">Pedidos</a>
-                <a class="nav-link" href="personalizaciones">Personalizaciones</a>
                 <a class="nav-link" href="productos">Productos</a>
+                <a class="nav-link" href="extras">Extras</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
+                <a class="nav-link" href="pedidos">Pedidos</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
             </div>
         </div>
@@ -49,11 +52,20 @@
                         <form method="POST" th:action="@{/admin/usuarios/save}" th:object="${usuario}">
                             <input type="hidden" th:field="*{id}" />
                             <div class="mb-3">
-                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre
-                                    Completo</label>
+                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre Completo</label>
                                 <input type="text" class="form-control border-info" id="nombre" th:field="*{nombre}">
                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
                                     class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="id_tienda" class="form-label fw-bold">Tienda</label>
+                                <select class="form-select" id="id_tienda" th:field="*{tienda.id}">
+                                    <option value="" disabled selected>Seleccionar</option>
+                                    <option th:each="t : ${tiendas}" th:value="${t.id}"
+                                        th:text="${t.nombre}">
+                                    </option>
+                                </select>
                             </div>
 
                             <div class="mb-3">
@@ -72,31 +84,6 @@
                                     class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="telefono" class="form-label"><i class="fas fa-phone"></i> Teléfono</label>
-                                <input type="tel" class="form-control border-info" id="telefono" th:field="*{telefono}">
-                                <span th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"
-                                    class="text-danger"></span>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="direccion" class="form-label"><i class="fas fa-home"></i> Dirección</label>
-                                <input type="text" class="form-control border-info" id="direccion"
-                                    th:field="*{direccion}">
-                                <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"
-                                    class="text-danger"></span>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="rol" class="form-label"><i class="fas fa-user-tag"></i> Rol</label>
-                                <select class="form-select border-info" id="rol" th:field="*{rol}">
-                                    <option value="">Seleccionar rol</option>
-                                    <option value="admin">Administrador</option>
-                                    <option value="empleado">Empleado</option>
-                                    <option value="cliente">Cliente</option>
-                                </select>
-                                <span th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}" class="text-danger"></span>
-                            </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-info btn-lg">
                                     <i class="fas fa-save"></i> Guardar Usuario
@@ -152,9 +139,6 @@
                                         <th>Nombre</th>
                                         <th>Correo</th>
                                         <th>Contraseña</th>
-                                        <th>Teléfono</th>
-                                        <th>Dirección</th>
-                                        <th>Rol</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -164,9 +148,6 @@
                                         <td>[[${usuario.nombre}]]</td>
                                         <td>[[${usuario.correo}]]</td>
                                         <td>[[${usuario.contrasena}]]</td>
-                                        <td>[[${usuario.telefono}]]</td>
-                                        <td>[[${usuario.direccion}]]</td>
-                                        <td>[[${usuario.rol}]]</td>
                                         <td>
                                             <a th:href="@{/admin/usuarios/edit(id=${usuario.id})}"
                                                 class="btn btn-warning">Editar</a>

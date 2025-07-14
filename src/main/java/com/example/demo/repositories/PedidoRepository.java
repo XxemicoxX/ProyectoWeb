@@ -6,18 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.entities.Pedido;
 import com.example.demo.entities.Producto;
 
 @Repository
-public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    List<Producto> findByCategoriaIdCategoria(Long idCategoria);
-
-    List<Producto> findTop3ByOrderByIdProductoAsc();
-
-    List<Producto> findByIdProductoIn(List<Integer> ids);
-
-    List<Producto> findTop6ByOrderByIdProductoAsc();
-
+public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Query("SELECT p FROM Producto p JOIN FETCH p.categoria")
     List<Producto> findAllWithCategoria();
 }

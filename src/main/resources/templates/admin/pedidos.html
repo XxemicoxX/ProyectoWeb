@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión de Pedidos - CafeWeb</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body style="background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); min-height: 100vh;">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);"
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
+                <span class="nav-link disabled">
+                    <i class="fas fa-user"></i>
+                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
+                </span>
                 <a class="nav-link" href="categorias">Categorias</a>
-                <a class="nav-link" href="detalle-pedido">Detalle del pedido</a>
-                <a class="nav-link" href="pedidos-pedido">Pedidos</a>
-                <a class="nav-link" href="personalizaciones">Personalizaciones</a>
+                <a class="nav-link" href="pedidos">Pedidos</a>
                 <a class="nav-link" href="productos">Productos</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
@@ -31,109 +35,397 @@
                 <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.95);">
                     <div class="card-body text-center py-4">
                         <h1 class="display-5 mb-2" style="color: #2d5016;">
-                            <i class="fas fa-shopping-cart"></i> Gestión de Pedidos
+                            <i class="fas fa-shopping-cart"></i> Crear Nuevo Pedido
                         </h1>
-                        <p class="lead text-muted">Administra los pedidos de tu cafetería</p>
+                        <p class="lead text-muted">Selecciona productos y extras para el pedido</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <!-- Formulario para Agregar Pedido -->
-            <div class="col-lg-5">
-                <div class="card shadow-lg border-0">
-                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
-                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Crear Nuevo Pedido</h5>
-                    </div>
-                    <div class="card-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="fecha" class="form-label fw-bold">Fecha del Pedido</label>
-                                <input type="datetime-local" class="form-control" id="fecha" name="fecha" style="border-color: #2d5016;" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="id_usuario" class="form-label fw-bold">Usuario</label>
-                                <select class="form-select" id="id_usuario" name="id_usuario" style="border-color: #2d5016;" required>
-                                    <option value="">-- Selecciona un usuario --</option>
-                                    <option value="1">Juan Pérez</option>
-                                    <option value="2">María García</option>
-                                    <option value="3">Carlos López</option>
-                                </select>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label for="id_tienda" class="form-label fw-bold">Tienda</label>
-                                <select class="form-select" id="id_tienda" name="id_tienda" style="border-color: #2d5016;" required>
-                                    <option value="">-- Selecciona una tienda --</option>
-                                    <option value="1">Tienda Centro</option>
-                                    <option value="2">Tienda Norte</option>
-                                    <option value="3">Tienda Sur</option>
-                                </select>
-                            </div>
-                            
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-lg" style="background: linear-gradient(45deg, #2d5016, #3e6b1f); color: white; border: none;">
-                                    <i class="fas fa-save"></i> Crear Pedido
-                                </button>
-                                <button type="reset" class="btn btn-outline-secondary">
-                                    <i class="fas fa-eraser"></i> Limpiar Formulario
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        <!-- Mostrar errores -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-            <!-- Lista de Pedidos -->
-            <div class="col-lg-7">
-                <div class="card shadow-lg border-0">
-                    <div class="card-header text-white" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
-                        <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Pedidos Registrados</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead style="background: linear-gradient(45deg, #2d5016, #3e6b1f); color: white;">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Fecha</th>
-                                        <th>Usuario</th>
-                                        <th>Tienda</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <!--<td><span class="badge bg-primary">1</span></td>
-                                        <td>
-                                            <strong>15/06/2024 10:30</strong><br>
-                                            <small class="text-muted">Hace 2 horas</small>
-                                        </td>
-                                        <td><span class="badge bg-info">Juan Pérez</span></td>
-                                        <td><span class="badge bg-warning">Tienda Centro</span></td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm me-1">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-danger btn-sm me-1">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                            <button class="btn btn-info btn-sm">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </td>-->
-                                    </tr>                                    
-                                </tbody>
-                            </table>
+        <!-- Formulario Principal -->
+        <div class="card shadow-lg border-0 mb-4">
+            <div class="card-header text-white" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Usuario Logeado</h5>
+            </div>
+            <div class="card-body">
+                <span class="nav-link disabled">
+                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Formulario de Pedido -->
+        <form th:action="@{/admin/pedidos/save}" method="post">
+            <input type="hidden" name="fechaPedido"
+                th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss')}" />
+
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header text-white" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
+                    <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Productos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 align-items-end mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Categoría</label>
+                            <select id="categoria" class="form-select">
+                                <option value="" disabled selected>-- Seleccionar categoría --</option>
+                                <option th:each="cat : ${categorias}" th:value="${cat.idCategoria}"
+                                    th:text="${cat.nombre}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Producto</label>
+                            <select id="producto" class="form-select" required disabled>
+                                <option value="" disabled selected>-- Seleccionar producto --</option>
+                                <option th:each="prod : ${productos}" th:value="${prod.idProducto}"
+                                    th:text="${prod.nombre + ' - S/. ' + prod.precio}"
+                                    th:attr="data-precio=${prod.precio},data-categoria=${prod.categoria.idCategoria}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Cantidad</label>
+                            <input type="number" min="1" id="cantidad" class="form-control" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Precio Unitario</label>
+                            <input type="number" step="0.01" id="precio" class="form-control" readonly />
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success w-100" id="btnAgregarProducto">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header text-white" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
+                    <h5 class="mb-0"><i class="fas fa-star"></i> Agregar Extras</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 align-items-end mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Extra</label>
+                            <select id="extra" class="form-select">
+                                <option value="" disabled selected>-- Seleccionar extra --</option>
+                                <option th:each="ext : ${extras}" th:value="${ext.id}"
+                                    th:text="${ext.nombre + ' - S/. ' + ext.precio}"
+                                    th:attr="data-precio=${ext.precio}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Cantidad</label>
+                            <input type="number" min="1" id="cantidadExtra" class="form-control" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Precio Unitario</label>
+                            <input type="number" step="0.01" id="precioExtra" class="form-control" readonly />
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-warning w-100" id="btnAgregarExtra">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Detalles -->
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header text-white" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
+                    <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Detalles del Pedido</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive mb-3">
+                        <table class="table table-striped table-hover" id="tablaDetalles">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Producto/Extra</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Tipo</th>
+                                    <th>Subtotal</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleBody">
+                                <!-- Los detalles se agregarán aquí dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Inputs ocultos para productos -->
+                    <div id="productosHiddenInputs">
+                        <!-- Inputs ocultos para detalles de productos -->
+                    </div>
+
+                    <!-- Inputs ocultos para extras -->
+                    <div id="extrasHiddenInputs">
+                        <!-- Inputs ocultos para detalles de extras -->
+                    </div>
+
+                    <!-- Total del Pedido -->
+                    <div class="row mb-3">
+                        <div class="col-md-6 ms-auto">
+                            <div class="card" style="background: #f8f9fa;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Resumen del Pedido</h5>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <strong>Total:</strong>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <strong id="totalPedido">S/. 0.00</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-lg"
+                            style="background: linear-gradient(45deg, #2d5016, #3e6b1f); color: white;">
+                            <i class="fas fa-save"></i> Guardar Pedido
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-lg" id="btnLimpiar">
+                            <i class="fas fa-trash"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
+
+    <script>
+        let contadorProductos = 0;
+        let contadorExtras = 0;
+        let totalPedido = 0;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inicializar el select de producto como deshabilitado
+            const productoSelect = document.getElementById('producto');
+            productoSelect.disabled = true;
+        });
+
+        // Filtrar productos por categoría
+        document.getElementById('categoria').addEventListener('change', function () {
+            const categoriaId = this.value;
+            const productoSelect = document.getElementById('producto');
+            const precioInput = document.getElementById('precio');
+
+            // Limpiar campos relacionados
+            productoSelect.value = '';
+            precioInput.value = '';
+
+            if (categoriaId) {
+                // Habilitar el select de productos
+                productoSelect.disabled = false;
+
+                // Filtrar productos por categoría
+                Array.from(productoSelect.options).forEach(option => {
+                    if (option.value === '') {
+                        // Mantener la opción por defecto visible
+                        option.style.display = 'block';
+                    } else {
+                        const productoCategoria = option.getAttribute('data-categoria');
+                        if (productoCategoria === categoriaId) {
+                            option.style.display = 'block';
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    }
+                });
+            } else {
+                // Deshabilitar el select de productos si no hay categoría seleccionada
+                productoSelect.disabled = true;
+            }
+        });
+
+        // Actualizar precio al seleccionar producto
+        document.getElementById('producto').addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const precio = selectedOption.getAttribute('data-precio');
+            document.getElementById('precio').value = precio || '';
+        });
+
+        // Actualizar precio al seleccionar extra
+        document.getElementById('extra').addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const precio = selectedOption.getAttribute('data-precio');
+            document.getElementById('precioExtra').value = precio || '';
+        });
+
+        // Agregar producto
+        document.getElementById('btnAgregarProducto').addEventListener('click', function () {
+            const categoriaSelect = document.getElementById('categoria');
+            const productoSelect = document.getElementById('producto');
+            const cantidad = parseInt(document.getElementById('cantidad').value);
+            const precio = parseFloat(document.getElementById('precio').value);
+
+            if (!categoriaSelect.value || !productoSelect.value || isNaN(cantidad) || cantidad <= 0 || isNaN(precio)) {
+                alert("Por favor, completa todos los campos del producto correctamente.");
+                return;
+            }
+
+            const categoriaNombre = categoriaSelect.options[categoriaSelect.selectedIndex].text;
+            const productoNombre = productoSelect.options[productoSelect.selectedIndex].text.split(' - S/. ')[0];
+            const subtotal = cantidad * precio;
+
+            agregarFilaDetalle(productoNombre, cantidad, precio, 'Producto', subtotal, 'producto', productoSelect.value);
+
+            // Limpiar formulario de productos
+            limpiarFormularioProductos();
+        });
+
+        // Agregar extra
+        document.getElementById('btnAgregarExtra').addEventListener('click', function () {
+            const extraSelect = document.getElementById('extra');
+            const cantidad = parseInt(document.getElementById('cantidadExtra').value);
+            const precio = parseFloat(document.getElementById('precioExtra').value);
+
+            if (!extraSelect.value || isNaN(cantidad) || cantidad <= 0 || isNaN(precio)) {
+                alert("Por favor, completa todos los campos del extra correctamente.");
+                return;
+            }
+
+            const extraNombre = extraSelect.options[extraSelect.selectedIndex].text.split(' - S/. ')[0];
+            const subtotal = cantidad * precio;
+
+            agregarFilaDetalle(extraNombre, cantidad, precio, 'Extra', subtotal, 'extra', extraSelect.value);
+
+            // Limpiar formulario de extras
+            limpiarFormularioExtras();
+        });
+
+        function agregarFilaDetalle(nombre, cantidad, precio, tipo, subtotal, tipoElemento, id) {
+            const tbody = document.getElementById('detalleBody');
+            const fila = tbody.insertRow();
+
+            // Generar ID único para la fila
+            const contadorActual = tipoElemento === 'producto' ? contadorProductos : contadorExtras;
+            const filaId = `fila-${tipoElemento}-${contadorActual}`;
+            fila.id = filaId;
+
+            fila.innerHTML = `
+                <td>${nombre}</td>
+                <td>${cantidad}</td>
+                <td>S/. ${precio.toFixed(2)}</td>
+                <td><span class="badge ${tipo === 'Extra' ? 'bg-warning' : 'bg-success'}">${tipo}</span></td>
+                <td>S/. ${subtotal.toFixed(2)}</td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarDetalle('${filaId}', ${subtotal}, '${tipoElemento}', ${contadorActual})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+
+            // Agregar inputs ocultos según el tipo
+            if (tipoElemento === 'producto') {
+                const div = document.createElement('div');
+                div.id = `producto-${contadorProductos}`;
+                div.innerHTML = `
+                    <input type="hidden" name="detallesProductos[${contadorProductos}].idProducto" value="${id}" />
+                    <input type="hidden" name="detallesProductos[${contadorProductos}].cantidad" value="${cantidad}" />
+                    <input type="hidden" name="detallesProductos[${contadorProductos}].precio" value="${precio}" />
+                    <input type="hidden" name="detallesProductos[${contadorProductos}].subtotal" value="${subtotal}" />
+                `;
+                document.getElementById('productosHiddenInputs').appendChild(div);
+                contadorProductos++;
+            } else {
+                const div = document.createElement('div');
+                div.id = `extra-${contadorExtras}`;
+                div.innerHTML = `
+                    <input type="hidden" name="detallesExtras[${contadorExtras}].idDetallePedido" value="0" />
+                    <input type="hidden" name="detallesExtras[${contadorExtras}].idExtra" value="${id}" />
+                    <input type="hidden" name="detallesExtras[${contadorExtras}].cantidad" value="${cantidad}" />
+                    <input type="hidden" name="detallesExtras[${contadorExtras}].precio" value="${precio}" />
+                    <input type="hidden" name="detallesExtras[${contadorExtras}].subtotal" value="${subtotal}" />
+                `;
+                document.getElementById('extrasHiddenInputs').appendChild(div);
+                contadorExtras++;
+            }
+
+            totalPedido += subtotal;
+            actualizarTotal();
+        }
+
+        function eliminarDetalle(filaId, subtotal, tipoElemento, index) {
+            const fila = document.getElementById(filaId);
+            if (fila) {
+                fila.remove();
+            }
+
+            totalPedido -= subtotal;
+
+            // Eliminar el input oculto correspondiente
+            const detalleElement = document.getElementById(`${tipoElemento}-${index}`);
+            if (detalleElement) {
+                detalleElement.remove();
+            }
+
+            actualizarTotal();
+        }
+
+        function actualizarTotal() {
+            document.getElementById('totalPedido').textContent = `S/. ${totalPedido.toFixed(2)}`;
+        }
+
+        function limpiarFormularioProductos() {
+            document.getElementById('cantidad').value = '';
+            document.getElementById('categoria').value = '';
+            document.getElementById('producto').value = '';
+            document.getElementById('precio').value = '';
+
+            // Deshabilitar el select de productos y restaurar visibilidad
+            const productoSelect = document.getElementById('producto');
+            productoSelect.disabled = true;
+
+            Array.from(productoSelect.options).forEach(option => {
+                option.style.display = 'block';
+            });
+        }
+
+        function limpiarFormularioExtras() {
+            document.getElementById('cantidadExtra').value = '';
+            document.getElementById('extra').value = '';
+            document.getElementById('precioExtra').value = '';
+        }
+
+        // Limpiar todo
+        document.getElementById('btnLimpiar').addEventListener('click', function () {
+            if (confirm('¿Estás seguro de que quieres limpiar todos los detalles del pedido?')) {
+                document.getElementById('detalleBody').innerHTML = '';
+                document.getElementById('productosHiddenInputs').innerHTML = '';
+                document.getElementById('extrasHiddenInputs').innerHTML = '';
+                totalPedido = 0;
+                contadorProductos = 0;
+                contadorExtras = 0;
+                actualizarTotal();
+
+                // Limpiar también los formularios
+                limpiarFormularioProductos();
+                limpiarFormularioExtras();
+            }
+        });
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

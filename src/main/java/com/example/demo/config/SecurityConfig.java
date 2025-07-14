@@ -36,7 +36,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
             auth -> auth.requestMatchers("/", "/menu", "/menu/productos/**", "/menu/mas-pedidos", "/menu/clasicos", "/user/registro", "/nosotros", "/contacto", "/css/**", "/img/**", "/js/**", "/log-in")
             .permitAll()
-            .requestMatchers("/admin/categorias/**", "/admin/productos/**", "/admin/tiendas/**", "/admin/usuarios/**", "/admin").hasAnyAuthority("ADMIN")
+            .requestMatchers("/admin/categorias/**", "/admin/productos/**", "/admin/tiendas/**", "/admin/usuarios/**","/admin/extras/**", "/admin/pedidos/**", "/admin").hasAnyAuthority("ADMIN")
             .anyRequest().authenticated())
         .formLogin(
             login -> login.loginPage("/log-in")

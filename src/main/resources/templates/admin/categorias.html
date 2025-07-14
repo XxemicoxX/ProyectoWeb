@@ -13,12 +13,15 @@
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
             <div class="navbar-nav ms-auto">
+                <span class="nav-link disabled">
+                    <i class="fas fa-user"></i>
+                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
+                </span>
                 <a class="nav-link" href="categorias">Categorias</a>
-                <a class="nav-link" href="detalle-pedido">Detalle del pedido</a>
-                <a class="nav-link" href="pedidos">Pedidos</a>
-                <a class="nav-link" href="personalizaciones">Personalizaciones</a>
                 <a class="nav-link" href="productos">Productos</a>
+                <a class="nav-link" href="extras">Extras</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
+                <a class="nav-link" href="pedidos">Pedidos</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
             </div>
         </div>

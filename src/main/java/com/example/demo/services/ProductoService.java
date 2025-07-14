@@ -22,6 +22,10 @@ public class ProductoService {
         return repository.findAll();
     }
 
+    public List<Producto> selCategoria() {
+        return repository.findAllWithCategoria(); // <-- Asegura que trae la categoría
+    }
+
     public Producto selectOne(Long id) {
         return repository.findById(id).orElse(null);
     }

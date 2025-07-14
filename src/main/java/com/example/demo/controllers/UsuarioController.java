@@ -36,7 +36,6 @@ public class UsuarioController {
                 return "/public/formulario";
             }
             try {
-                usuario.setRol(RolEnum.CLIENT);
                 usuario.setContrasena(encoder.encode(usuario.getContrasena()));
                 service.crearUsuario(usuario);
                 return "redirect:/";

@@ -5,28 +5,27 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entities.Categoria;
-import com.example.demo.repositories.CategoriaRepository;
+import com.example.demo.entities.Extra;
+import com.example.demo.repositories.ExtraRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CategoriaService {
-
+public class ExtraService {
     @Autowired
-   private final CategoriaRepository repository;
+    private final ExtraRepository repository;
 
-    public List<Categoria> sel() {
+    public List<Extra> sel() {
         return repository.findAll();
     }
 
-    public Categoria selectOne (Long id) {
+    public Extra selectOne (Long id) {
         return repository.findById(id).orElse(null);
     }
 
-    public Categoria insertUpdate (Categoria categoria) {
-        return repository.save(categoria);
+    public Extra insertUpdate (Extra extra) {
+        return repository.save(extra);
     }
 
     public void delete (Long id) {

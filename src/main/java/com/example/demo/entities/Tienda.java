@@ -20,8 +20,10 @@ public class Tienda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tienda")
     private Integer id;
+
     @NotBlank(message = "El nombre es un campo obligatorio")
     private String nombre;
+    
     @NotBlank(message = "Ingrese la direccion es un campo obligatorio")
     @Size(min = 10, max = 100,message = "La direccion debe de tener entre 10 a 100 caracterres")
     private String direccion;

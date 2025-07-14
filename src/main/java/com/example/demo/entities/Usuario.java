@@ -1,5 +1,8 @@
 package com.example.demo.entities;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.example.demo.util.RolEnum;
 
 import jakarta.persistence.Column;
@@ -9,6 +12,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -28,30 +33,19 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "id_tienda")
+    private Tienda tienda;
+
     @NotBlank(message = "El nombre es un campo obligatorio")
     @Column(nullable = false, length = 100)
     private String nombre;
 
     @Email(message = "Ingrese un correo válido (ej: ejemplo@correo.com)")
     @NotBlank(message = "El correo es obligatorio")
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, unique = true)
     private String correo;
 
-    @NotBlank(message = "Ingrese una contraseña valida")
+    @NotBlank(message = "La contraseña es obligatoria")
     private String contrasena;
-
-    @NotNull(message = "Ingrese el numero de telefono del usuario")    
-    @Pattern(regexp = "^[0-9]{9}$", message = "El telefono debe de tener 9 digitos")
-     @Column(nullable = false, length = 20)
-    private String telefono;
-
-    @NotBlank(message = "La dirección es obligatoria")
-    @Size(min = 10, max = 100,message = "La direccion debe de tener entre 10 a 100 caracterres")
-    @Column(nullable = false, length = 200)
-    private String direccion;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private RolEnum rol;
-
 }

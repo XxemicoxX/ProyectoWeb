@@ -28,9 +28,6 @@ public class MarcoswebApplication {
 				usuario.setNombre("Admin");
 				usuario.setCorreo("admin@gmail.com");
 				usuario.setContrasena(encoder.encode("12345678"));
-				usuario.setTelefono("999444333");
-				usuario.setDireccion("Av. Escardon 432");
-				usuario.setRol(RolEnum.ADMIN);
 				repository.save(usuario);
 			}
 		};

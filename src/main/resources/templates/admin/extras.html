@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extras - CafeWeb</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body style="background: linear-gradient(135deg, #d4edda 0%, #155724 100%); min-height: 100vh;">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #28a745, #20c997);">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
+            <div class="navbar-nav ms-auto">
+                <span class="nav-link disabled">
+                    <i class="fas fa-user"></i>
+                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
+                </span>
+                <a class="nav-link" href="categorias">Categorias</a>
+                <a class="nav-link" href="productos">Productos</a>
+                <a class="nav-link" href="extras">Extras</a>
+                <a class="nav-link" href="tiendas">Tiendas</a>
+                <a class="nav-link" href="pedidos">Pedidos</a>
+                <a class="nav-link" href="usuarios">Usuarios</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Título Principal -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.95);">
+                    <div class="card-body text-center py-4">
+                        <h1 class="display-5 mb-2" style="color: #28a745;">
+                            <i class="fas fa-plus-square"></i> Extras
+                        </h1>
+                        <p class="lead text-muted">Administra los extras disponibles para los productos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Formulario para Agregar Extra -->
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
+                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Extra</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/extras/save}" method="post" th:object="${extra}">
+                            <input type="hidden" th:field="*{id}"/>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label fw-bold">Nombre del Extra</label>
+                                <input type="text" class="form-control" name="nombre" maxlength="100" placeholder="Ej: Leche de almendras, Shot extra, etc." style="border-color: #28a745;" th:field="*{nombre}" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">S/.</span>
+                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" placeholder="0.00" style="border-color: #28a745;" th:field="*{precio}" required>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-lg" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none;">
+                                    <i class="fas fa-save"></i> Guardar Extra
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary">
+                                    <i class="fas fa-eraser"></i> Limpiar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Extras -->
+            <div class="col-lg-7">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
+                        <h5 class="mb-0"><i class="fas fa-list"></i> Lista de Extras</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead style="background: linear-gradient(45deg, #28a745, #20c997); color: white;">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="extra:${lista}">
+                                        <td>[[${extra.id}]]</td>
+                                        <td>[[${extra.nombre}]]</td>
+                                        <td>[[${extra.precio}]]</td>
+                                        <td>
+                                            <a th:href="@{/admin/extras/edit(id=${extra.id})}" class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
+                                            <form th:action="@{/admin/extras/delete(id=${extra.id})}" method="post">
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Deseas eliminar este extra?')">Eliminar</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
