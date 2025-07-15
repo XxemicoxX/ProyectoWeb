@@ -124,7 +124,20 @@ public class AdminController {
     }
 
     @PostMapping("tiendas/save")
-    public String guardarTiendas(@ModelAttribute Tienda tienda) {
+    public String guardarTiendas(@Valid @ModelAttribute("tienda") Tienda tienda, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("lista", tservice.sel());
+            model.addAttribute("usuarios", uservice.sel());
+
+            // Obtener usuario logueado
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+            model.addAttribute("usuarioLogueado", usuarioLogueado);
+
+            return "admin/tiendas"; // Regresa a la misma vista con errores visibles
+        }
+
         tservice.insertUpdate(tienda);
         return "redirect:/admin/tiendas";
     }
@@ -200,8 +213,14 @@ public class AdminController {
         return "redirect:/admin/categorias";
     }
 
+<<<<<<< HEAD
     @PostMapping("categorias/toggleEstadoCategorias")
     public String toggleEstadoCategorias(@RequestParam("id") Long id) {
+=======
+    // Cambiar esto en categorias
+    @PostMapping("categorias/toggleEstado")
+    public String toggleEstado(@RequestParam("id") Long id) {
+>>>>>>> 9b25af018d1c6770c7ffcaaea56fdabe963176d3
         Categoria categoria = cservice.selectOne(id);
         if (categoria != null) {
             if ("activo".equalsIgnoreCase(categoria.getEstado())) {

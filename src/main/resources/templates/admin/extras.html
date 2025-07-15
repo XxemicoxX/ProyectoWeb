@@ -54,15 +54,19 @@
                             <input type="hidden" th:field="*{id}"/>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre del Extra</label>
-                                <input type="text" class="form-control" name="nombre" maxlength="100" placeholder="Ej: Leche de almendras, Shot extra, etc." style="border-color: #28a745;" th:field="*{nombre}" required>
+                                <input type="text" class="form-control" name="nombre" maxlength="100" placeholder="Ej: Leche de almendras, Shot extra, etc." style="border-color: #28a745;" th:field="*{nombre}" >
+                                <!-- <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+                                    class="text-danger"></span> -->
                             </div>
                             
                             <div class="mb-4">
                                 <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">S/.</span>
-                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" placeholder="0.00" style="border-color: #28a745;" th:field="*{precio}" required>
+                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" placeholder="0.00" style="border-color: #28a745;" th:field="*{precio}" >
                                 </div>
+                                <!-- <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"
+                                    class="text-danger"></span> -->
                             </div>
                             
                             <div class="d-grid gap-2">

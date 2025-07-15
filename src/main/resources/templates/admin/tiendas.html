@@ -53,12 +53,16 @@
                         <form method="POST" th:action="@{/admin/tiendas/save}" th:object="${tienda}">
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre de la Tienda</label>
-                                <input type="text" class="form-control" id="nombre" maxlength="255" style="border-color: #8e44ad;" th:field="*{nombre}" required>
+                                <input type="text" class="form-control" id="nombre" maxlength="255" style="border-color: #8e44ad;" th:field="*{nombre}" >
+                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+                                    class="text-danger"></span>
                             </div>
                             
                             <div class="mb-4">
                                 <label for="direccion" class="form-label fw-bold">Dirección</label>
-                                <textarea class="form-control" id="direccion" rows="3" style="border-color: #8e44ad;" th:field="*{direccion}" required></textarea>
+                                <textarea class="form-control" id="direccion" rows="3" style="border-color: #8e44ad;" th:field="*{direccion}" ></textarea>
+                                <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"
+                                    class="text-danger"></span>
                             </div>
                             
                             <div class="d-grid gap-2">

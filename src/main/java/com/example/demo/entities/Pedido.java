@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,11 +39,14 @@ public class Pedido {
     @NotNull(message = "La fecha es un campo obligatorio")
     @Column(name = "fecha_pedido")
     private LocalDate fecha;
+
     @PrePersist
     public void asignarFecha() {
         this.fecha = LocalDate.now();
     }
 
+    @NotNull(message = "El total no puede ser nulo")
+    @DecimalMin(value = "0.0", inclusive = true, message = "El total no puede ser negativo")
     private BigDecimal total;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
