@@ -36,4 +36,8 @@ public class CategoriaService {
         repository.deleteById(id);
     }
 
+    public List<Categoria> selActivas() {
+        return repository.findByEstado("activo");
+    }
+
 }

@@ -25,6 +25,9 @@ public class ExtraService {
     }
 
     public Extra insertUpdate (Extra extra) {
+        if (extra.getEstado() == null || extra.getEstado().isEmpty()) {
+            extra.setEstado("activo");
+        }
         return repository.save(extra);
     }
 

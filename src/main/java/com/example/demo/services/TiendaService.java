@@ -25,6 +25,9 @@ public class TiendaService {
     }
     
     public Tienda insertUpdate (Tienda tienda) {
+        if (tienda.getEstado() == null || tienda.getEstado().isEmpty()) {
+            tienda.setEstado("activo");
+        }
         return repository.save(tienda);
     }
 

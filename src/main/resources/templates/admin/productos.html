@@ -140,6 +140,7 @@
                                         <th>Unidad de medida</th>
                                         <th>Imagen URL</th>
                                         <th>Descripción</th>
+                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -153,13 +154,19 @@
                                         <td>[[${producto.imagen}]]</td>
                                         <td>[[${producto.descripcion}]]</td>
                                         <td>
+                                            <form
+                                                th:action="@{/admin/categorias/toggleEstadoProductos(id=${producto.idProducto})}"
+                                                method="post" style="display:inline;">
+                                                <button type="submit"
+                                                    th:classappend="${producto.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
+                                                    <span
+                                                        th:text="${producto.estado} == 'activo' ? 'Desactivar' : 'Activar'"></span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td>
                                             <a th:href="@{/admin/productos/edit(id=${producto.idProducto})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/productos/delete(id=${producto.idProducto})}"
-                                                method="post" style="display:inline;">
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('¿Deseas eliminar este producto?')">Eliminar</button>
-                                            </form>
                                         </td>
                                     </tr>
                                 </tbody>

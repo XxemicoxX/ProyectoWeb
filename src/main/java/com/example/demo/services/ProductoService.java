@@ -31,6 +31,9 @@ public class ProductoService {
     }
 
     public Producto insertUpdate(Producto producto) {
+        if (producto.getEstado() == null || producto.getEstado().isEmpty()) {
+            producto.setEstado("activo");
+        }
         return repository.save(producto);
     }
 
