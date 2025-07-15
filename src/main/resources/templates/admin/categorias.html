@@ -101,7 +101,7 @@
                                         <td>[[${categoria.idCategoria}]]</td>
                                         <td>[[${categoria.nombre}]]</td>
                                         <td>[[${categoria.descripcion}]]</td>
-                                        <td>
+                                        <td> 
                                             <span th:text="${categoria.estado}"></span>
                                             <form
                                                 th:action="@{/admin/categorias/toggleEstado(id=${categoria.idCategoria})}"
