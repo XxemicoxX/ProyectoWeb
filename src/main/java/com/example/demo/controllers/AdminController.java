@@ -54,7 +54,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/productos";
     }
 
@@ -81,7 +81,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/productos";
     }
 
@@ -104,12 +104,25 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/tiendas";
     }
 
     @PostMapping("tiendas/save")
-    public String guardarTiendas(@ModelAttribute Tienda tienda) {
+    public String guardarTiendas(@Valid @ModelAttribute("tienda") Tienda tienda, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("lista", tservice.sel());
+            model.addAttribute("usuarios", uservice.sel());
+
+            // Obtener usuario logueado
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+            model.addAttribute("usuarioLogueado", usuarioLogueado);
+
+            return "admin/tiendas"; // Regresa a la misma vista con errores visibles
+        }
+
         tservice.insertUpdate(tienda);
         return "redirect:/admin/tiendas";
     }
@@ -126,7 +139,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/tiendas";
     }
 
@@ -149,7 +162,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/categorias";
     }
 
@@ -175,7 +188,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/categorias";
     }
 
@@ -185,7 +198,7 @@ public class AdminController {
         return "redirect:/admin/categorias";
     }
 
-    //Cambiar esto en categorias
+    // Cambiar esto en categorias
     @PostMapping("categorias/toggleEstado")
     public String toggleEstado(@RequestParam("id") Long id) {
         Categoria categoria = cservice.selectOne(id);
@@ -213,7 +226,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/usuarios";
     }
 
@@ -241,7 +254,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/usuarios";
     }
 
@@ -264,7 +277,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/extras";
     }
 
@@ -290,7 +303,7 @@ public class AdminController {
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
 
         model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-        
+
         return "admin/extras";
     }
 
