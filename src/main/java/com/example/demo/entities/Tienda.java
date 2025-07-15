@@ -27,4 +27,6 @@ public class Tienda {
     @NotBlank(message = "Ingrese la direccion es un campo obligatorio")
     @Size(min = 10, max = 100,message = "La direccion debe de tener entre 10 a 100 caracterres")
     private String direccion;
+
+    private String estado;
 }

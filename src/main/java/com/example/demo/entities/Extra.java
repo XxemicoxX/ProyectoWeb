@@ -22,4 +22,5 @@ public class Extra {
     private Long id;
     private String nombre;
     private BigDecimal precio;
+    private String estado;
 }

@@ -46,6 +46,15 @@ public class AdminController {
         model.addAttribute("lista", pservice.sel());
         model.addAttribute("producto", new Producto());
         model.addAttribute("categorias", cservice.sel());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/productos";
     }
 
@@ -64,6 +73,15 @@ public class AdminController {
         model.addAttribute("producto", pservice.selectOne(id));
         model.addAttribute("lista", pservice.sel());
         model.addAttribute("categorias", cservice.sel());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/productos";
     }
 
@@ -78,6 +96,15 @@ public class AdminController {
     public String listaTiendas(Model model) {
         model.addAttribute("lista", tservice.sel());
         model.addAttribute("tienda", new Tienda());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/tiendas";
     }
 
@@ -91,6 +118,15 @@ public class AdminController {
     public String editarTiendas(@RequestParam("id") Long id, Model model) {
         model.addAttribute("tienda", tservice.selectOne(id));
         model.addAttribute("lista", tservice.sel());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/tiendas";
     }
 
@@ -105,6 +141,15 @@ public class AdminController {
     public String listaCategoria(Model model) {
         model.addAttribute("lista", cservice.sel());
         model.addAttribute("categoria", new Categoria());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/categorias";
     }
 
@@ -122,6 +167,15 @@ public class AdminController {
     public String editarCategoria(@RequestParam("id") Long id, Model model) {
         model.addAttribute("categoria", cservice.selectOne(id));
         model.addAttribute("lista", cservice.sel());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/categorias";
     }
 
@@ -131,12 +185,35 @@ public class AdminController {
         return "redirect:/admin/categorias";
     }
 
+    //Cambiar esto en categorias
+    @PostMapping("categorias/toggleEstado")
+    public String toggleEstado(@RequestParam("id") Long id) {
+        Categoria categoria = cservice.selectOne(id);
+        if (categoria != null) {
+            if ("activo".equalsIgnoreCase(categoria.getEstado())) {
+                categoria.setEstado("desactivado");
+            } else {
+                categoria.setEstado("activo");
+            }
+            cservice.insertUpdate(categoria);
+        }
+        return "redirect:/admin/categorias";
+    }
+
     // USUARIOS
     @GetMapping("/usuarios")
     public String lista(Model model) {
         model.addAttribute("lista", uservice.sel());
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("tiendas", tservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/usuarios";
     }
 
@@ -157,6 +234,14 @@ public class AdminController {
         model.addAttribute("usuario", uservice.selectOne(id));
         model.addAttribute("lista", uservice.sel());
         model.addAttribute("tiendas", tservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/usuarios";
     }
 
@@ -171,6 +256,15 @@ public class AdminController {
     public String listaExtra(Model model) {
         model.addAttribute("lista", extraS.sel());
         model.addAttribute("extra", new Extra());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/extras";
     }
 
@@ -188,6 +282,15 @@ public class AdminController {
     public String editarExtra(@RequestParam("id") Long id, Model model) {
         model.addAttribute("extra", extraS.selectOne(id));
         model.addAttribute("lista", extraS.sel());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        
         return "admin/extras";
     }
 
@@ -260,6 +363,15 @@ public class AdminController {
     public String editarVenta(@RequestParam("id") Long id, Model model) {
         model.addAttribute("pedido", pedidoS.selectOne(id));
         model.addAttribute("lista", pedidoS.sel());
+        model.addAttribute("usuarios", uservice.sel());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+
+        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+
         return "admin/pedidos";
     }
 

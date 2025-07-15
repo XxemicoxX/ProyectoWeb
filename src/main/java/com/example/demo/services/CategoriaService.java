@@ -15,21 +15,25 @@ import lombok.RequiredArgsConstructor;
 public class CategoriaService {
 
     @Autowired
-   private final CategoriaRepository repository;
+    private final CategoriaRepository repository;
 
     public List<Categoria> sel() {
         return repository.findAll();
     }
 
-    public Categoria selectOne (Long id) {
+    public Categoria selectOne(Long id) {
         return repository.findById(id).orElse(null);
     }
 
-    public Categoria insertUpdate (Categoria categoria) {
+    public Categoria insertUpdate(Categoria categoria) {
+        if (categoria.getEstado() == null || categoria.getEstado().isEmpty()) {
+            categoria.setEstado("activo");
+        }
         return repository.save(categoria);
     }
 
-    public void delete (Long id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
+
 }

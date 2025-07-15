@@ -48,4 +48,6 @@ public class Usuario {
 
     @NotBlank(message = "La contraseña es obligatoria")
     private String contrasena;
+
+    private String estado;
 }

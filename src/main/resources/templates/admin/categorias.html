@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -31,7 +33,8 @@
         <!-- Header -->
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <div class="alert alert-warning border-0 shadow-sm py-4 text-primary" style="background: rgba(255,255,255,0.95);">
+                <div class="alert alert-warning border-0 shadow-sm py-4 text-primary"
+                    style="background: rgba(255,255,255,0.95);">
                     <h1 class="display-5 mb-2"><i class="fas fa-cogs"></i> Gestión de Categorías</h1>
                     <p class="mb-0">Agrega categorías para los productos</p>
                 </div>
@@ -45,17 +48,22 @@
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Categoría</h5>
                     </div>
                     <div class="card-body">
-                        <form id="categoriasForm" th:action="@{/admin/categorias/save}" method="post" th:object="${categoria}">
-                            <input type="hidden" th:field="*{idCategoria}"/>
+                        <form id="categoriasForm" th:action="@{/admin/categorias/save}" method="post"
+                            th:object="${categoria}">
+                            <input type="hidden" th:field="*{idCategoria}" />
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre de la Categoría</label>
-                                <input type="text" class="form-control" id="nombre" maxlength="100" placeholder="Ejm: Bebidas frias, Bebidas calientes..." th:field="*{nombre}">
-                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></span>
+                                <input type="text" class="form-control" id="nombre" maxlength="100"
+                                    placeholder="Ejm: Bebidas frias, Bebidas calientes..." th:field="*{nombre}">
+                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+                                    class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="descripcion" class="form-label">Descripción</label>
-                                <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="4" placeholder="Ingrese la descripción..."></textarea>
-                                <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" class="text-danger"></span>
+                                <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="4"
+                                    placeholder="Ingrese la descripción..."></textarea>
+                                <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"
+                                    class="text-danger"></span>
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success">
@@ -84,6 +92,7 @@
                                         <th>ID</th>
                                         <th>Nombre de Categoría</th>
                                         <th>Descripción</th>
+                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -93,25 +102,22 @@
                                         <td>[[${categoria.nombre}]]</td>
                                         <td>[[${categoria.descripcion}]]</td>
                                         <td>
-                                            <a th:href="@{/admin/categorias/edit(id=${categoria.idCategoria})}" class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
-                                            <form th:action="@{/admin/categorias/delete(id=${categoria.idCategoria})}" method="post">
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Deseas eliminar esta categoria?')">Eliminar</button>
+                                            <span th:text="${categoria.estado}"></span>
+                                            <form
+                                                th:action="@{/admin/categorias/toggleEstado(id=${categoria.idCategoria})}"
+                                                method="post" style="display:inline;">
+                                                <button type="submit"
+                                                    th:classappend="${categoria.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
+                                                    <span th:text="${categoria.estado} == 'activo' ? 'Desactivar' : 'Activar'"></span>
+                                                </button>
                                             </form>
                                         </td>
                                         <td>
+                                            <a th:href="@{/admin/categorias/edit(id=${categoria.idCategoria})}" class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
                                         </td>
-                                        
-                                        <!--<td>1</td>
-                                        <td>Bebidas Calientes</td>
                                         <td>
-                                            <button class="btn btn-warning btn-sm me-2">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i> Eliminar
-                                            </button>
-                                        </td>-->
-                                    </tr>                                    
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -123,4 +129,5 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
