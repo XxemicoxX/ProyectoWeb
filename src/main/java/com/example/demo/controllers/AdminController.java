@@ -334,8 +334,15 @@ public class AdminController {
     public String guardarExtra(@Valid @ModelAttribute Extra extra, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("lista", extraS.sel());
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+            model.addAttribute("usuarioLogueado", usuarioLogueado);
+
             return "admin/extras";
         }
+
         extraS.insertUpdate(extra);
         return "redirect:/admin/extras";
     }
