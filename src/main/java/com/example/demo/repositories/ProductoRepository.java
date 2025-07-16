@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entities.Producto;
@@ -22,4 +23,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findAllWithCategoria();
 
     List<Producto> findByEstado(String estado);
+
+    @Query("SELECT p FROM Producto p JOIN FETCH p.categoria WHERE p.estado = :estado")
+    List<Producto> findByEstadoWithCategoria(@Param("estado") String estado);
 }

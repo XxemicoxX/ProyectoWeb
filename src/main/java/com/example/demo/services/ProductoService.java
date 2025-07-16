@@ -63,4 +63,7 @@ public class ProductoService {
         return repository.findTop6ByOrderByIdProductoAsc();
     }
 
+    public List<Producto> selActivasConCategoria() {
+        return repository.findByEstadoWithCategoria("activo");
+    }
 }

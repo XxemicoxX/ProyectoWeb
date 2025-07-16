@@ -14,12 +14,14 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "detalle_extra")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"detallePedido", "extra"})
 public class DetalleExtra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

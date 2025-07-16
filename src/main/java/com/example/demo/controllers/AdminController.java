@@ -1,5 +1,11 @@
 package com.example.demo.controllers;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -7,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -377,7 +384,7 @@ public class AdminController {
         model.addAttribute("pedido", new Pedido());
         model.addAttribute("usuarios", uservice.selActivas());
         model.addAttribute("categorias", cservice.selActivas());
-        model.addAttribute("productos", pservice.selActivas());
+        model.addAttribute("productos", pservice.selActivasConCategoria());
         model.addAttribute("extras", extraS.selActivas());
         // Obtener usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -434,5 +441,58 @@ public class AdminController {
         return "redirect:/admin/pedidos";
     }
 
-    //HISTORIAL
+    // HISTORIAL
+    // 🔹 Mostrar historial de pedidos (vista separada)
+    @GetMapping("/historial")
+    public String mostrarHistorial(Model model,
+            @RequestParam(required = false) Long usuarioId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+
+        List<Pedido> pedidos;
+
+        // Filtrar por usuario si se especifica
+        if (usuarioId != null) {
+            pedidos = pedidoS.obtenerPedidosPorUsuario(usuarioId);
+        }
+        // Filtrar por rango de fechas si se especifica
+        else if (fechaInicio != null && fechaFin != null) {
+            pedidos = pedidoS.obtenerPedidosPorRangoFechas(fechaInicio, fechaFin);
+        }
+        // Obtener todos los pedidos
+        else {
+            pedidos = pedidoS.obtenerTodosLosHistorialPedidos();
+        }
+
+        model.addAttribute("listaPedidos", pedidos);
+        model.addAttribute("usuarios", uservice.selActivas());
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
+
+        return "admin/historial";
+    }
+
+    // 🔹 Ver detalles específicos de un pedido
+    @GetMapping("/pedidos/{id}")
+    public String verDetallePedido(@PathVariable Long id, Model model) {
+        Pedido pedido = pedidoS.selectOne(id);
+        if (pedido == null) {
+            return "redirect:/admin/historial";
+        }
+
+        model.addAttribute("pedido", pedido);
+
+        // Obtener usuario logueado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
+
+        return "admin/detalle-pedido";
+    }
+
 }

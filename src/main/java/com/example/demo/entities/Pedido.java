@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,11 +22,15 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "pedidos")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Pedido {
     @Id
@@ -38,11 +44,11 @@ public class Pedido {
 
     @NotNull(message = "La fecha es un campo obligatorio")
     @Column(name = "fecha_pedido")
-    private LocalDate fecha;
+    private LocalDateTime fecha;
 
     @PrePersist
     public void asignarFecha() {
-        this.fecha = LocalDate.now();
+        this.fecha = LocalDateTime.now();
     }
 
     @NotNull(message = "El total no puede ser nulo")
@@ -50,5 +56,19 @@ public class Pedido {
     private BigDecimal total;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetallePedido> detalles = new ArrayList<>();
+    private Set<DetallePedido> detalles = new HashSet<>();
+
+    // hashCode y equals SOLO usan el ID
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pedido)) return false;
+        Pedido pedido = (Pedido) o;
+        return id != null && id.equals(pedido.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

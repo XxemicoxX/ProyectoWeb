@@ -1,103 +1,241 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización de Pedidos - CafeWeb</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/tabla.css}" rel="stylesheet">
-</head>
+<head th:replace="~{/admin/fragments/fragmento :: head('Visualización de Pedidos - CafeWeb')}"></head>
+<style>
+    .th-small {
+        font-size: 0.85rem;
+    }
+</style>
 
-<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
-            <div class="navbar-nav ms-auto">
-                <span class="nav-link disabled">
-                    <i class="fas fa-user"></i>
-                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
-                </span>
-                <a class="nav-link" href="categorias">Categorias</a>
-                <a class="nav-link" href="productos">Productos</a>
-                <a class="nav-link" href="extras">Extras</a>
-                <a class="nav-link" href="tiendas">Tiendas</a>
-                <a class="nav-link" href="pedidos">Pedidos</a>
-                <a class="nav-link" href="usuarios">Usuarios</a>
-            </div>
-        </div>
-    </nav>
+<body
+    style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); min-height: 100vh; display: flex; flex-direction: column;">
+    <div style="flex: 1; padding-bottom: 40px;">
 
-    <div class="container mt-4">
-        <!-- Título Principal -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.95);">
-                    <div class="card-body text-center py-4">
-                        <h1 class="display-5 text-dark mb-2">
-                            <i class="fas fa-receipt"></i> Visualización de Pedidos
-                        </h1>
-                        <p class="lead text-muted">Consulta todos los pedidos realizados en tu cafetería</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #34495e, #2c3e50);">
+            <div th:replace="~{admin/fragments/fragmento :: navegador}"> </div>
+        </nav>
 
-        <!-- Lista de Pedidos -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow-lg border-0">
-                    <div class="card-header text-white" style="background: linear-gradient(45deg, #007bff, #6610f2);">
-                        <h5 class="mb-0"><i class="fas fa-list"></i> Pedidos Registrados</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-container">
-                            <table class="table table-hover mb-0 table-fixed">
-                                <thead class="table-dark sticky-top">
-                                    <tr>
-                                        <th>ID Pedido</th>
-                                        <th>Cliente</th>
-                                        <th>Correo</th>
-                                        <th>Fecha</th>
-                                        <th>Total</th>
-                                        <th>Productos</th>
-                                        <th>Extras</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="pedido : ${listaPedidos}">
-                                        <td>[[${pedido.idPedido}]]</td>
-                                        <td>[[${pedido.usuario.nombre}]]</td>
-                                        <td>[[${pedido.usuario.correo}]]</td>
-                                        <td>[[${#temporals.format(pedido.fechaPedido, 'dd/MM/yyyy HH:mm')}]]</td>
-                                        <td>S/. [[${pedido.total}]]</td>
-                                        <td>
-                                            <div th:each="detalle : ${pedido.detallesPedido}">
-                                                <small>[[${detalle.producto.nombre}]] (x[[${detalle.cantidad}]])</small><br>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div th:each="detalleExtra : ${pedido.detallesExtra}">
-                                                <small>[[${detalleExtra.extra.nombre}]] (x[[${detalleExtra.cantidad}]])</small><br>
-                                            </div>
-                                            <span th:if="${pedido.detallesExtra == null or pedido.detallesExtra.isEmpty()}">
-                                                <small class="text-muted">Sin extras</small>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+        <div class="container mt-4">
+            <!-- Título Principal -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.95);">
+                        <div class="card-body text-center py-4">
+                            <h1 class="display-5 mb-2" style="color: #2c3e50;">
+                                <i class="fas fa-receipt"></i> Visualización de Pedidos
+                            </h1>
+                            <p class="lead text-muted">Consulta todos los pedidos realizados en tu cafetería</p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Búsqueda y Filtros -->
+            <div
+                style="background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <form method="GET" th:action="@{/admin/historial}">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text text-white"
+                                    style="background-color: #3498db; border-color: #3498db;">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" class="form-control" name="buscarId"
+                                    placeholder="Buscar por ID de pedido..." th:value="${param.buscarId}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text text-white"
+                                    style="background-color: #3498db; border-color: #3498db;">
+                                    <i class="fas fa-calendar"></i>
+                                </span>
+                                <input type="date" class="form-control" name="fechaInicio"
+                                    th:value="${param.fechaInicio}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text text-white"
+                                    style="background-color: #3498db; border-color: #3498db;">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                                <input type="date" class="form-control" name="fechaFin" th:value="${param.fechaFin}">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn w-100 text-white"
+                                style="background-color: #3498db; border-color: #3498db;">
+                                <i class="fas fa-filter"></i> Filtrar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i>
+                                Puedes buscar por ID específico o filtrar por rango de fechas
+                            </small>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="/admin/historial" class="btn btn-outline-secondary btn-sm w-100">
+                                <i class="fas fa-refresh"></i> Limpiar
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de Pedidos -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header text-white"
+                            style="background: linear-gradient(45deg, #3498db, #2c3e50);">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-list"></i> Pedidos Registrados</h5>
+                                <span class="badge bg-light text-dark">
+                                    <span th:text="${totalPedidos ?: 0}">0</span> pedidos encontrados
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div style="max-height: 600px; overflow-y: auto;">
+                                <table class="table table-hover mb-0 text-center" style="table-layout: fixed; width: 100%;">
+                                    <thead class="sticky-top text-white"
+                                        style="background: linear-gradient(45deg, #34495e, #2c3e50); top: 0; z-index: 10;">
+                                        <tr>
+                                            <th class="th-small" style="width: 5%;">ID</th>
+                                            <th class="th-small" style="width: 15%;">Cliente</th>
+                                            <th class="th-small" style="width: 20%;">Fecha</th>
+                                            <th class="th-small" style="width: 15%;">Productos</th>
+                                            <th class="th-small" style="width: 15%;">Cantidad</th>
+                                            <th class="th-small" style="width: 15%;">Precio</th>
+                                            <th class="th-small" style="width: 20%;">Extras</th>
+                                            <th class="th-small" style="width: 15%;">Cantidad</th>
+                                            <th class="th-small" style="width: 20%;">Precio</th>
+                                            <th class="th-small" style="width: 15%;">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="pedido : ${listaPedidos}">
+                                            <td class="fw-bold text-primary" style="vertical-align: top;">
+                                                [[${pedido.id}]]</td>
+                                            <td style="vertical-align: top;">[[${pedido.usuario.nombre}]]</td>
+                                            <td style="vertical-align: top;">[[${#temporals.format(pedido.fecha,
+                                                'dd/MM/yyyy HH:mm')}]]</td>
+
+                                            <!-- Producto -->
+                                            <td style="vertical-align: top;">
+                                                <div th:each="detalle : ${pedido.detalles}">
+                                                    <small>[[${detalle.producto.nombre}]]</small><br>
+                                                </div>
+                                            </td>
+
+                                            <!-- Cantidad -->
+                                            <td style="vertical-align: top;">
+                                                <div th:each="detalle : ${pedido.detalles}">
+                                                    <small>x[[${detalle.cantidad}]]</small><br>
+                                                </div>
+                                            </td>
+
+                                            <!-- Precio -->
+                                            <td style="vertical-align: top;">
+                                                <div th:each="detalle : ${pedido.detalles}">
+                                                    <small>S/. [[${detalle.producto.precio}]]</small><br>
+                                                </div>
+                                            </td>
+
+                                            <!-- Extras -->
+                                            <td style="vertical-align: top;">
+                                                <div th:each="detalle : ${pedido.detalles}">
+                                                    <div th:each="extra : ${detalle.extras}">
+                                                        <small>[[${extra.extra.nombre}]]</small><br>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <!-- Cantidad Extra -->
+                                            <td style="vertical-align: top;">
+                                                <div th:each="detalle : ${pedido.detalles}">
+                                                    <div th:each="extra : ${detalle.extras}">
+                                                        <small>x[[${extra.cantidad}]]</small><br>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <!-- Precio Extra -->
+                                            <td style="vertical-align: top;">
+                                                <div th:each="detalle : ${pedido.detalles}">
+                                                    <div th:each="extra : ${detalle.extras}">
+                                                        <small>S/. [[${extra.extra.precio}]]</small><br>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <!-- Total Pedido -->
+                                            <td class="fw-bold text-success" style="vertical-align: top;">S/.
+                                                [[${pedido.total}]]</td>
+                                        </tr>
+
+                                        <!-- Si no hay pedidos -->
+                                        <tr th:if="${#lists.isEmpty(listaPedidos)}">
+                                            <td colspan="10" class="text-center py-5">
+                                                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                                <h5 class="text-muted">No se encontraron pedidos</h5>
+                                                <p class="text-muted">Prueba modificando los filtros de búsqueda</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paginación -->
+            <div
+                style="background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 10px; margin-top: 30px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <nav aria-label="Paginación de pedidos">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1"
+                                style="color: #6c757d; background-color: #e9ecef; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px;">
+                                <i class="fas fa-chevron-left"></i> Anterior
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#"
+                                style="color: white; background-color: #3498db; border-color: #3498db; padding: 8px 16px; margin: 0 2px; border-radius: 6px;">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"
+                                style="color: #3498db; background-color: white; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px; transition: all 0.3s ease;">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"
+                                style="color: #3498db; background-color: white; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px; transition: all 0.3s ease;">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"
+                                style="color: #3498db; background-color: white; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px; transition: all 0.3s ease;">
+                                Siguiente <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/tabla.js"></script>
+    <!-- Footer -->
+    <footer class="footer mt-4" style="background-color: #2c3e50; color: white; margin-top: auto; padding: 15px 0;">
+        <div th:replace="~{admin/fragments/fragmento :: footer}"></div>
+    </footer>
+    <script th:replace="~{admin/fragments/fragmento :: bootstrap}"></script>
 </body>
 
 </html>

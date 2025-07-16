@@ -17,4 +17,46 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Query("SELECT p FROM Producto p JOIN FETCH p.categoria")
     List<Producto> findAllWithCategoria();
 
+    // Consulta para obtener todos los pedidos con sus relaciones cargadas
+    @Query("SELECT DISTINCT p FROM Pedido p " +
+           "LEFT JOIN FETCH p.usuario " +
+           "LEFT JOIN FETCH p.detalles d " +
+           "LEFT JOIN FETCH d.producto " +
+           "LEFT JOIN FETCH d.extras e " +
+           "LEFT JOIN FETCH e.extra " +
+           "ORDER BY p.fecha DESC")
+    List<Pedido> findAllWithDetails();
+    
+    // Consulta para obtener pedidos por usuario
+    @Query("SELECT DISTINCT p FROM Pedido p " +
+           "LEFT JOIN FETCH p.usuario " +
+           "LEFT JOIN FETCH p.detalles d " +
+           "LEFT JOIN FETCH d.producto " +
+           "LEFT JOIN FETCH d.extras e " +
+           "LEFT JOIN FETCH e.extra " +
+           "WHERE p.usuario.id = :usuarioId " +
+           "ORDER BY p.fecha DESC")
+    List<Pedido> findByUsuarioIdWithDetails(@Param("usuarioId") Long usuarioId);
+    
+    // Consulta para obtener pedidos por rango de fechas
+    @Query("SELECT DISTINCT p FROM Pedido p " +
+           "LEFT JOIN FETCH p.usuario " +
+           "LEFT JOIN FETCH p.detalles d " +
+           "LEFT JOIN FETCH d.producto " +
+           "LEFT JOIN FETCH d.extras e " +
+           "LEFT JOIN FETCH e.extra " +
+           "WHERE p.fecha BETWEEN :fechaInicio AND :fechaFin " +
+           "ORDER BY p.fecha DESC")
+    List<Pedido> findByFechaRangeWithDetails(@Param("fechaInicio") LocalDate fechaInicio, 
+                                           @Param("fechaFin") LocalDate fechaFin);
+    
+    // Consulta para obtener un pedido específico con todos sus detalles
+    @Query("SELECT DISTINCT p FROM Pedido p " +
+           "LEFT JOIN FETCH p.usuario " +
+           "LEFT JOIN FETCH p.detalles d " +
+           "LEFT JOIN FETCH d.producto " +
+           "LEFT JOIN FETCH d.extras e " +
+           "LEFT JOIN FETCH e.extra " +
+           "WHERE p.id = :id")
+    Optional<Pedido> findByIdWithDetails(@Param("id") Long id);
 }

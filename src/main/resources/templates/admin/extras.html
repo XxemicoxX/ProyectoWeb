@@ -1,31 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extras - CafeWeb</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
+
+<head th:replace="~{/admin/fragments/fragmento :: head('Gestión de Extras - CafeWeb')}"></head>
+
 <body style="background: linear-gradient(135deg, #d4edda 0%, #155724 100%); min-height: 100vh;">
-    <!-- Navbar -->
+
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #28a745, #20c997);">
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
-            <div class="navbar-nav ms-auto">
-                <span class="nav-link disabled">
-                    <i class="fas fa-user"></i>
-                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
-                </span>
-                <a class="nav-link" href="categorias">Categorias</a>
-                <a class="nav-link" href="productos">Productos</a>
-                <a class="nav-link" href="extras">Extras</a>
-                <a class="nav-link" href="tiendas">Tiendas</a>
-                <a class="nav-link" href="pedidos">Pedidos</a>
-                <a class="nav-link" href="historial">Historial</a>
-                <a class="nav-link" href="usuarios">Usuarios</a>
-            </div>
-        </div>
+        <div th:replace="~{admin/fragments/fragmento :: navegador}"> </div>
     </nav>
 
     <div class="container mt-4">
@@ -105,7 +86,7 @@
                                     <tr th:each="extra:${lista}">
                                         <td>[[${extra.id}]]</td>
                                         <td>[[${extra.nombre}]]</td>
-                                        <td>[[${extra.precio}]]</td>
+                                        <td>S/. [[${extra.precio}]]</td>
                                         <td>
                                             <form
                                                 th:action="@{/admin/extras/toggleEstadoExtras(id=${extra.id})}" method="post" style="display:inline;">
@@ -121,8 +102,6 @@
                                             <form th:action="@{/admin/extras/delete(id=${extra.id})}" method="post">
                                             </form>
                                         </td>
-                                        <td>
-                                        </td>
                                     </tr>                                   
                                 </tbody>
                             </table>
@@ -133,6 +112,9 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <footer class="footer mt-4" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; margin-top: auto; padding: 15px 0;">
+        <div th:replace="~{admin/fragments/fragmento :: footer}"></div>
+    </footer>
+    <script th:replace="~{admin/fragments/fragmento :: bootstrap}"></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[[${titulo}]]</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div th:fragment="navegador" class="container">
+        <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
+        <div class="navbar-nav ms-auto">
+            <span class="nav-link disabled">
+                <i class="fas fa-user"></i>
+                <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
+            </span>
+            <a class="nav-link" href="categorias">Categorias</a>
+            <a class="nav-link" href="productos">Productos</a>
+            <a class="nav-link" href="extras">Extras</a>
+            <a class="nav-link" href="tiendas">Tiendas</a>
+            <a class="nav-link" href="pedidos">Pedidos</a>
+            <a class="nav-link" href="historial">Historial</a>
+            <a class="nav-link" href="usuarios">Usuarios</a>
+        </div>
+    </div>
+</body>
+
+<footer>
+    <div th:fragment="footer" class="footer-bottom text-center">
+        <p class="mb-0">&copy; 2024 CafeWeb. Todos los derechos reservados. | Desarrollado con <i
+                class="fas fa-heart text-danger"></i> para cafeterías</p>
+    </div>
+</footer>
+
+<script th:fragment="bootstrap" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</html>

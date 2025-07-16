@@ -1,11 +1,15 @@
 package com.example.demo.services;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +22,6 @@ import com.example.demo.entities.Extra;
 import com.example.demo.entities.Pedido;
 import com.example.demo.entities.Producto;
 import com.example.demo.entities.Usuario;
-import com.example.demo.repositories.DetalleExtraRepository;
-import com.example.demo.repositories.DetallePedidoRepository;
 import com.example.demo.repositories.ExtraRepository;
 import com.example.demo.repositories.PedidoRepository;
 import com.example.demo.repositories.ProductoRepository;
@@ -34,8 +36,6 @@ public class PedidoService {
 
     @Autowired
     private final PedidoRepository pedidoR;
-    private final DetallePedidoRepository detallePedidoR;
-    private final DetalleExtraRepository detalleExtraR;
     private final ProductoRepository productoR;
     private final ExtraRepository extraR;
     private final UsuarioRepository usuarioR;
@@ -47,10 +47,10 @@ public class PedidoService {
 
         Pedido pedido = new Pedido();
         pedido.setUsuario(usuario);
-        pedido.setFecha(LocalDate.now());
+        pedido.setFecha(LocalDateTime.now()); // Para timestamp completo
 
         BigDecimal totalPedido = BigDecimal.ZERO;
-        List<DetallePedido> listaDetallePedidos = new ArrayList<>();
+        Set<DetallePedido> listaDetallePedidos = new HashSet<>();
 
         // Mapa temporal para encontrar detalles por un índice (clave lógica)
         Map<Integer, DetallePedido> detalleMap = new HashMap<>();
@@ -66,7 +66,7 @@ public class PedidoService {
             detalle.setPedido(pedido);
             detalle.setProducto(producto);
             detalle.setCantidad(dto.getCantidad());
-            detalle.setExtras(new ArrayList<>()); // Necesario para el cascade
+            detalle.setExtras(new HashSet<>()); // Necesario para el cascade
 
             BigDecimal subtotal = producto.getPrecio().multiply(BigDecimal.valueOf(dto.getCantidad()));
             detalle.setSubtotal(subtotal);
@@ -117,5 +117,17 @@ public class PedidoService {
 
     public void delete(Long id) {
         pedidoR.deleteById(id);
+    }
+
+    public List<Pedido> obtenerTodosLosHistorialPedidos() {
+        return pedidoR.findAllWithDetails();
+    }
+
+    public List<Pedido> obtenerPedidosPorUsuario(Long usuarioId) {
+        return pedidoR.findByUsuarioIdWithDetails(usuarioId);
+    }
+
+    public List<Pedido> obtenerPedidosPorRangoFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return pedidoR.findByFechaRangeWithDetails(fechaInicio, fechaFin);
     }
 }

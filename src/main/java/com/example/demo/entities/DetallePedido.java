@@ -2,7 +2,9 @@ package com.example.demo.entities;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,12 +16,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "detalle_pedido")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class DetallePedido {
     @Id
@@ -40,5 +44,18 @@ public class DetallePedido {
     private BigDecimal subtotal;
 
     @OneToMany(mappedBy = "detallePedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetalleExtra> extras = new ArrayList<>();
+    private Set<DetalleExtra> extras = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DetallePedido)) return false;
+        DetallePedido that = (DetallePedido) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
