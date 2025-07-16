@@ -63,71 +63,45 @@
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0"><i class="fas fa-list"></i> Lista de Categorías</h5>
                     </div>
-                    <form th:action="@{/admin/categorias}" method="get" class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <input type="text" name="buscar" class="form-control" placeholder="Buscar categorías..."
-                                    th:value="${buscar}">
-                                <button class="btn btn-info" type="submit"><i class="fas fa-search"></i> Buscar</button>
-                            </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="categoria:${lista}">
+                                        <td>[[${categoria.idCategoria}]]</td>
+                                        <td>[[${categoria.nombre}]]</td>
+                                        <td>[[${categoria.descripcion}]]</td>
+                                        <td>
+                                            <form
+                                                th:action="@{/admin/categorias/toggleEstadoCategorias(id=${categoria.idCategoria})}"
+                                                method="post" style="display:inline;">
+                                                <button type="submit"
+                                                    th:classappend="${categoria.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
+                                                    <span
+                                                        th:text="${categoria.estado} == 'activo' ? 'Desactivar' : 'Activar'"></span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/categorias/edit(id=${categoria.idCategoria})}"
+                                                class="btn btn-warning btn-sm me-2"> <i
+                                                    class="fas fa-edit"></i>Editar</a>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </form>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="categoria:${lista}">
-                                    <td>[[${categoria.idCategoria}]]</td>
-                                    <td>[[${categoria.nombre}]]</td>
-                                    <td>[[${categoria.descripcion}]]</td>
-                                    <td>
-                                        <form
-                                            th:action="@{/admin/categorias/toggleEstadoCategorias(id=${categoria.idCategoria})}"
-                                            method="post" style="display:inline;">
-                                            <button type="submit"
-                                                th:classappend="${categoria.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
-                                                <span
-                                                    th:text="${categoria.estado} == 'activo' ? 'Desactivar' : 'Activar'"></span>
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <a th:href="@{/admin/categorias/edit(id=${categoria.idCategoria})}"
-                                            class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-                </div>
-                <nav th:if="${page.totalPages > 0}">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
-                                    <a class="page-link"
-                                        th:href="@{/admin/categorias(page=${page.number - 1}, buscar=${buscar})}">Anterior</a>
-                                </li>
-                                <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-                                    th:classappend="${page.number == i} ? 'active'">
-                                    <a class="page-link" th:href="@{/admin/categorias(page=${i}, buscar=${buscar})}"
-                                        th:text="${i + 1}"></a>
-                                </li>
-                                <li class="page-item"
-                                    th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
-                                    <a class="page-link"
-                                        th:href="@{/admin/categorias(page=${page.number + 1}, buscar=${buscar})}">Siguiente</a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
             </div>
         </div>
