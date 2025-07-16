@@ -22,6 +22,7 @@
                 <a class="nav-link" href="extras">Extras</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
                 <a class="nav-link" href="pedidos">Pedidos</a>
+                <a class="nav-link" href="historial">Historial</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
             </div>
         </div>
@@ -85,12 +86,13 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover mb-0 table-striped">
                                 <thead style="background: linear-gradient(45deg, #8e44ad, #9b59b6); color: white;">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nombre de la Tienda</th>
+                                        <th>Nombre</th>
                                         <th>Dirección</th>
+                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -99,6 +101,17 @@
                                         <td>[[${tienda.id}]]</td>
                                         <td>[[${tienda.nombre}]]</td>
                                         <td>[[${tienda.direccion}]]</td>
+                                        <td>
+                                            <form
+                                                th:action="@{/admin/tiendas/toggleEstadoTiendas(id=${tienda.id})}"
+                                                method="post" style="display:inline;">
+                                                <button type="submit"
+                                                    th:classappend="${tienda.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
+                                                    <span
+                                                        th:text="${tienda.estado} == 'activo' ? 'Desactivar' : 'Activar'"></span>
+                                                </button>
+                                            </form>
+                                        </td>
                                         <td>
                                             <a th:href="@{/admin/tiendas/edit(id=${tienda.id})}"
                                                 class="btn btn-warning">Editar</a>

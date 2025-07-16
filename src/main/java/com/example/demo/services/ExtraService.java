@@ -31,6 +31,10 @@ public class ExtraService {
         return repository.save(extra);
     }
 
+    public List<Extra> selActivas() {
+        return repository.findByEstado("activo");
+    }
+
     public void delete (Long id) {
         repository.deleteById(id);
     }

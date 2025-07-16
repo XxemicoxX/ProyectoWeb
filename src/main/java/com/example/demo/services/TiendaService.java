@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Tienda;
 import com.example.demo.repositories.TiendaRepository;
 
@@ -29,6 +30,10 @@ public class TiendaService {
             tienda.setEstado("activo");
         }
         return repository.save(tienda);
+    }
+
+    public List<Tienda> selActivas() {
+        return repository.findByEstado("activo");
     }
 
     public void delete (Long id) {
