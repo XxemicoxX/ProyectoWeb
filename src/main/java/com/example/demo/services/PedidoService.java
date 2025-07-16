@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.DetalleExtraDTO;
@@ -130,4 +132,8 @@ public class PedidoService {
     public List<Pedido> obtenerPedidosPorRangoFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return pedidoR.findByFechaRangeWithDetails(fechaInicio, fechaFin);
     }
+
+    public Page<Pedido> buscarHistorialConFiltros(Long usuarioId, LocalDate fecha, String filtro, Pageable pageable) {
+    return pedidoR.buscarHistorialConFiltros(usuarioId, fecha, filtro, pageable);
+}
 }

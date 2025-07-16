@@ -10,35 +10,37 @@
 
   <main>
     <div class="container py-5">
-        <div class="row g-3">
-          <div class="col-12">
-            <h1 class="text-center">Menú</h1>
-            <br>
-            <h4>Bebidas</h4>
-            <hr>
-            <br>
-            <div class="row">
-              <div class="col" th:each="producto : ${bebidas}">
-                <a th:href="@{'/menu/productos/' + ${producto.idProducto}}">
-                  <img th:src="${producto.imagen}" class="img-fluid rounded-circle" width="200">
-                </a>
-                <h5 th:text="${producto.nombre}"></h5>
-              </div>
+      <h1 class="text-center m-4">Menú</h1>
+      <form th:action="@{/menu}" method="get">
+        <div class="row m-2">
+          <div class="col-md-4">
+            <div class="input-group m-2 mb-4">
+              </span>
+              <input type="text" class="form-control" name="buscar" th:value="${buscar}"
+                placeholder="Buscar productos...">
             </div>
           </div>
-          <br>
-          <br>
-          <h4 id="postre">Alimentos</h4>
-          <hr>
-          <div class="row">
-            <div class="col"  th:each="producto : ${alimentos}">
-              <a th:href="@{/menu/productos/{id}(id=${producto.idProducto})}">
-                <img th:src="${producto.imagen}" class="img-fluid rounded-circle" width="200">
-              </a>
-              <h5><i th:text="${producto.nombre}"></i></h5>
-            </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-info w-100 m-2">
+              <i class="fas fa-filter"></i> Buscar
+            </button>
           </div>
+        </div>
+      </form>
+      <div th:each="entry : ${productosPorCategoria}" class="mt-2">
+        <h4 th:text="${entry.key}"></h4>
+        <hr>
+        <div class="row">
+          <div class="col" th:each="producto : ${entry.value}">
+            <a th:href="@{/menu/productos/{id}(id=${producto.idProducto})}">
+              <img th:src="${producto.imagen}" class="img-fluid rounded-circle" width="200">
+            </a>
+            <h5 th:text="${producto.nombre}"></h5>
+          </div>
+        </div>
+        <br>
       </div>
+    </div>
   </main>
 
   <footer th:replace="~{/public/fragments/template :: footer}"></footer>

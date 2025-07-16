@@ -1,13 +1,18 @@
 package com.example.demo.controllers;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +30,14 @@ import com.example.demo.entities.Pedido;
 import com.example.demo.entities.Producto;
 import com.example.demo.entities.Tienda;
 import com.example.demo.entities.Usuario;
+import com.example.demo.repositories.PedidoRepository;
 import com.example.demo.services.CategoriaService;
 import com.example.demo.services.ExtraService;
 import com.example.demo.services.PedidoService;
 import com.example.demo.services.ProductoService;
 import com.example.demo.services.TiendaService;
 import com.example.demo.services.UsuarioService;
+import com.example.demo.util.RolEnum;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,37 +47,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminController {
 
+    private final PedidoRepository pedidoRepository;
+
     private final ProductoService pservice;
     private final TiendaService tservice;
     private final CategoriaService cservice;
     private final UsuarioService uservice;
     private final ExtraService extraS;
     private final PedidoService pedidoS;
+    private final PasswordEncoder encoder;
 
     // PRODUCTOS
     @GetMapping("/productos")
-    public String listaProductos(Model model) {
-        model.addAttribute("lista", pservice.sel());
+    public String listaProductos(@RequestParam(name = "buscar", required = false) String buscar,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            Model model) {
+        int pageSize = 3;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Producto> productosPage;
+
+        if (buscar != null && !buscar.isEmpty()) {
+            productosPage = pservice.buscarPorNombre(buscar, pageable);
+        } else {
+            productosPage = pservice.obtenerTodos(pageable);
+        }
+
+        model.addAttribute("lista", productosPage.getContent());
+        model.addAttribute("page", productosPage);
         model.addAttribute("producto", new Producto());
         model.addAttribute("categorias", cservice.selActivas());
         model.addAttribute("usuarios", uservice.sel());
+        model.addAttribute("buscar", buscar);
 
         // Obtener usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
 
         return "admin/productos";
     }
 
     @PostMapping("productos/save")
     public String guardarProductos(@Valid @ModelAttribute Producto producto, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("lista", pservice.sel());
-            return "admin/productos";
-        }
         pservice.insertUpdate(producto);
         return "redirect:/admin/productos";
     }
@@ -102,30 +121,41 @@ public class AdminController {
     @PostMapping("productos/toggleEstadoProductos")
     public String toggleEstadoProductos(@RequestParam("id") Long id) {
         Producto producto = pservice.selectOne(id);
-        if (producto != null) {
-            if ("activo".equalsIgnoreCase(producto.getEstado())) {
-                producto.setEstado("desactivado");
-            } else {
-                producto.setEstado("activo");
-            }
-            pservice.insertUpdate(producto);
+        if ("activo".equalsIgnoreCase(producto.getEstado())) {
+            producto.setEstado("desactivado");
+        } else {
+            producto.setEstado("activo");
         }
+        pservice.insertUpdate(producto);
+
         return "redirect:/admin/productos";
     }
 
-    // TIENDAS
     @GetMapping("/tiendas")
-    public String listaTiendas(Model model) {
-        model.addAttribute("lista", tservice.sel());
+    public String listaTiendas(@RequestParam(name = "buscar", required = false) String buscar,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, 2);
+        Page<Tienda> tiendasPage;
+
+        if (buscar != null && !buscar.isBlank()) {
+            tiendasPage = tservice.buscarPorNombre(buscar, pageable);
+        } else {
+            tiendasPage = tservice.obtenerTodos(pageable);
+        }
+
+        model.addAttribute("page", tiendasPage);
+        model.addAttribute("lista", tiendasPage.getContent());
+        model.addAttribute("buscar", buscar);
         model.addAttribute("tienda", new Tienda());
         model.addAttribute("usuarios", uservice.sel());
 
-        // Obtener usuario logueado
+        // Usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
 
         return "admin/tiendas";
     }
@@ -187,17 +217,30 @@ public class AdminController {
 
     // CATEGORIAS
     @GetMapping("/categorias")
-    public String listaCategoria(Model model) {
-        model.addAttribute("lista", cservice.sel());
+    public String listaCategoria(@RequestParam(name = "buscar", required = false) String buscar,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, 2);
+        Page<Categoria> categoriaPage;
+
+        if (buscar != null && !buscar.isBlank()) {
+            categoriaPage = cservice.buscarPorNombre(buscar, pageable);
+        } else {
+            categoriaPage = cservice.obtenerTodos(pageable);
+        }
+
+        model.addAttribute("page", categoriaPage);
+        model.addAttribute("lista", categoriaPage.getContent());
+        model.addAttribute("buscar", buscar);
         model.addAttribute("categoria", new Categoria());
         model.addAttribute("usuarios", uservice.sel());
 
-        // Obtener usuario logueado
+        // Usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
 
         return "admin/categorias";
     }
@@ -250,31 +293,57 @@ public class AdminController {
 
     // USUARIOS
     @GetMapping("/usuarios")
-    public String lista(Model model) {
-        model.addAttribute("lista", uservice.sel());
+    public String lista(
+            @RequestParam(required = false) String buscar,
+            @RequestParam(required = false) String filtro_rol,
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, 3);
+        Page<Usuario> usuariosPage = uservice.filtrarUsuarios(buscar, filtro_rol, pageable);
+
+        model.addAttribute("page", usuariosPage);
+        model.addAttribute("lista", usuariosPage.getContent());
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("tiendas", tservice.selActivas());
+        model.addAttribute("tiendas", tservice.sel());
+        model.addAttribute("rolesDisponibles", RolEnum.values());
+        model.addAttribute("filtro_rol", filtro_rol);
+        model.addAttribute("buscar", buscar);
 
-        // Obtener usuario logueado
+        // Usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        if (auth != null && !"anonymousUser".equals(auth.getName())) {
+            Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(auth.getName());
+            model.addAttribute("usuarioLogueado", usuarioLogueado);
+        }
 
         return "admin/usuarios";
     }
 
-    @PostMapping("usuarios/save")
-    public String guardarUsuario(@Valid @ModelAttribute Usuario usuario, BindingResult result, Model model) {
+    @PostMapping("/usuarios/save")
+    public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario usuario,
+            BindingResult result, Model model) {
+        model.addAttribute("lista", uservice.sel());
+        model.addAttribute("tiendas", tservice.sel());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
+
         if (result.hasErrors()) {
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("lista", uservice.sel());
-            model.addAttribute("tiendas", tservice.selActivas());
             return "admin/usuarios";
         }
-        uservice.insertUpdate(usuario);
-        return "redirect:/admin/usuarios";
+
+        try {
+            usuario.setRol(RolEnum.EMPLOYEE);
+            usuario.setContrasena(encoder.encode(usuario.getContrasena()));
+            uservice.crearUsuario(usuario);
+            return "redirect:/admin/usuarios";
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al guardar el usuario: " + e.getMessage());
+            return "admin/usuarios";
+        }
     }
 
     @GetMapping("usuarios/edit")
@@ -299,33 +368,46 @@ public class AdminController {
         return "redirect:/admin/usuarios";
     }
 
-    @PostMapping("usuarios/toggleEstadoUsuarios")
-    public String toggleEstadoUsuarios(@RequestParam("id") Long id) {
+    @PostMapping("usuarios/cambiarEstado")
+    public String cambiarEstado(@RequestParam("id") Long id) {
         Usuario usuario = uservice.selectOne(id);
-        if (usuario != null) {
-            if ("activo".equalsIgnoreCase(usuario.getEstado())) {
-                usuario.setEstado("desactivado");
-            } else {
-                usuario.setEstado("activo");
-            }
-            uservice.insertUpdate(usuario);
+
+        if ("activo".equals(usuario.getEstado())) {
+            usuario.setEstado("desactivado");
+        } else {
+            usuario.setEstado("activo");
         }
+
+        uservice.insertUpdate(usuario);
         return "redirect:/admin/usuarios";
     }
 
     // EXTRAS
     @GetMapping("/extras")
-    public String listaExtra(Model model) {
-        model.addAttribute("lista", extraS.sel());
+    public String listaExtra(@RequestParam(name = "buscar", required = false) String buscar,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Extra> extrasPage;
+
+        if (buscar != null && !buscar.isBlank()) {
+            extrasPage = extraS.buscarPorNombre(buscar, pageable);
+        } else {
+            extrasPage = extraS.obtenerTodos(pageable);
+        }
+
+        model.addAttribute("page", extrasPage);
+        model.addAttribute("lista", extrasPage.getContent());
+        model.addAttribute("buscar", buscar);
         model.addAttribute("extra", new Extra());
         model.addAttribute("usuarios", uservice.sel());
 
-        // Obtener usuario logueado
+        // Usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
 
         return "admin/extras";
     }
@@ -334,15 +416,8 @@ public class AdminController {
     public String guardarExtra(@Valid @ModelAttribute Extra extra, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("lista", extraS.sel());
-
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String correo = auth.getName();
-            Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-            model.addAttribute("usuarioLogueado", usuarioLogueado);
-
             return "admin/extras";
         }
-
         extraS.insertUpdate(extra);
         return "redirect:/admin/extras";
     }
@@ -449,32 +524,29 @@ public class AdminController {
     }
 
     // HISTORIAL
-    // 🔹 Mostrar historial de pedidos (vista separada)
     @GetMapping("/historial")
-    public String mostrarHistorial(Model model,
+    public String mostrarHistorial(
+            Model model,
             @RequestParam(required = false) Long usuarioId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            @RequestParam(required = false) String filtro,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        List<Pedido> pedidos;
-
-        // Filtrar por usuario si se especifica
-        if (usuarioId != null) {
-            pedidos = pedidoS.obtenerPedidosPorUsuario(usuarioId);
-        }
-        // Filtrar por rango de fechas si se especifica
-        else if (fechaInicio != null && fechaFin != null) {
-            pedidos = pedidoS.obtenerPedidosPorRangoFechas(fechaInicio, fechaFin);
-        }
-        // Obtener todos los pedidos
-        else {
-            pedidos = pedidoS.obtenerTodosLosHistorialPedidos();
-        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by("fecha").descending());
+        Page<Pedido> pedidos = pedidoS.buscarHistorialConFiltros(usuarioId, fecha, filtro, pageable);
 
         model.addAttribute("listaPedidos", pedidos);
         model.addAttribute("usuarios", uservice.selActivas());
 
-        // Obtener usuario logueado
+        // ✅ Evita el NullPointerException
+        Map<String, Object> param = new HashMap<>();
+        param.put("usuarioId", usuarioId);
+        param.put("fecha", fecha);
+        param.put("filtro", filtro);
+        model.addAttribute("param", param);
+
+        // Usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
@@ -501,5 +573,4 @@ public class AdminController {
 
         return "admin/detalle-pedido";
     }
-
 }

@@ -10,22 +10,36 @@
 </head>
 
 <body>
-    <div th:fragment="navegador" class="container">
-        <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> CafeWeb Admin</a>
-        <div class="navbar-nav ms-auto">
-            <span class="nav-link disabled">
-                <i class="fas fa-user"></i>
-                <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
-            </span>
-            <a class="nav-link" href="categorias">Categorias</a>
-            <a class="nav-link" href="productos">Productos</a>
-            <a class="nav-link" href="extras">Extras</a>
-            <a class="nav-link" href="tiendas">Tiendas</a>
-            <a class="nav-link" href="pedidos">Pedidos</a>
-            <a class="nav-link" href="historial">Historial</a>
-            <a class="nav-link" href="usuarios">Usuarios</a>
+    <nav th:fragment="navegador" class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
+        <div class="container">
+            <a class="navbar-brand" href="/" sec:authorize="hasAuthority('CLIENT')">
+                <i class="fas fa-coffee"></i> CafeWeb - Cliente
+            </a>
+
+            <a class="navbar-brand" sec:authorize="hasAuthority('ADMIN')">
+                <i class="fas fa-coffee"></i> CafeWeb - Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+
+                <span class="nav-link disabled">
+                    <i class="fas fa-user"></i>
+                    <span th:text="${usuarioLogueado.nombre}">Nombre del Usuario</span>
+                </span>
+                <a class="nav-link" href="categorias" sec:authorize="hasAuthority('ADMIN')">Categorías</a>
+                <a class="nav-link" href="productos" sec:authorize="hasAuthority('ADMIN')">Productos</a>
+                <a class="nav-link" href="tiendas" sec:authorize="hasAuthority('ADMIN')">Tiendas</a>
+                <a class="nav-link" href="usuarios" sec:authorize="hasAuthority('ADMIN')">Usuarios</a>
+                <a class="nav-link" href="historial" sec:authorize="hasAnyAuthority('ADMIN', 'EMPLOYEE')">Historial</a>
+
+                <a class="nav-link" href="pedidos" sec:authorize="hasAnyAuthority('ADMIN', 'CLIENT', 'EMPLOYEE')">Pedidos</a>
+
+                <form class="d-flex mx-5" th:if="${#authorization.expression('isAuthenticated()')}"
+                    th:action="@{/logout}" method="post">
+                    <button class="btn btn-danger" type="submit">Cerrar Sesión</button>
+                </form>
+            </div>
         </div>
-    </div>
+    </nav>
 </body>
 
 <footer>

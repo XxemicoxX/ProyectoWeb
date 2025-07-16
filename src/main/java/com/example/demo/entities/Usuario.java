@@ -46,5 +46,13 @@ public class Usuario {
     @NotBlank(message = "La contraseña es obligatoria")
     private String contrasena;
 
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RolEnum rol;
+
+    private String estado = "activo";
+
+    public boolean estaActivo() {
+        return "activo".equalsIgnoreCase(this.estado);
+    }
 }

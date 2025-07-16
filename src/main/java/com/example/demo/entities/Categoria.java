@@ -26,5 +26,5 @@ public class Categoria {
     @NotBlank(message = "Ingrese una descripcion para esta categoria")
     private String descripcion;
 
-    private String estado;
+    private String estado = "activo";
 }

@@ -45,5 +45,5 @@ public class Producto {
     @NotBlank(message = "Ingrese una descripcion del producto ")
     private String descripcion;
 
-    private String estado;
+    private String estado = "activo";
 }

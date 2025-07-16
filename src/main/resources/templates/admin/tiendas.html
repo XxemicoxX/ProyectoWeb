@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head th:replace="~{/admin/fragments/fragmento :: head('Gestión de Tiendas - CafeWeb')}"></head>
+<head th:replace="~{/admin/fragments/fragmento :: head('Gestión de Pedidos - CafeWeb')}"></head>
 
 <body style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); min-height: 100vh;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #8e44ad, #9b59b6);">
-        <div th:replace="~{admin/fragments/fragmento :: navegador}"> </div>
-    </nav>
-
+    <nav th:replace="~{admin/fragments/fragmento :: navegador}"></nav>
     <div class="container mt-4">
         <!-- Título Principal -->
         <div class="row mb-4">
@@ -28,27 +25,31 @@
             <!-- Formulario para Agregar Tienda -->
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0">
-                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #8e44ad, #9b59b6);">
+                    <div class="card-header bg-gradient text-white"
+                        style="background: linear-gradient(45deg, #8e44ad, #9b59b6);">
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Nueva Tienda</h5>
                     </div>
                     <div class="card-body">
                         <form method="POST" th:action="@{/admin/tiendas/save}" th:object="${tienda}">
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre de la Tienda</label>
-                                <input type="text" class="form-control" id="nombre" maxlength="255" style="border-color: #8e44ad;" th:field="*{nombre}" >
+                                <input type="text" class="form-control" id="nombre" maxlength="255"
+                                    style="border-color: #8e44ad;" th:field="*{nombre}">
                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
                                     class="text-danger"></span>
                             </div>
-                            
+
                             <div class="mb-4">
                                 <label for="direccion" class="form-label fw-bold">Dirección</label>
-                                <textarea class="form-control" id="direccion" rows="3" style="border-color: #8e44ad;" th:field="*{direccion}" ></textarea>
+                                <textarea class="form-control" id="direccion" rows="3" style="border-color: #8e44ad;"
+                                    th:field="*{direccion}"></textarea>
                                 <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"
                                     class="text-danger"></span>
                             </div>
-                            
+
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-lg" style="background: linear-gradient(45deg, #8e44ad, #9b59b6); color: white; border: none;">
+                                <button type="submit" class="btn btn-lg"
+                                    style="background: linear-gradient(45deg, #8e44ad, #9b59b6); color: white; border: none;">
                                     <i class="fas fa-save"></i> Guardar Tienda
                                 </button>
                                 <button type="reset" class="btn btn-outline-secondary">
@@ -65,6 +66,16 @@
                     <div class="card-header text-white" style="background: linear-gradient(45deg, #8e44ad, #9b59b6);">
                         <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Tiendas Registradas</h5>
                     </div>
+                    <form th:action="@{/admin/tiendas}" method="get" class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" name="buscar" class="form-control" placeholder="Buscar tiendas..."
+                                    th:value="${buscar}">
+                                <button class="btn btn-info" type="submit"><i class="fas fa-search"></i>
+                                    Buscar</button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-hover mb-0 table-striped">
@@ -83,8 +94,7 @@
                                         <td>[[${tienda.nombre}]]</td>
                                         <td>[[${tienda.direccion}]]</td>
                                         <td>
-                                            <form
-                                                th:action="@{/admin/tiendas/toggleEstadoTiendas(id=${tienda.id})}"
+                                            <form th:action="@{/admin/tiendas/toggleEstadoTiendas(id=${tienda.id})}"
                                                 method="post" style="display:inline;">
                                                 <button type="submit"
                                                     th:classappend="${tienda.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
@@ -96,25 +106,46 @@
                                         <td>
                                             <a th:href="@{/admin/tiendas/edit(id=${tienda.id})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/tiendas/delete(id=${tienda.id})}" method="post" style="display:inline;">
+                                            <form th:action="@{/admin/tiendas/delete(id=${tienda.id})}" method="post"
+                                                style="display:inline;">
                                                 <button type="submit" class="btn btn-danger"
                                                     onclick="return confirm('¿Deseas eliminar esta tienda?')">Eliminar</button>
                                             </form>
-                                        </td>                                        
-                                    </tr>                                      
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
+                        <nav th:if="${page.totalPages > 1}">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/tiendas(page=${page.number - 1}, buscar=${buscar})}">Anterior</a>
+                                </li>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                                    th:classappend="${page.number == i} ? 'active'">
+                                    <a class="page-link" th:href="@{/admin/tiendas(page=${i}, buscar=${buscar})}"
+                                        th:text="${i + 1}"></a>
+                                </li>
+                                <li class="page-item"
+                                    th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/tiendas(page=${page.number + 1}, buscar=${buscar})}">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="footer mt-4" style="color: white; margin-top: auto; padding: 15px 0; background: linear-gradient(45deg, #8e44ad, #9b59b6);">
+    <footer class="footer mt-4"
+        style="color: white; margin-top: auto; padding: 15px 0; background: linear-gradient(45deg, #8e44ad, #9b59b6);">
         <div th:replace="~{admin/fragments/fragmento :: footer}"></div>
     </footer>
 
     <script th:replace="~{admin/fragments/fragmento :: bootstrap}"></script>
 </body>
+
 </html>

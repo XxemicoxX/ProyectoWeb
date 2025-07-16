@@ -5,8 +5,7 @@
 
 <body style="background: linear-gradient(135deg, #d4edda 0%, #155724 100%); min-height: 100vh;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #28a745, #20c997);">
-        <div th:replace="~{admin/fragments/fragmento :: navegador}"> </div>
+    <nav th:replace="~{admin/fragments/fragmento :: navegador}">
     </nav>
 
     <div class="container mt-4">
@@ -28,31 +27,39 @@
             <!-- Formulario para Agregar Extra -->
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0">
-                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
+                    <div class="card-header bg-gradient text-white"
+                        style="background: linear-gradient(45deg, #28a745, #20c997);">
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Extra</h5>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/admin/extras/save}" method="post" th:object="${extra}">
-                            <input type="hidden" th:field="*{id}"/>
+                            <input type="hidden" th:field="*{id}" />
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre del Extra</label>
                                 <input type="text" class="form-control" name="nombre" maxlength="100" placeholder="Ej: Leche de almendras, Shot extra, etc." style="border-color: #28a745;" th:field="*{nombre}" >
                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
                                     class="text-danger"></span>
+                                <input type="text" class="form-control" name="nombre" maxlength="100"
+                                    placeholder="Ej: Leche de almendras, Shot extra, etc."
+                                    style="border-color: #28a745;" th:field="*{nombre}">
+                                <!-- <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+                                    class="text-danger"></span> -->
                             </div>
-                            
+
                             <div class="mb-4">
                                 <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">S/.</span>
-                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" placeholder="0.00" style="border-color: #28a745;" th:field="*{precio}" >
+                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01"
+                                        min="0" placeholder="0.00" style="border-color: #28a745;" th:field="*{precio}">
                                 </div>
                                 <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"
                                     class="text-danger"></span>
                             </div>
-                            
+
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-lg" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none;">
+                                <button type="submit" class="btn btn-lg"
+                                    style="background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none;">
                                     <i class="fas fa-save"></i> Guardar Extra
                                 </button>
                                 <button type="reset" class="btn btn-outline-secondary">
@@ -70,6 +77,16 @@
                     <div class="card-header text-white" style="background: linear-gradient(45deg, #28a745, #20c997);">
                         <h5 class="mb-0"><i class="fas fa-list"></i> Lista de Extras</h5>
                     </div>
+                    <form th:action="@{/admin/extras}" method="get" class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" name="buscar" class="form-control" placeholder="Buscar extras..."
+                                        th:value="${buscar}">
+                                    <button class="btn btn-info" type="submit"><i class="fas fa-search"></i>
+                                        Buscar</button>
+                                </div>
+                            </div>
+                        </form>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
@@ -88,8 +105,8 @@
                                         <td>[[${extra.nombre}]]</td>
                                         <td>S/. [[${extra.precio}]]</td>
                                         <td>
-                                            <form
-                                                th:action="@{/admin/extras/toggleEstadoExtras(id=${extra.id})}" method="post" style="display:inline;">
+                                            <form th:action="@{/admin/extras/toggleEstadoExtras(id=${extra.id})}"
+                                                method="post" style="display:inline;">
                                                 <button type="submit"
                                                     th:classappend="${extra.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
                                                     <span
@@ -98,14 +115,32 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <a th:href="@{/admin/extras/edit(id=${extra.id})}" class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
-                                            <form th:action="@{/admin/extras/delete(id=${extra.id})}" method="post">
-                                            </form>
+                                            <a th:href="@{/admin/extras/edit(id=${extra.id})}"
+                                                class="btn btn-warning btn-sm me-2"> <i
+                                                    class="fas fa-edit"></i>Editar</a>
                                         </td>
                                     </tr>                                   
                                 </tbody>
                             </table>
                         </div>
+                        <nav th:if="${page.totalPages > 1}">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/extras(page=${page.number - 1}, buscar=${buscar})}">Anterior</a>
+                                </li>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                                    th:classappend="${page.number == i} ? 'active'">
+                                    <a class="page-link" th:href="@{/admin/extras(page=${i}, buscar=${buscar})}"
+                                        th:text="${i + 1}"></a>
+                                </li>
+                                <li class="page-item"
+                                    th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/extras(page=${page.number + 1}, buscar=${buscar})}">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -117,4 +152,5 @@
     </footer>
     <script th:replace="~{admin/fragments/fragmento :: bootstrap}"></script>
 </body>
+
 </html>

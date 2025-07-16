@@ -28,5 +28,6 @@ public class Extra {
     @NotNull(message = "El precio es un campo obligatorio")
     @Min(1)
     private BigDecimal precio;
-    private String estado;
+    @NotBlank(message = "El estado es un campo obligatorio")
+    private String estado = "activo";
 }

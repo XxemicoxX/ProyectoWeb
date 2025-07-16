@@ -12,8 +12,8 @@
     style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); min-height: 100vh; display: flex; flex-direction: column;">
     <div style="flex: 1; padding-bottom: 40px;">
 
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #34495e, #2c3e50);">
-            <div th:replace="~{admin/fragments/fragmento :: navegador}"> </div>
+        <nav th:replace="~{admin/fragments/fragmento :: navegador}">
+
         </nav>
 
         <div class="container mt-4">
@@ -42,8 +42,9 @@
                                     style="background-color: #3498db; border-color: #3498db;">
                                     <i class="fas fa-search"></i>
                                 </span>
-                                <input type="text" class="form-control" name="buscarId"
-                                    placeholder="Buscar por ID de pedido..." th:value="${param.buscarId}">
+                                <input type="text" class="form-control" name="filtro"
+                                    placeholder="Buscar por ID de pedido o nombre de cliente..."
+                                    th:value="${param.filtro}">
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -52,17 +53,8 @@
                                     style="background-color: #3498db; border-color: #3498db;">
                                     <i class="fas fa-calendar"></i>
                                 </span>
-                                <input type="date" class="form-control" name="fechaInicio"
-                                    th:value="${param.fechaInicio}">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-text text-white"
-                                    style="background-color: #3498db; border-color: #3498db;">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                                <input type="date" class="form-control" name="fechaFin" th:value="${param.fechaFin}">
+                                <input type="date" class="form-control" name="fecha"
+                                    th:value="${param.fecha}">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -103,7 +95,8 @@
                         </div>
                         <div class="card-body p-0">
                             <div style="max-height: 600px; overflow-y: auto;">
-                                <table class="table table-hover mb-0 text-center" style="table-layout: fixed; width: 100%;">
+                                <table class="table table-hover mb-0 text-center"
+                                    style="table-layout: fixed; width: 100%;">
                                     <thead class="sticky-top text-white"
                                         style="background: linear-gradient(45deg, #34495e, #2c3e50); top: 0; z-index: 10;">
                                         <tr>
@@ -199,31 +192,21 @@
             <!-- Paginación -->
             <div
                 style="background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 10px; margin-top: 30px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                <nav aria-label="Paginación de pedidos">
-                    <ul class="pagination justify-content-center mb-0">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1"
-                                style="color: #6c757d; background-color: #e9ecef; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px;">
-                                <i class="fas fa-chevron-left"></i> Anterior
-                            </a>
+                <nav th:if="${listaPedidos.totalPages > 0}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${listaPedidos.first} ? 'disabled'">
+                            <a class="page-link"
+                                th:href="@{/admin/historial(page=${listaPedidos.number - 1}, filtro=${param.filtro}, fechaInicio=${param.fechaInicio}, fechaFin=${param.fechaFin})}">&laquo;</a>
                         </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#"
-                                style="color: white; background-color: #3498db; border-color: #3498db; padding: 8px 16px; margin: 0 2px; border-radius: 6px;">1</a>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, listaPedidos.totalPages - 1)}"
+                            th:classappend="${i == listaPedidos.number} ? 'active'">
+                            <a class="page-link"
+                                th:href="@{/admin/historial(page=${i}, filtro=${param.filtro}, fechaInicio=${param.fechaInicio}, fechaFin=${param.fechaFin})}"
+                                th:text="${i + 1}"></a>
                         </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#"
-                                style="color: #3498db; background-color: white; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px; transition: all 0.3s ease;">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#"
-                                style="color: #3498db; background-color: white; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px; transition: all 0.3s ease;">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#"
-                                style="color: #3498db; background-color: white; border-color: #dee2e6; padding: 8px 16px; margin: 0 2px; border-radius: 6px; transition: all 0.3s ease;">
-                                Siguiente <i class="fas fa-chevron-right"></i>
-                            </a>
+                        <li class="page-item" th:classappend="${listaPedidos.last} ? 'disabled'">
+                            <a class="page-link"
+                                th:href="@{/admin/historial(page=${listaPedidos.number + 1}, filtro=${param.filtro}, fechaInicio=${param.fechaInicio}, fechaFin=${param.fechaFin})}">&raquo;</a>
                         </li>
                     </ul>
                 </nav>

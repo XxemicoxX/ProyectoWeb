@@ -29,20 +29,6 @@
                         placeholder="Escribe tu contraseña">
                     <div class="text-danger" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></div>
                 </div>
-
-                <div class="col-3">
-                    <label for="telefono" class="form-label">Telefono</label>
-                    <input type="text" class="form-control" id="telefono" th:field="*{telefono}"
-                        placeholder="Escribe tu telefono personal">
-                    <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
-                </div>
-
-                <div class="col-12">
-                    <label for="direccion" class="form-label">Dirección</label>
-                    <input type="text" class="form-control" id="direccion" th:field="*{direccion}"
-                        placeholder="Escribe tu direccion">
-                    <div class="text-danger" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
-                </div>
                 <div class="col-12 mb-5">
                     <button type="submit" class="btn btn-primary">Regístrate</button>
                 </div>

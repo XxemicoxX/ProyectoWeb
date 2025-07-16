@@ -17,8 +17,8 @@ public class CustomUserDetail implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // return List.of(new SimpleGrantedAuthority(usuario.getRol().name()));
-        return List.of(new SimpleGrantedAuthority("ADMIN"));
+         return List.of(new SimpleGrantedAuthority(usuario.getRol().name()));
+        //return List.of(new SimpleGrantedAuthority("ADMIN"));
     }
 
     @Override
@@ -30,4 +30,18 @@ public class CustomUserDetail implements UserDetails{
     public String getUsername() {
         return usuario.getCorreo();
     }
+
+    @Override
+    public boolean isEnabled() {
+        return usuario.estaActivo(); 
+    }
+    
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+    
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+    
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
 }

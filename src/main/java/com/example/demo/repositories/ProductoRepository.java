@@ -2,6 +2,8 @@ package com.example.demo.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +28,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     @Query("SELECT p FROM Producto p JOIN FETCH p.categoria WHERE p.estado = :estado")
     List<Producto> findByEstadoWithCategoria(@Param("estado") String estado);
+    Page<Producto> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
+
+     @Query("SELECT p FROM Producto p WHERE p.estado = 'activo' AND p.categoria.estado = 'activo'")
+    List<Producto> findActivosConCategoriaActiva();
 }

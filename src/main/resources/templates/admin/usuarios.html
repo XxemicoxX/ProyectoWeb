@@ -5,8 +5,8 @@
 
 <body class="bg-info-subtle">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-        <div th:replace="~{admin/fragments/fragmento :: navegador}"> </div>
+    <nav  th:replace="~{admin/fragments/fragmento :: navegador}">
+        
     </nav>
 
     <div class="container mt-4">
@@ -31,7 +31,8 @@
                         <form method="POST" th:action="@{/admin/usuarios/save}" th:object="${usuario}">
                             <input type="hidden" th:field="*{id}" />
                             <div class="mb-3">
-                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre Completo</label>
+                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre
+                                    Completo</label>
                                 <input type="text" class="form-control border-info" id="nombre" th:field="*{nombre}">
                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
                                     class="text-danger"></span>
@@ -41,8 +42,7 @@
                                 <label for="id_tienda" class="form-label fw-bold">Tienda</label>
                                 <select class="form-select" id="id_tienda" th:field="*{tienda.id}">
                                     <option value="" disabled selected>Seleccionar</option>
-                                    <option th:each="t : ${tiendas}" th:value="${t.id}"
-                                        th:text="${t.nombre}">
+                                    <option th:each="t : ${tiendas}" th:value="${t.id}" th:text="${t.nombre}">
                                     </option>
                                 </select>
                             </div>
@@ -72,6 +72,9 @@
                                 </button>
                             </div>
                         </form>
+                        <div th:if="${error}" class="alert alert-danger">
+                            <p th:text="${error}"></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,29 +88,35 @@
                     </div>
                     <div class="card-body">
                         <!-- Búsqueda y Filtros -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-info text-white"><i
-                                            class="fas fa-search"></i></span>
-                                    <input type="text" class="form-control" name="buscar"
-                                        placeholder="Buscar usuarios...">
+                        <form th:action="@{/admin/usuarios}" method="get">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-info text-white">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <input type="text" class="form-control" name="buscar" th:value="${buscar}"
+                                            placeholder="Buscar usuarios...">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" name="filtro_rol">
+                                        <option value="">Todos los roles</option>
+                                        <option value="ADMIN" th:selected="${filtro_rol == 'ADMIN'}">
+                                            Administrador</option>
+                                        <option value="EMPLOYEE" th:selected="${filtro_rol == 'EMPLOYEE'}">Empleado
+                                        </option>
+                                        <option value="CLIENT" th:selected="${filtro_rol == 'CLIENT'}">Cliente
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-info w-100">
+                                        <i class="fas fa-filter"></i> Filtrar
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <select class="form-select" name="filtro_rol">
-                                    <option value="">Todos los roles</option>
-                                    <option value="Administrador">Administrador</option>
-                                    <option value="Empleado">Empleado</option>
-                                    <option value="Cliente">Cliente</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-info w-100">
-                                    <i class="fas fa-filter"></i> Filtrar
-                                </button>
-                            </div>
-                        </div>
+                        </form>
 
                         <!-- Tabla de usuarios -->
                         <div class="table-responsive">
@@ -117,6 +126,7 @@
                                         <th>ID</th>
                                         <th>Nombre</th>
                                         <th>Correo</th>
+                                        <th>Rol</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -126,20 +136,23 @@
                                         <td>[[${usuario.id}]]</td>
                                         <td>[[${usuario.nombre}]]</td>
                                         <td>[[${usuario.correo}]]</td>
+                                        <td>[[${usuario.rol}]]</td>
                                         <td>
-                                            <form
-                                                th:action="@{/admin/usuarios/toggleEstadoUsuarios(id=${usuario.id})}"
-                                                method="post" style="display:inline;">
+                                            <form th:action="@{/admin/usuarios/cambiarEstado(id=${usuario.id})}"
+                                                method="post" class="m-1">
                                                 <button type="submit"
-                                                    th:classappend="${usuario.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
+                                                    th:class="${usuario.estado == 'activo'} ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
                                                     <span
-                                                        th:text="${usuario.estado} == 'activo' ? 'Desactivar' : 'Activar'"></span>
+                                                        th:text="${usuario.estado == 'activo'} ? 'Desactivar' : 'Activar'"></span>
                                                 </button>
                                             </form>
                                         </td>
                                         <td>
+
                                             <a th:href="@{/admin/usuarios/edit(id=${usuario.id})}"
-                                                class="btn btn-warning">Editar</a>
+                                                class="btn btn-warning btn-sm m-1">Editar</a>
+
+
                                         </td>
                                     </tr>
                                 </tbody>
@@ -147,16 +160,22 @@
                         </div>
 
                         <!-- Paginación -->
-                        <nav aria-label="Paginación de usuarios">
+                        <nav th:if="${page.totalPages > 0}">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/usuarios(page=${page.number - 1}, buscar=${buscar}, filtro_rol=${filtro_rol})}">Anterior</a>
                                 </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Siguiente</a>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                                    th:classappend="${page.number == i} ? 'active'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/usuarios(page=${i}, buscar=${buscar}, filtro_rol=${filtro_rol})}"
+                                        th:text="${i + 1}">1</a>
+                                </li>
+                                <li class="page-item"
+                                    th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/usuarios(page=${page.number + 1}, buscar=${buscar}, filtro_rol=${filtro_rol})}">Siguiente</a>
                                 </li>
                             </ul>
                         </nav>

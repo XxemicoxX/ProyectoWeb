@@ -3,9 +3,12 @@ package com.example.demo.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Categoria;
+import com.example.demo.entities.Producto;
 import com.example.demo.repositories.CategoriaRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +41,14 @@ public class CategoriaService {
 
     public List<Categoria> selActivas() {
         return repository.findByEstado("activo");
+    }
+
+    public Page<Categoria> obtenerTodos(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    public Page<Categoria> buscarPorNombre(String nombre, Pageable pageable) {
+        return repository.findByNombreContainingIgnoreCase(nombre, pageable);
     }
 
 }
