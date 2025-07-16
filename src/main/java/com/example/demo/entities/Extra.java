@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +28,5 @@ public class Extra {
     @NotNull(message = "El precio es un campo obligatorio")
     @Min(1)
     private BigDecimal precio;
-    @NotBlank(message = "El estado es un campo obligatorio")
     private String estado;
 }

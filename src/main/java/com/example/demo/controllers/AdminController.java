@@ -213,14 +213,8 @@ public class AdminController {
         return "redirect:/admin/categorias";
     }
 
-<<<<<<< HEAD
     @PostMapping("categorias/toggleEstadoCategorias")
     public String toggleEstadoCategorias(@RequestParam("id") Long id) {
-=======
-    // Cambiar esto en categorias
-    @PostMapping("categorias/toggleEstado")
-    public String toggleEstado(@RequestParam("id") Long id) {
->>>>>>> 9b25af018d1c6770c7ffcaaea56fdabe963176d3
         Categoria categoria = cservice.selectOne(id);
         if (categoria != null) {
             if ("activo".equalsIgnoreCase(categoria.getEstado())) {
@@ -305,8 +299,15 @@ public class AdminController {
     public String guardarExtra(@Valid @ModelAttribute Extra extra, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("lista", extraS.sel());
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
+            model.addAttribute("usuarioLogueado", usuarioLogueado);
+
             return "admin/extras";
         }
+
         extraS.insertUpdate(extra);
         return "redirect:/admin/extras";
     }
