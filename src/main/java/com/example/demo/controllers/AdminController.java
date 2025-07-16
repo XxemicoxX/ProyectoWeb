@@ -92,7 +92,7 @@ public class AdminController {
     }
 
     // Cambiar esto en productos
-    @PostMapping("productos/toggleEstado")
+    @PostMapping("productos/toggleEstadoProductos")
     public String toggleEstadoProductos(@RequestParam("id") Long id) {
         Producto producto = pservice.selectOne(id);
         if (producto != null) {
@@ -164,6 +164,20 @@ public class AdminController {
         return "redirect:/admin/tiendas";
     }
 
+    @PostMapping("tiendas/toggleEstadoTiendas")
+    public String toggleEstadoTiendas(@RequestParam("id") Long id) {
+        Tienda tienda = tservice.selectOne(id);
+        if (tienda != null) {
+            if ("activo".equalsIgnoreCase(tienda.getEstado())) {
+                tienda.setEstado("desactivado");
+            } else {
+                tienda.setEstado("activo");
+            }
+            tservice.insertUpdate(tienda);
+        }
+        return "redirect:/admin/tiendas";
+    }
+
     // CATEGORIAS
     @GetMapping("/categorias")
     public String listaCategoria(Model model) {
@@ -232,7 +246,7 @@ public class AdminController {
     public String lista(Model model) {
         model.addAttribute("lista", uservice.sel());
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("tiendas", tservice.sel());
+        model.addAttribute("tiendas", tservice.selActivas());
 
         // Obtener usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -249,7 +263,7 @@ public class AdminController {
         if (result.hasErrors()) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("lista", uservice.sel());
-            model.addAttribute("tiendas", tservice.sel());
+            model.addAttribute("tiendas", tservice.selActivas());
             return "admin/usuarios";
         }
         uservice.insertUpdate(usuario);
@@ -260,7 +274,7 @@ public class AdminController {
     public String editarUsuario(@RequestParam("id") Long id, Model model) {
         model.addAttribute("usuario", uservice.selectOne(id));
         model.addAttribute("lista", uservice.sel());
-        model.addAttribute("tiendas", tservice.sel());
+        model.addAttribute("tiendas", tservice.selActivas());
 
         // Obtener usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -275,6 +289,20 @@ public class AdminController {
     @PostMapping("usuarios/delete")
     public String eliminarUsuario(@RequestParam("id") Long id) {
         uservice.delete(id);
+        return "redirect:/admin/usuarios";
+    }
+
+    @PostMapping("usuarios/toggleEstadoUsuarios")
+    public String toggleEstadoUsuarios(@RequestParam("id") Long id) {
+        Usuario usuario = uservice.selectOne(id);
+        if (usuario != null) {
+            if ("activo".equalsIgnoreCase(usuario.getEstado())) {
+                usuario.setEstado("desactivado");
+            } else {
+                usuario.setEstado("activo");
+            }
+            uservice.insertUpdate(usuario);
+        }
         return "redirect:/admin/usuarios";
     }
 
@@ -334,16 +362,30 @@ public class AdminController {
         return "redirect:/admin/extras";
     }
 
+    @PostMapping("extras/toggleEstadoExtras")
+    public String toggleEstadoExtras(@RequestParam("id") Long id) {
+        Extra extra = extraS.selectOne(id);
+        if (extra != null) {
+            if ("activo".equalsIgnoreCase(extra.getEstado())) {
+                extra.setEstado("desactivado");
+            } else {
+                extra.setEstado("activo");
+            }
+            extraS.insertUpdate(extra);
+        }
+        return "redirect:/admin/extras";
+    }
+
     // PEDIDOS
     // 🔹 Mostrar formulario y lista de pedidos
     @GetMapping("/pedidos")
     public String listarVentas(Model model) {
         model.addAttribute("lista", pedidoS.sel());
         model.addAttribute("pedido", new Pedido());
-        model.addAttribute("usuarios", uservice.sel());
+        model.addAttribute("usuarios", uservice.selActivas());
         model.addAttribute("categorias", cservice.selActivas());
-        model.addAttribute("productos", pservice.sel());
-        model.addAttribute("extras", extraS.sel());
+        model.addAttribute("productos", pservice.selActivas());
+        model.addAttribute("extras", extraS.selActivas());
         // Obtener usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -377,8 +419,8 @@ public class AdminController {
             model.addAttribute("lista", pedidoS.sel());
             model.addAttribute("usuarios", uservice.sel());
             model.addAttribute("categorias", cservice.selActivas());
-            model.addAttribute("productos", pservice.sel());
-            model.addAttribute("extras", extraS.sel());
+            model.addAttribute("productos", pservice.selActivas());
+            model.addAttribute("extras", extraS.selActivas());
 
             // Obtener usuario logueado para mostrar en caso de error
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -398,4 +440,6 @@ public class AdminController {
         pedidoS.delete(id);
         return "redirect:/admin/pedidos";
     }
+
+    //HISTORIAL
 }

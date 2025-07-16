@@ -24,6 +24,7 @@
                 <a class="nav-link" href="extras">Extras</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
                 <a class="nav-link" href="pedidos">Pedidos</a>
+                <a class="nav-link" href="historial">Historial</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
             </div>
         </div>
@@ -138,7 +139,7 @@
                                         <th>ID</th>
                                         <th>Nombre</th>
                                         <th>Correo</th>
-                                        <th>Contraseña</th>
+                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -147,31 +148,21 @@
                                         <td>[[${usuario.id}]]</td>
                                         <td>[[${usuario.nombre}]]</td>
                                         <td>[[${usuario.correo}]]</td>
-                                        <td>[[${usuario.contrasena}]]</td>
+                                        <td>
+                                            <form
+                                                th:action="@{/admin/usuarios/toggleEstadoUsuarios(id=${usuario.id})}"
+                                                method="post" style="display:inline;">
+                                                <button type="submit"
+                                                    th:classappend="${usuario.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
+                                                    <span
+                                                        th:text="${usuario.estado} == 'activo' ? 'Desactivar' : 'Activar'"></span>
+                                                </button>
+                                            </form>
+                                        </td>
                                         <td>
                                             <a th:href="@{/admin/usuarios/edit(id=${usuario.id})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/usuarios/delete(id=${usuario.id})}" method="post"
-                                                style="display:inline;">
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('¿Deseas eliminar este usuario?')">Eliminar</button>
-                                            </form>
                                         </td>
-                                        <!--<td>001</td>
-                                        <td>Juan Pérez García</td>
-                                        <td>juan.perez@email.com</td>
-                                        <td>+51 987 654 321</td>
-                                        <td>
-                                            <span class="badge bg-success">Administrador</span>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>

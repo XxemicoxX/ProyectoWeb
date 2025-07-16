@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Usuario;
 import com.example.demo.repositories.UsuarioRepository;
 
@@ -36,7 +37,14 @@ public class UsuarioService {
     }
 
     public Usuario insertUpdate (Usuario usuario) {
+        if (usuario.getEstado() == null || usuario.getEstado().isEmpty()) {
+            usuario.setEstado("activo");
+        }
         return repository.save(usuario);
+    }
+
+    public List<Usuario> selActivas() {
+        return repository.findByEstado("activo");
     }
 
     public void delete (Long id) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Producto;
 import com.example.demo.repositories.ProductoRepository;
 
@@ -35,6 +36,10 @@ public class ProductoService {
             producto.setEstado("activo");
         }
         return repository.save(producto);
+    }
+
+    public List<Producto> selActivas() {
+        return repository.findByEstado("activo");
     }
 
     public void delete(Long id) {

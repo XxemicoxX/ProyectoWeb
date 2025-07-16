@@ -25,6 +25,7 @@
                 <a class="nav-link" href="extras">Extras</a>
                 <a class="nav-link" href="tiendas">Tiendas</a>
                 <a class="nav-link" href="pedidos">Pedidos</a>
+                <a class="nav-link" href="historial">Historial</a>
                 <a class="nav-link" href="usuarios">Usuarios</a>
             </div>
         </div>
@@ -155,7 +156,7 @@
                                         <td>[[${producto.descripcion}]]</td>
                                         <td>
                                             <form
-                                                th:action="@{/admin/categorias/toggleEstadoProductos(id=${producto.idProducto})}"
+                                                th:action="@{/admin/productos/toggleEstadoProductos(id=${producto.idProducto})}"
                                                 method="post" style="display:inline;">
                                                 <button type="submit"
                                                     th:classappend="${producto.estado} == 'activo' ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
