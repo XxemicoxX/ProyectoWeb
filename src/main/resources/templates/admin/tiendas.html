@@ -96,10 +96,6 @@
                                         <td>
                                             <a th:href="@{/admin/tiendas/edit(id=${tienda.id})}"
                                                 class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/tiendas/delete(id=${tienda.id})}" method="post" style="display:inline;">
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('¿Deseas eliminar esta tienda?')">Eliminar</button>
-                                            </form>
                                         </td>                                        
                                     </tr>                                      
                                 </tbody>

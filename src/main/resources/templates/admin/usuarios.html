@@ -116,6 +116,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
+                                        <th>Tienda</th>
                                         <th>Correo</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
@@ -125,6 +126,7 @@
                                     <tr th:each="usuario:${lista}">
                                         <td>[[${usuario.id}]]</td>
                                         <td>[[${usuario.nombre}]]</td>
+                                        <td th:text="${usuario.tienda != null} ? ${usuario.tienda.nombre} : 'Sin tienda'"></td>
                                         <td>[[${usuario.correo}]]</td>
                                         <td>
                                             <form
