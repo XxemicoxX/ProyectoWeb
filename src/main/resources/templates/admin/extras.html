@@ -30,18 +30,13 @@
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Extra</h5>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/extras/save}" method="post" th:object="${extra}">
-                            <input type="hidden" th:field="*{id}" />
+                        <form id="form-extra" th:object="${extra}">
+                            <input type="hidden" name="id" th:field="*{id}" />
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre del Extra</label>
                                 <input type="text" class="form-control" name="nombre" maxlength="100" placeholder="Ej: Leche de almendras, Shot extra, etc." style="border-color: #28a745;" th:field="*{nombre}" >
                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
                                     class="text-danger"></span>
-                                <input type="text" class="form-control" name="nombre" maxlength="100"
-                                    placeholder="Ej: Leche de almendras, Shot extra, etc."
-                                    style="border-color: #28a745;" th:field="*{nombre}">
-                                <!-- <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
-                                    class="text-danger"></span> -->
                             </div>
 
                             <div class="mb-4">
@@ -113,9 +108,8 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <a th:href="@{/admin/extras/edit(id=${extra.id})}" class="btn btn-warning btn-sm me-2"> <i class="fas fa-edit"></i>Editar</a>
-                                            <form th:action="@{/admin/extras/delete(id=${extra.id})}" method="post">
-                                            </form>
+                                          <a th:attr="data-id=${extra.id}"
+                                                class="btn btn-warning btn-editar">Editar</a>
                                         </td>
                                     </tr>                                   
                                 </tbody>
@@ -148,6 +142,100 @@
     <footer class="footer mt-4" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; margin-top: auto; padding: 15px 0;">
         <div th:replace="~{admin/fragments/fragmento :: footer}"></div>
     </footer>
+     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form-extra');
+
+            const csrfMeta = document.querySelector("meta[name='_csrf']");
+            const csrfHeaderMeta = document.querySelector("meta[name='_csrf_header']");
+            const csrfToken = csrfMeta ? csrfMeta.getAttribute("content") : null;
+            const csrfHeader = csrfHeaderMeta ? csrfHeaderMeta.getAttribute("content") : null;
+
+            if (!csrfToken || !csrfHeader) {
+                console.warn("⚠️ CSRF meta tags not found.");
+                return; 
+            }
+
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const extra = {
+                        id: formData.get("id") || null,
+                        nombre: formData.get("nombre").trim(),
+                        precio: parseFloat(formData.get("precio")) || 0,
+                    };
+
+                    try {
+                        const response = await fetch("/admin/api/extras/save", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                [csrfHeader]: csrfToken
+                            },
+                            body: JSON.stringify(extra)
+                        });
+
+                        if (!response.ok) {
+                            const errors = await response.json();
+                            if (Array.isArray(errors)) {
+                                const mensajes = errors.map(e => e.defaultMessage).join("\n");
+                                alert("Llena los campos ._.:\n" + mensajes);
+                            } else {
+                                throw new Error("Error del servidor");
+                            }
+                            return;
+                        }
+
+                        alert("✅ Extra guardado correctamente");
+                        form.reset();
+                        window.location.reload();
+
+                    } catch (err) {
+                        console.error(err);
+                        alert("❌ Error al guardar extra");
+                    }
+                });
+            }
+
+            document.querySelectorAll('.btn-editar').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    console.log("ID extra a editar:", id);
+                    editarExtra(id);
+                });
+            });
+
+            async function editarExtra(id) {
+                try {
+                    const url = `/admin/api/extras/edit/${id}`;
+                    console.log("Fetch URL:", url);
+                    const response = await fetch(url, {
+                        headers: {
+                            [csrfHeader]: csrfToken
+                        }
+                    });
+
+                    if (!response.ok) throw new Error("Extra no encontrado");
+
+                    const extra = await response.json();
+
+
+                    form.querySelector('[name="id"]').value = extra.id || '';
+                    form.querySelector('[name="nombre"]').value = extra.nombre || '';
+                    form.querySelector('[name="precio"]').value = extra.precio || '';
+
+                    form.scrollIntoView({ behavior: 'smooth' });
+
+                } catch (err) {
+                    console.error(err);
+                    alert("❌ No se pudo cargar el extra");
+                }
+            }
+        });
+
+
+    </script>
     <script th:replace="~{admin/fragments/fragmento :: bootstrap}"></script>
 </body>
 

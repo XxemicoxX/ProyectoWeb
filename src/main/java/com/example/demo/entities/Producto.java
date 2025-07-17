@@ -1,8 +1,12 @@
 package com.example.demo.entities;
 
 import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,8 +29,9 @@ public class Producto {
     @Column(name = "id_producto")
     private Integer idProducto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Categoria categoria;
 
     @NotBlank(message = "El nombre es un campo obligatorio")

@@ -79,7 +79,6 @@ public class AdminController {
         model.addAttribute("usuarios", uservice.sel());
         model.addAttribute("buscar", buscar);
 
-        // Obtener usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
@@ -88,36 +87,6 @@ public class AdminController {
         return "admin/productos";
     }
 
-    @PostMapping("productos/save")
-    public String guardarProductos(@Valid @ModelAttribute Producto producto, BindingResult result, Model model) {
-        pservice.insertUpdate(producto);
-        return "redirect:/admin/productos";
-    }
-
-    @GetMapping("productos/edit")
-    public String editarProductos(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("producto", pservice.selectOne(id));
-        model.addAttribute("lista", pservice.sel());
-        model.addAttribute("categorias", cservice.selActivas());
-        model.addAttribute("usuarios", uservice.sel());
-
-        // Obtener usuario logueado
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-
-        return "admin/productos";
-    }
-
-    @PostMapping("productos/delete")
-    public String eliminarProductos(@RequestParam("id") Long id) {
-        pservice.delete(id);
-        return "redirect:/admin/productos";
-    }
-
-    // Cambiar esto en productos
     @PostMapping("productos/toggleEstadoProductos")
     public String toggleEstadoProductos(@RequestParam("id") Long id) {
         Producto producto = pservice.selectOne(id);
@@ -151,54 +120,12 @@ public class AdminController {
         model.addAttribute("tienda", new Tienda());
         model.addAttribute("usuarios", uservice.sel());
 
-        // Usuario logueado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
         model.addAttribute("usuarioLogueado", usuarioLogueado);
 
         return "admin/tiendas";
-    }
-
-    @PostMapping("tiendas/save")
-    public String guardarTiendas(@Valid @ModelAttribute("tienda") Tienda tienda, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("lista", tservice.sel());
-            model.addAttribute("usuarios", uservice.sel());
-
-            // Obtener usuario logueado
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String correo = auth.getName();
-            Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-            model.addAttribute("usuarioLogueado", usuarioLogueado);
-
-            return "admin/tiendas"; // Regresa a la misma vista con errores visibles
-        }
-
-        tservice.insertUpdate(tienda);
-        return "redirect:/admin/tiendas";
-    }
-
-    @GetMapping("tiendas/edit")
-    public String editarTiendas(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("tienda", tservice.selectOne(id));
-        model.addAttribute("lista", tservice.sel());
-        model.addAttribute("usuarios", uservice.sel());
-
-        // Obtener usuario logueado
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-
-        return "admin/tiendas";
-    }
-
-    @PostMapping("tiendas/delete")
-    public String eliminarTiendas(@RequestParam("id") Long id) {
-        tservice.delete(id);
-        return "redirect:/admin/tiendas";
     }
 
     @PostMapping("tiendas/toggleEstadoTiendas")
@@ -215,7 +142,6 @@ public class AdminController {
         return "redirect:/admin/tiendas";
     }
 
-    // CATEGORIAS
     @GetMapping("/categorias")
     public String listaCategoria(@RequestParam(name = "buscar", required = false) String buscar,
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -231,7 +157,7 @@ public class AdminController {
         }
 
         model.addAttribute("page", categoriaPage);
-        model.addAttribute("lista", categoriaPage.getContent());
+        model.addAttribute("lista", cservice.sel());
         model.addAttribute("buscar", buscar);
         model.addAttribute("categoria", new Categoria());
         model.addAttribute("usuarios", uservice.sel());
@@ -243,38 +169,6 @@ public class AdminController {
         model.addAttribute("usuarioLogueado", usuarioLogueado);
 
         return "admin/categorias";
-    }
-
-    @PostMapping("categorias/save")
-    public String guardarCategoria(@Valid @ModelAttribute Categoria categoria, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("lista", cservice.sel());
-            return "admin/categorias";
-        }
-        cservice.insertUpdate(categoria);
-        return "redirect:/admin/categorias";
-    }
-
-    @GetMapping("categorias/edit")
-    public String editarCategoria(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("categoria", cservice.selectOne(id));
-        model.addAttribute("lista", cservice.sel());
-        model.addAttribute("usuarios", uservice.sel());
-
-        // Obtener usuario logueado
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-
-        return "admin/categorias";
-    }
-
-    @PostMapping("categorias/delete")
-    public String eliminarCategoria(@RequestParam("id") Long id) {
-        cservice.delete(id);
-        return "redirect:/admin/categorias";
     }
 
     @PostMapping("categorias/toggleEstadoCategorias")
@@ -412,38 +306,6 @@ public class AdminController {
         return "admin/extras";
     }
 
-    @PostMapping("extras/save")
-    public String guardarExtra(@Valid @ModelAttribute Extra extra, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("lista", extraS.sel());
-            return "admin/extras";
-        }
-        extraS.insertUpdate(extra);
-        return "redirect:/admin/extras";
-    }
-
-    @GetMapping("extras/edit")
-    public String editarExtra(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("extra", extraS.selectOne(id));
-        model.addAttribute("lista", extraS.sel());
-        model.addAttribute("usuarios", uservice.sel());
-
-        // Obtener usuario logueado
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-
-        model.addAttribute("usuarioLogueado", usuarioLogueado); // Pasarlo a la vista
-
-        return "admin/extras";
-    }
-
-    @PostMapping("extras/delete")
-    public String eliminarExtra(@RequestParam("id") Long id) {
-        extraS.delete(id);
-        return "redirect:/admin/extras";
-    }
-
     @PostMapping("extras/toggleEstadoExtras")
     public String toggleEstadoExtras(@RequestParam("id") Long id) {
         Extra extra = extraS.selectOne(id);
@@ -458,8 +320,6 @@ public class AdminController {
         return "redirect:/admin/extras";
     }
 
-    // PEDIDOS
-    // 🔹 Mostrar formulario y lista de pedidos
     @GetMapping("/pedidos")
     public String listarVentas(Model model) {
         model.addAttribute("lista", pedidoS.sel());
@@ -539,7 +399,6 @@ public class AdminController {
         model.addAttribute("listaPedidos", pedidos);
         model.addAttribute("usuarios", uservice.selActivas());
 
-        // ✅ Evita el NullPointerException
         Map<String, Object> param = new HashMap<>();
         param.put("usuarioId", usuarioId);
         param.put("fecha", fecha);

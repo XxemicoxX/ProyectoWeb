@@ -30,7 +30,8 @@
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Nueva Tienda</h5>
                     </div>
                     <div class="card-body">
-                        <form method="POST" th:action="@{/admin/tiendas/save}" th:object="${tienda}">
+                        <form id="form-tienda"th:object="${tienda}">
+                            <input type="hidden" th:field="*{id}" />
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre de la Tienda</label>
                                 <input type="text" class="form-control" id="nombre" maxlength="255"
@@ -104,12 +105,8 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <a th:href="@{/admin/tiendas/edit(id=${tienda.id})}"
-                                                class="btn btn-warning">Editar</a>
-                                            <form th:action="@{/admin/tiendas/delete(id=${tienda.id})}" method="post" style="display:inline;">
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('¿Deseas eliminar esta tienda?')">Eliminar</button>
-                                            </form>
+                                            <a th:attr="data-id=${tienda.id}"
+                                                class="btn btn-warning btn-editar">Editar</a>
                                         </td>                                        
                                     </tr>                                      
                                 </tbody>
@@ -143,7 +140,100 @@
         style="color: white; margin-top: auto; padding: 15px 0; background: linear-gradient(45deg, #8e44ad, #9b59b6);">
         <div th:replace="~{admin/fragments/fragmento :: footer}"></div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form-tienda');
 
+            const csrfMeta = document.querySelector("meta[name='_csrf']");
+            const csrfHeaderMeta = document.querySelector("meta[name='_csrf_header']");
+            const csrfToken = csrfMeta ? csrfMeta.getAttribute("content") : null;
+            const csrfHeader = csrfHeaderMeta ? csrfHeaderMeta.getAttribute("content") : null;
+
+            if (!csrfToken || !csrfHeader) {
+                console.warn("⚠️ CSRF meta tags not found.");
+                return; 
+            }
+
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const tienda = {
+                        id: formData.get("id") || null,
+                        nombre: formData.get("nombre").trim(),
+                        direccion: formData.get("direccion").trim()
+                    };
+
+                    try {
+                        const response = await fetch("/admin/api/tiendas/save", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                [csrfHeader]: csrfToken
+                            },
+                            body: JSON.stringify(tienda)
+                        });
+
+                        if (!response.ok) {
+                            const errors = await response.json();
+                            if (Array.isArray(errors)) {
+                                const mensajes = errors.map(e => e.defaultMessage).join("\n");
+                                alert("Llena los campos ._.:\n" + mensajes);
+                            } else {
+                                throw new Error("Error del servidor");
+                            }
+                            return;
+                        }
+
+                        alert("✅ Tienda guardado correctamente");
+                        form.reset();
+                        window.location.reload();
+
+                    } catch (err) {
+                        console.error(err);
+                        alert("❌ Error al guardar tienda");
+                    }
+                });
+            }
+
+            document.querySelectorAll('.btn-editar').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    console.log("ID tienda a editar:", id);
+                    editarTienda(id);
+                });
+            });
+
+            async function editarTienda(id) {
+                try {
+                    const url = `/admin/api/tiendas/edit/${id}`;
+                    console.log("Fetch URL:", url);
+                    const response = await fetch(url, {
+                        headers: {
+                            [csrfHeader]: csrfToken
+                        }
+                    });
+
+                    if (!response.ok) throw new Error("Tienda no encontrado");
+
+                    const tienda = await response.json();
+
+
+                    form.querySelector('[name="id"]').value = tienda.id || '';
+                    form.querySelector('[name="nombre"]').value = tienda.nombre || '';
+                    form.querySelector('[name="direccion"]').value = tienda.direccion || '';
+
+                    form.scrollIntoView({ behavior: 'smooth' });
+
+                } catch (err) {
+                    console.error(err);
+                    alert("❌ No se pudo cargar el tienda");
+                }
+            }
+        });
+
+
+    </script>
     <script th:replace="~{admin/fragments/fragmento :: bootstrap}"></script>
 </body>
 

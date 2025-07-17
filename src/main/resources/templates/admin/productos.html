@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head th:replace="~{/admin/fragments/fragmento :: head('Gestión de Productos - CafeWeb')}"></head>
+<head th:replace="~{/admin/fragments/fragmento :: head('Gestión de Productos - CafeWeb')}">
+</head>
 
 <body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
 
@@ -32,11 +33,11 @@
                         <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h5>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/productos/save}" method="post" th:object="${producto}">
-                            <input type="hidden" th:field="*{idProducto}" />
+                        <form id="form-producto" th:object="${producto}">
+                            <input type="hidden" name="idProducto" th:field="*{idProducto}" />
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}"
                                     maxlength="100">
                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
                                     class="text-danger"></span>
@@ -44,12 +45,11 @@
 
                             <div class="mb-4">
                                 <label for="id_categoria" class="form-label fw-bold">Categoría</label>
-                                <select class="form-select" id="id_categoria" name="id_categoria"
-                                    th:field="*{categoria}">
+                                <select class="form-select" id="id_categoria" name="categoria.idCategoria"
+                                    th:field="*{categoria.idCategoria}">
                                     <option value="" disabled selected>Seleccionar</option>
                                     <option th:each="c : ${categorias}" th:value="${c.idCategoria}"
-                                        th:text="${c.nombre}">
-                                    </option>
+                                        th:text="${c.nombre}"></option>
                                 </select>
                             </div>
 
@@ -57,7 +57,7 @@
                                 <label for="precio" class="form-label fw-bold">Precio (S/.)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">S/.</span>
-                                    <input type="number" class="form-control" id="precio" step="0.01"
+                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01"
                                         th:field="*{precio}">
                                 </div>
                                 <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"
@@ -66,23 +66,20 @@
 
                             <div class="mb-3">
                                 <label for="medida" class="form-label fw-bold">Unidad de medida (ml/gr)</label>
-                                <input type="text" class="form-control" id="medida" th:field="*{medida}">
-                                <!-- ACTUALIZAR
-                                <span th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"
-                                    class="text-danger"></span>-->
+                                <input type="text" class="form-control" id="medida" name="medida" th:field="*{medida}">
                             </div>
 
                             <div class="mb-3">
                                 <label for="imagen" class="form-label fw-bold">Imagen (URL)</label>
-                                <input type="text" class="form-control" id="imagen" th:field="*{imagen}">
+                                <input type="text" class="form-control" id="imagen" name="imagen" th:field="*{imagen}">
                                 <span th:if="${#fields.hasErrors('imagen')}" th:errors="*{imagen}"
                                     class="text-danger"></span>
                             </div>
 
-
                             <div class="mb-3">
                                 <label for="descripcion" class="form-label fw-bold">Descripción</label>
-                                <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}">
+                                <input type="text" class="form-control" id="descripcion" name="descripcion"
+                                    th:field="*{descripcion}">
                                 <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"
                                     class="text-danger"></span>
                             </div>
@@ -99,6 +96,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Lista de Productos -->
             <div class="col-lg-7">
@@ -161,9 +159,10 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <a th:href="@{/admin/productos/edit(id=${producto.idProducto})}"
-                                                class="btn btn-warning">Editar</a>
+                                            <a th:attr="data-id=${producto.idProducto}"
+                                                class="btn btn-warning btn-editar">Editar</a>
                                         </td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -197,7 +196,110 @@
     <footer class="footer bg-dark mt-4" style="color: white; margin-top: auto; padding: 15px 0;">
         <div th:replace="~{admin/fragments/fragmento :: footer}"></div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form-producto');
 
+            const csrfMeta = document.querySelector("meta[name='_csrf']");
+            const csrfHeaderMeta = document.querySelector("meta[name='_csrf_header']");
+            const csrfToken = csrfMeta ? csrfMeta.getAttribute("content") : null;
+            const csrfHeader = csrfHeaderMeta ? csrfHeaderMeta.getAttribute("content") : null;
+
+            if (!csrfToken || !csrfHeader) {
+                console.warn("⚠️ CSRF meta tags not found.");
+                return; 
+            }
+
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const producto = {
+                        idProducto: formData.get("idProducto") || null,
+                        nombre: formData.get("nombre").trim(),
+                        categoria: {
+                            idCategoria: parseInt(formData.get("categoria.idCategoria"))
+                        },
+                        precio: parseFloat(formData.get("precio")) || 0,
+                        medida: formData.get("medida").trim(),
+                        imagen: formData.get("imagen").trim(),
+                        descripcion: formData.get("descripcion").trim()
+                    };
+
+                    try {
+                        const response = await fetch("/admin/api/productos/save", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                [csrfHeader]: csrfToken
+                            },
+                            body: JSON.stringify(producto)
+                        });
+
+                        if (!response.ok) {
+                            const errors = await response.json();
+                            if (Array.isArray(errors)) {
+                                const mensajes = errors.map(e => e.defaultMessage).join("\n");
+                                alert("Llena los campos ._.:\n" + mensajes);
+                            } else {
+                                throw new Error("Error del servidor");
+                            }
+                            return;
+                        }
+
+                        alert("✅ Producto guardado correctamente");
+                        form.reset();
+                        window.location.reload();
+
+                    } catch (err) {
+                        console.error(err);
+                        alert("❌ Error al guardar producto");
+                    }
+                });
+            }
+
+            document.querySelectorAll('.btn-editar').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    console.log("ID producto a editar:", id);
+                    editarProducto(id);
+                });
+            });
+
+            async function editarProducto(id) {
+                try {
+                    const url = `/admin/api/productos/edit/${id}`;
+                    console.log("Fetch URL:", url);
+                    const response = await fetch(url, {
+                        headers: {
+                            [csrfHeader]: csrfToken
+                        }
+                    });
+
+                    if (!response.ok) throw new Error("Producto no encontrado");
+
+                    const producto = await response.json();
+
+
+                    form.querySelector('[name="idProducto"]').value = producto.idProducto || '';
+                    form.querySelector('[name="nombre"]').value = producto.nombre || '';
+                    form.querySelector('[name="categoria.idCategoria"]').value = producto.categoria?.idCategoria || '';
+                    form.querySelector('[name="precio"]').value = producto.precio || '';
+                    form.querySelector('[name="medida"]').value = producto.medida || '';
+                    form.querySelector('[name="imagen"]').value = producto.imagen || '';
+                    form.querySelector('[name="descripcion"]').value = producto.descripcion || '';
+
+                    form.scrollIntoView({ behavior: 'smooth' });
+
+                } catch (err) {
+                    console.error(err);
+                    alert("❌ No se pudo cargar el producto");
+                }
+            }
+        });
+
+
+    </script>
     <script th:replace="~{admin/fragments/fragmento :: bootstrap}"></script>
     <script src="/js/tabla.js"></script>
 </body>
