@@ -5,7 +5,9 @@
 
 <body class="bg-light">
 
-    <nav th:replace="~{admin/fragments/fragmento :: navegador}">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div th:replace="~{admin/fragments/fragmento :: navegador}"></div>
     </nav>
 
     <div class="container mt-4">
@@ -91,7 +93,7 @@
                                             </form>
                                         </td>
                                         <td>
-                                             <a th:attr="data-id=${categoria.id}"
+                                             <a th:attr="data-id=${categoria.idCategoria}"
                                                 class="btn btn-warning btn-editar">Editar</a>
                                         </td>
                                         <td>

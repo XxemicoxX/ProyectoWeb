@@ -12,8 +12,9 @@
 </head>
 
 <body>
-    <nav th:fragment="navegador" class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark"
+        style="background: linear-gradient(45deg, #2d5016, #3e6b1f);">
+        <div th:fragment="navegador" class="container">
             <a class="navbar-brand" href="/" sec:authorize="hasAuthority('CLIENT')">
                 <i class="fas fa-coffee"></i> CafeWeb - Cliente
             </a>
@@ -30,12 +31,11 @@
                 <a class="nav-link" href="categorias" sec:authorize="hasAuthority('ADMIN')">Categorías</a>
                 <a class="nav-link" href="productos" sec:authorize="hasAuthority('ADMIN')">Productos</a>
                 <a class="nav-link" href="tiendas" sec:authorize="hasAuthority('ADMIN')">Tiendas</a>
-                 <a class="nav-link" href="extras" sec:authorize="hasAuthority('ADMIN')">Extras</a>
+                <a class="nav-link" href="extras" sec:authorize="hasAuthority('ADMIN')">Extras</a>
                 <a class="nav-link" href="usuarios" sec:authorize="hasAuthority('ADMIN')">Usuarios</a>
+                <a class="nav-link" href="pedidos"
+                    sec:authorize="hasAnyAuthority('ADMIN', 'CLIENT', 'EMPLOYEE')">Pedidos</a>
                 <a class="nav-link" href="historial" sec:authorize="hasAnyAuthority('ADMIN', 'EMPLOYEE')">Historial</a>
-
-                <a class="nav-link" href="pedidos" sec:authorize="hasAnyAuthority('ADMIN', 'CLIENT', 'EMPLOYEE')">Pedidos</a>
-
                 <form class="d-flex mx-5" th:if="${#authorization.expression('isAuthenticated()')}"
                     th:action="@{/logout}" method="post">
                     <button class="btn btn-danger" type="submit">Cerrar Sesión</button>
@@ -52,6 +52,7 @@
     </div>
 </footer>
 
-<script th:fragment="bootstrap" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script th:fragment="bootstrap"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
 </html>

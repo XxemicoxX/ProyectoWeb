@@ -2,7 +2,6 @@ package com.example.demo.controllers;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -46,9 +45,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-
-    private final PedidoRepository pedidoRepository;
-
     private final ProductoService pservice;
     private final TiendaService tservice;
     private final CategoriaService cservice;
@@ -368,7 +364,7 @@ public class AdminController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String correo = auth.getName();
             Usuario usuarioLogueado = uservice.buscarUsuarioPorCorreo(correo);
-            model.addAttribute("usuarioLogueado", usuarioLogueado);
+            model.addAttribute("usuarioLogueado", usuarioLogueado); 
 
             return "admin/pedidos";
         }
