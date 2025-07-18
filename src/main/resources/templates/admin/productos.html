@@ -6,8 +6,7 @@
 
 <body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div th:replace="~{admin/fragments/fragmento :: navegador}"></div>
+    <nav th:replace="~{admin/fragments/fragmento :: navegador}">
     </nav>
 
     <div class="container mt-4">
@@ -79,9 +78,8 @@
 
                             <div class="mb-3">
                                 <label for="descripcion" class="form-label fw-bold">Descripción</label>
-
-                                <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="4"
-                                    placeholder="Ingrese la descripción..."></textarea>
+                                <input type="text" class="form-control" id="descripcion" name="descripcion"
+                                    th:field="*{descripcion}">
                                 <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"
                                     class="text-danger"></span>
                             </div>
@@ -135,6 +133,7 @@
                                         <th>Precio</th>
                                         <th>Unidad de medida</th>
                                         <th>Imagen URL</th>
+                                        <th>Descripción</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -147,6 +146,7 @@
                                         <td>[[${producto.precio}]]</td>
                                         <td>[[${producto.medida}]]</td>
                                         <td>[[${producto.imagen}]]</td>
+                                        <td>[[${producto.descripcion}]]</td>
                                         <td>
                                             <form
                                                 th:action="@{/admin/productos/toggleEstadoProductos(id=${producto.idProducto})}"
@@ -207,7 +207,7 @@
 
             if (!csrfToken || !csrfHeader) {
                 console.warn("⚠️ CSRF meta tags not found.");
-                return;
+                return; 
             }
 
             if (form) {
