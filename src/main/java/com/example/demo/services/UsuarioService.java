@@ -71,4 +71,6 @@ public class UsuarioService {
         return repository.findByRol(RolEnum.valueOf(filtroRol), pageable);
     }
 
+    
+
 }

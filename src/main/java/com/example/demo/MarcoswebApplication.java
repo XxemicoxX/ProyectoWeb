@@ -28,6 +28,8 @@ public class MarcoswebApplication {
 				usuario.setNombre("Admin");
 				usuario.setCorreo("admin@gmail.com");
 				usuario.setContrasena(encoder.encode("12345678"));
+				usuario.setRol(RolEnum.ADMIN);
+				usuario.setEstado("activo");
 				repository.save(usuario);
 			}
 		};
